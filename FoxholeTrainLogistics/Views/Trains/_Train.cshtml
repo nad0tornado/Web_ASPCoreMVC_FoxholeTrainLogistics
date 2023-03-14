@@ -1,22 +1,30 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model Train
+﻿@model TrainViewModel
+@using FoxholeTrainLogistics.Trains;
 
-
-<div style="border: 1px solid black; border-radius: 8px; padding: 5px; margin-bottom: 5px; height: 100px; display: flex; flex-direction: column">
-    <span>@Model.TrainId</span>
-    <div>
-        <img src="../img/trainBlack_side.png" style="height: 40px; width: auto;"/>
-        @for(int i = 0; i < Model.NumberOfCars; ++i) {
-        <img src="../img/flatbedCarBlack_side.png" style="height: 40px; width: auto;" />
+<div style="border: 1px solid black; border-radius: 8px; padding: 5px; margin-bottom: 5px; min-height: 100px; display: flex; flex-direction: column">
+    <span>@Model.Train.TrainId</span>
+    <div style="margin-top: 5px; margin-bottom: 5px;">
+        @foreach(TrainCar c in Model.Train.Cars) {
+            var src = "../img/" + c.Image();
+            <button class="ftl-interact ftl-button" style="">
+                <img src="@src" class="ftl-icon" />
+            </button>
         }
-        <img src="../img/cabooseCarBlack_side.png" style="height: 40px; width: auto;" />
     </div>
     <div class="btn-group" role="group">
-        <button type="button" class="btn btn-secondary">Tag 1</button>
-        <button type="button" class="btn btn-secondary">Tag 2</button>
-        <button type="button" class="btn btn-secondary">Tag 3</button>
+        <button type="button" class="ftl-interact ftl-chip">@Model.NumberOfCars Cars</button>
+
+        @{
+            if (@Model.Train.Status == TrainStatus.Parked) {
+                <button type="button" class="ftl-interact ftl-chip alert-info">Status: @Model.StatusDisplayName</button>
+            }
+            if (@Model.Train.Status == TrainStatus.InTransit) {
+                <button type="button" class="ftl-interact ftl-chip alert-success">Status: @Model.StatusDisplayName</button>
+            }
+            if (@Model.Train.Status == TrainStatus.Stopped)
+            {
+                <button type="button" class="ftl-interact ftl-chip alert-danger">Status: @Model.StatusDisplayName</button>
+            }
+        }
     </div>
 </div>

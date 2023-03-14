@@ -7,6 +7,6 @@
     {
         public Guid TrainId { get; set; }
         public TrainStatus Status { get; set; }
-        public int NumberOfCars { get; set; }
+        public List<TrainCar> Cars { get; set; }
     }
 }

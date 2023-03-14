@@ -16,3 +16,30 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.ftl-icon {
+    height: 40px;
+    width: auto;
+}
+
+.ftl-button {
+    border: none;
+}
+.ftl-chip {
+    border: 1px solid black;
+    border-radius: 8px;
+    margin: 2px;
+    padding: 10px;
+    padding-top: initial;
+    height: 25px;
+    font-size: 12px;
+}
+
+.ftl-interact:hover {
+    filter: brightness(85%)
+}
+
+.ftl-interact:active {
+    filter: none;
+}
+

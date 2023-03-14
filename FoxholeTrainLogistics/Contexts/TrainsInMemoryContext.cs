@@ -18,12 +18,5 @@ namespace FoxholeTrainLogistics.Contexts
 
             base.OnConfiguring(optionsBuilder);
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //modelBuilder.Entity<Train>().HasData(randomTrains);
-
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }

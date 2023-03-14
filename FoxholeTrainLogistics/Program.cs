@@ -51,14 +51,25 @@ namespace FoxholeTrainLogistics
             var rand = new Random();
             for (int i = 0; i < 10; ++i)
             {
+                var trainCars = new List<TrainCar>()
+                {
+                    TrainCar.Engine,
+                    TrainCar.CoalCar,
+                    TrainCar.InfantryCar,
+                };
+
+                for (int j = 0; j < 10; ++j)
+                    trainCars.Add(TrainCar.FlatbedCar);
+
+                trainCars.Add(TrainCar.Caboose);
+
                 dbContext.Trains.Add(new Train()
                 {
                     TrainId = new Guid(),
-                    NumberOfCars = rand.Next(6, 16),
-                    Status = (TrainStatus)rand.Next(0, 2)
+                    Cars = trainCars,
+                    Status = (TrainStatus)rand.Next(0, 3)
                 });
             }
-                
 
             dbContext.SaveChanges();
         }

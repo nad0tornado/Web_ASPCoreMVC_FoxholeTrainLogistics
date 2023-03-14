@@ -20,7 +20,7 @@ namespace FoxholeTrainLogistics.Controllers
         {
             var trainsViewModel = new TrainsViewModel()
             {
-                Trains = _dbContext.Trains.ToList()
+                Trains = _dbContext.Trains.Select(t => new TrainViewModel(t,false)).ToList()
             };
 
             return View(trainsViewModel);
