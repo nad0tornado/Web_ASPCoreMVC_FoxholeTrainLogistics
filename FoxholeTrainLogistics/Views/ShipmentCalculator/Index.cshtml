@@ -3,6 +3,9 @@
     ViewData["Title"] = "Shipment Calculator";
 }
 
+<!-- Import Train Creation Factory-->
+<script src="~/js/trainsFactory.js"/>
+
 <h1>Shipment Calculator</h1>
 <div>
     <b>Your Train</b>
@@ -15,8 +18,9 @@
             };
         await Html.RenderPartialAsync("../Trains/_Train", new TrainViewModel(train));
     }
+    
     <div style="border: 1px solid black; border-radius: 8px; padding: 5px; height: 50px; width: 500px;">
-        <button class="ftl-interact ftl-button" onclick="console.log('clicked train')">
+        <button class="ftl-interact ftl-button" onclick="createTrainCar('train')">
             <img src="./img/trainBlack_side.png" class="ftl-icon" />
         </button>
         <button class="ftl-interact ftl-button">

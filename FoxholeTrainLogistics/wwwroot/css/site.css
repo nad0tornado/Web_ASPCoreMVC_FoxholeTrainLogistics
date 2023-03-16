@@ -17,6 +17,10 @@ body {
   margin-bottom: 60px;
 }
 
+.ftl-noselect {
+    user-select: none;
+}
+
 .ftl-icon {
     height: 40px;
     width: auto;
