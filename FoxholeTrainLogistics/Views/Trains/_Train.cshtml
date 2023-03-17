@@ -1,30 +1,96 @@
 ﻿@model TrainViewModel
 @using FoxholeTrainLogistics.Trains;
+@using FoxholeTrainLogistics.Services;
+@using FoxholeTrainLogistics.Interfaces;
 
 <!-- Import Train Creation Factory-->
-
-<!-- having an issue where the <script> tag won't run when the page loads. I need it in order to iterate over the train cars and spawn them
-    in the train-container-->
-<script src="~/js/trainsFactory.js"/>
-
-<div style="border: 1px solid black; border-radius: 8px; padding: 5px; margin-bottom: 5px; min-height: 100px; display: flex; flex-direction: column">
-    <span>@Model.Train.TrainId</span>
-    <div id="train-container" style="margin-top: 5px; margin-bottom: 5px;"></div>
+<script type="module">
+    import { TrainsFactory } from './js/trainsFactory.js?v=1';
+    var trainId = '@Model.Train.TrainId';
+    var trainsFactory = new TrainsFactory(trainId, @Model.Interactable.ToString().ToLower());
     
-        <div class="btn-group" role="group">
-            <button type="button" class="ftl-interact ftl-chip" onclick="() => render()">@Model.NumberOfCars Cars</button>
-    
-            @{
+    var trainCars = JSON.parse('@Html.Raw(Model.Train.Cars.ToJson())');
+    delete localStorage.trainCars;
+
+    trainCars.forEach(c => trainsFactory.createTrainCar(c))
+
+    function validateTrain() {
+        const trainContainer = trainsFactory.getTrainContainer();
+
+        if (trainContainer.children.length > 16)
+            return false;
+
+        return true;
+    }
+    function updateTrain() {
+        const trainCrewChip = document.getElementById("train-crew-" + trainId);
+        trainCrewChip.innerHTML = "Crew Capacity: " + trainCars.map(c => c.Crew).reduce((a, c) => a + c);
+    }
+    function buildToolbar () {
+        const carTypes = JSON.parse('@Html.Raw(TrainCarFactory.GetAllTrainCarTypes().ToJson())');
+
+        const trainToolbar = document.getElementById("train-toolbar-" + trainId);
+        
+
+        if (trainToolbar === null)
+            throw new DOMException("Unable to find trainToolbar - was this script ran before the page was loaded?");
+
+        carTypes.forEach(car => {
+            const btn = document.createElement("button");
+            btn.className = 'ftl-interact ftl-button';
+            btn.onclick = () => {
+                var trainCar = trainsFactory.createTrainCar(car);
+                
+                    if (!validateTrain())
+                        trainCar.style = 'background-color: red;';
+
+                    updateTrain();
+                }
+
+                const img = document.createElement("img");
+                img.src = "/img/" + car.Image + "?v=1";
+                img.className = "ftl-icon";
+                btn.appendChild(img);
+
+                trainToolbar.appendChild(btn);
+            })
+        }
+
+        @(Model.Interactable.ToString().ToLower()) && buildToolbar();
+    </script>
+
+
+
+    <div style="border: 1px solid black; border-radius: 8px; padding: 5px; margin-bottom: 5px; min-height: 100px; display: flex; flex-direction: column">
+        <span>@Model.Train.TrainId</span>
+        
+        <div id=@("train-container-"+Model.Train.TrainId) style="margin-top: 5px; margin-bottom: 5px"></div>
+        
+            <div class="btn-group" role="group">
+                <button type="button" class="ftl-interact ftl-chip">@Model.NumberOfCars Cars</button>
+                <button id=@("train-crew-"+Model.Train.TrainId) type ="button" class="ftl-interact ftl-chip">
+                    Crew Capacity: 2
+                </button>
+                
+                @{
             if (@Model.Train.Status == TrainStatus.Parked) {
-                <button type="button" class="ftl-interact ftl-chip alert-info">Status: @Model.StatusDisplayName</button>
+               <button type="button" class="ftl-interact ftl-chip alert-info">Status: @Model.StatusDisplayName</button>
             }
             if (@Model.Train.Status == TrainStatus.InTransit) {
-                <button type="button" class="ftl-interact ftl-chip alert-success">Status: @Model.StatusDisplayName</button>
+               <button type="button" class="ftl-interact ftl-chip alert-success">Status: @Model.StatusDisplayName</button>
             }
             if (@Model.Train.Status == TrainStatus.Stopped)
             {
-                <button type="button" class="ftl-interact ftl-chip alert-danger">Status: @Model.StatusDisplayName</button>
+                                                                                                                                                                                                                                        <button type="button" class="ftl-interact ftl-chip alert-danger">Status: @Model.StatusDisplayName</button>
             }
             }
         </div>
-</div>
+    </div>
+
+
+    @if (!Model.Interactable)
+    return;
+
+    <div id=@("train-toolbar-"+Model.Train.TrainId) style ="border: 1px solid black; border-radius: 8px; padding: 5px; height: 50px; width: 500px;">
+        
+    </div>

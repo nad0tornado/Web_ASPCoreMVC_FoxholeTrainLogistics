@@ -2,6 +2,7 @@ using FoxholeTrainLogistics.Contexts;
 using FoxholeTrainLogistics.Controllers;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Models;
+using FoxholeTrainLogistics.Services;
 using FoxholeTrainLogistics.Trains;
 
 namespace FoxholeTrainLogistics
@@ -51,17 +52,17 @@ namespace FoxholeTrainLogistics
             var rand = new Random();
             for (int i = 0; i < 10; ++i)
             {
-                var trainCars = new List<TrainCar>()
+                var trainCars = new List<ITrainCar>()
                 {
-                    TrainCar.Engine,
-                    TrainCar.CoalCar,
-                    TrainCar.InfantryCar,
+                    TrainCarFactory.CreateTrainCar(TrainCarType.EngineCar),
+                    TrainCarFactory.CreateTrainCar(TrainCarType.CoalCar),
+                    TrainCarFactory.CreateTrainCar(TrainCarType.InfantryCar),
                 };
 
                 for (int j = 0; j < 10; ++j)
-                    trainCars.Add(TrainCar.FlatbedCar);
+                    trainCars.Add(TrainCarFactory.CreateTrainCar(TrainCarType.FlatbedCar));
 
-                trainCars.Add(TrainCar.Caboose);
+                trainCars.Add(TrainCarFactory.CreateTrainCar(TrainCarType.CabooseCar));
 
                 dbContext.Trains.Add(new Train()
                 {

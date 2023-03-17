@@ -1,4 +1,5 @@
-﻿using FoxholeTrainLogistics.Trains;
+﻿using FoxholeTrainLogistics.Interfaces;
+using FoxholeTrainLogistics.Trains;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoxholeTrainLogistics.Models
@@ -9,6 +10,6 @@ namespace FoxholeTrainLogistics.Models
         public TrainStatus Status { get; set; }
 
         [NotMapped] // .. TODO: this should probably be a many-to-many relationship between other "Cars" in the database
-        public List<TrainCar> Cars { get; set; } = new List<TrainCar>();
+        public List<ITrainCar> Cars { get; set; } = new List<ITrainCar>();
     }
 }
