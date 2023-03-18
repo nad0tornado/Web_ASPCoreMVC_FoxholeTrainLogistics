@@ -23,40 +23,10 @@ export class TrainsFactory {
         const trainCars = localStorage.trainCars ? JSON.parse('['+localStorage.trainCars+']') : [];
         const trainContainer = this.getTrainContainer();
         const btn = trainContainer.appendChild(document.createElement("button"));
-        btn.className = "ftl-interact ftl-button";
+        btn.className = "ftl-noselect ftl-interact ftl-button";
 
-        var img = undefined;
-
-        
-        switch (car.Type) {
-            case "EngineCar": {
-                img = btn.appendChild(document.createElement("img"));
-                img.src = "./img/trainBlack_side.png";
-                break;
-            }
-            case "CoalCar": {
-                img = btn.appendChild(document.createElement("img"));
-                img.src = "./img/coalCarBlack_side.png";
-                break;
-            }
-            case "InfantryCar": {
-                img = btn.appendChild(document.createElement("img"));
-                img.src = "./img/infantryCarBlack_side.png";
-                break;
-            }
-            case "FlatbedCar": {
-                img = btn.appendChild(document.createElement("img"));
-                img.src = "./img/flatbedCarBlack_side.png";
-                break;
-            }
-            case "CabooseCar": {
-                img = btn.appendChild(document.createElement("img"));
-                img.src = "./img/cabooseCarBlack_side.png";
-                break;
-            }
-            default:
-                throw new DOMException("Invalid train car type \"" + car.Type + "\"");
-        }
+        var img = btn.appendChild(document.createElement("img"));
+        img.src = "./img/"+car.Image;
 
         img.className = "ftl-icon";
 

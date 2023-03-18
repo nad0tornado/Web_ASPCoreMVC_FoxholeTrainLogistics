@@ -26,15 +26,22 @@ body {
     width: auto;
 }
 
+.ftl-paper {
+    box-shadow: 1px 3px 5px 0px rgba(100,100,100,0.5);
+    border: 0.1px solid rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 10px;
+}
+
 .ftl-button {
     border: none;
 }
 .ftl-chip {
-    border: 1px solid black;
+    box-shadow: 1px 3px 5px 0px rgba(100,100,100,0.5);
+    border: 0.1px solid rgba(0,0,0,0.15);
     border-radius: 8px;
     margin: 2px;
-    padding: 10px;
-    padding-top: initial;
+    
     height: 25px;
     font-size: 12px;
 }
