@@ -9,7 +9,6 @@ namespace FoxholeTrainLogistics.ViewModels
     {
        
         public List<IShippableIcon> ShippableCategories { get; private set; }
-        private List<string> shippableCategoriesNames { get; } = new List<string>();
 
         public Dictionary<string,List<IShippableIcon>> ShippableItems { get; } = new Dictionary<string, List<IShippableIcon>>();
 

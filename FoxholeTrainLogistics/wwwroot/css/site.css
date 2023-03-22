@@ -19,11 +19,16 @@ body {
 
 .ftl-noselect {
     user-select: none;
+    -webkit-user-drag: none;
 }
 
 .ftl-icon {
     height: 40px;
     width: auto;
+}
+
+.ftl-shippable-icon {
+    filter: drop-shadow(0px 0px 2px rgba(0,0,0,1));
 }
 
 .ftl-paper {
@@ -54,5 +59,21 @@ body {
 
 .ftl-interact:active {
     filter: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .ftl-anim-slide-down {
+        animation: FTL-Anim-Slide-Down infinite 2s alternate;
+    }
+}
+
+@keyframes FTL-Anim-Slide-Down {
+    from {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(100px);
+    }
 }
 

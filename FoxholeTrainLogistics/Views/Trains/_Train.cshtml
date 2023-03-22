@@ -71,14 +71,14 @@
                 
                 @{
             if (@Model.Train.Status == TrainStatus.Parked) {
-                                    <button type="button" class="ftl-interact ftl-chip alert-info">Status: @Model.StatusDisplayName</button>
+                                                                        <button type="button" class="ftl-interact ftl-chip alert-info">Status: @Model.StatusDisplayName</button>
             }
             if (@Model.Train.Status == TrainStatus.InTransit) {
-                                    <button type="button" class="ftl-interact ftl-chip alert-success">Status: @Model.StatusDisplayName</button>
+                                                                        <button type="button" class="ftl-interact ftl-chip alert-success">Status: @Model.StatusDisplayName</button>
             }
             if (@Model.Train.Status == TrainStatus.Stopped)
             {
-                                    <button type="button" class="ftl-interact ftl-chip alert-danger">Status: @Model.StatusDisplayName</button>
+                                                                        <button type="button" class="ftl-interact ftl-chip alert-danger">Status: @Model.StatusDisplayName</button>
             }
             }
         </div>
@@ -87,4 +87,12 @@
     @if (!Model.Interactable)
     return;
 
-    <div id=@("train-toolbar-"+Model.Train.TrainId) class="ftl-paper" style =" display: flex; vertical-align: middle; min-height: 75px; width: fit-content; min-width: 500px"/>
+    <div class="ftl-paper" style=" display: flex; min-height: 75px; width: fit-content; min-width: 500px">
+        <div id=@("train-toolbar-"+Model.Train.TrainId) style=" display: flex; "></div>
+        <!--<div style="display: flex; justify-content: end; align-content:start; flex: 1">
+        <button class="ftl-button ftl-paper ftl-noselect ftl-interact" style="padding: 2px; padding-top: initial; padding-bottom: initial; height: fit-content">
+            <i class="fa-solid fa-check" style="color:green"></i>
+        </button>
+        </div>-->
+        
+    </div>

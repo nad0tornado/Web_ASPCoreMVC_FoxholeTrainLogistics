@@ -24,8 +24,7 @@
             };
         await Html.RenderPartialAsync("../Trains/_Train", new TrainViewModel(train,true));
     }
-</div>
-
+    </div>
 @{
     await Html.RenderPartialAsync("./_ShippableToolbar", new ShippableToolbarViewModel(ShippableToolbarService));
 }
