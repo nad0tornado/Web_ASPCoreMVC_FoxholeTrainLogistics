@@ -16,6 +16,7 @@ namespace FoxholeTrainLogistics.ViewModels
         public ShippableToolbarViewModel(IShippableToolbarService shippableToolbarService)
         {
             ShippableCategories = shippableToolbarService.GetShippableCategories();
+            ShippableItems = shippableToolbarService.GetShippableItems();
         }
 
         

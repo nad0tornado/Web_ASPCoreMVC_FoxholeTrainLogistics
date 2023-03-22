@@ -14,7 +14,6 @@ namespace FoxholeTrainLogistics.Services
         public List<IShippableIcon> GetShippableCategories()
         {
             var categories = new List<IShippableIcon>();
-            // .. move this file manipulation logic to a separate service
             var categoriesImagePaths = Directory.GetFiles(shippableContentRoot + "/categories/");
 
             foreach (var path in categoriesImagePaths)
@@ -43,9 +42,11 @@ namespace FoxholeTrainLogistics.Services
             return categories;
         }
 
-        private void setupItems()
+        public Dictionary<string,List<IShippableIcon>> GetShippableItems()
         {
-            // .. move this file manipulation logic to a separate service
+            var shippableItems = new Dictionary<string,List<IShippableIcon>>();
+
+            return shippableItems;
         }
     }
 }
