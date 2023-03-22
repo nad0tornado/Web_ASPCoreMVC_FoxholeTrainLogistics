@@ -18,6 +18,7 @@ namespace FoxholeTrainLogistics
 
             // .. Setup DB Context
             builder.Services.AddSingleton<ITrainsDbContext, TrainsInMemoryContext>();
+            builder.Services.AddSingleton<IShippableToolbarService, ShippableToolbarService>();
 
             var app = builder.Build();
 

@@ -1,6 +1,7 @@
 ﻿@using FoxholeTrainLogistics.Trains;
 @using FoxholeTrainLogistics.Interfaces;
 @using FoxholeTrainLogistics.Services;
+@using FoxholeTrainLogistics.ViewModels;
 @{
     ViewData["Title"] = "Shipment Calculator";
 }
@@ -22,7 +23,9 @@
             };
         await Html.RenderPartialAsync("../Trains/_Train", new TrainViewModel(train,true));
     }
-
-    
 </div>
+
+@{
+    await Html.RenderPartialAsync("./_ShippableToolbar", new ShippableToolbarViewModel());
+}
 
