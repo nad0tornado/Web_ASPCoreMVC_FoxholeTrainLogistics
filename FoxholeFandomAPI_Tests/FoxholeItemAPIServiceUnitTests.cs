@@ -1,41 +1,45 @@
-namespace FoxholeFandomAPI_Tests
+using FoxholeItemAPI_Tests.Interfaces;
+using FoxholeItemAPI;
+using FoxholeItemAPI.Services;
+using FoxholeItemAPI_Tests.Repositories;
+
+namespace FoxholeItemAPI_Tests
 {
-    // .. https://foxhole.fandom.com/wiki/Category:Icons
-    public class FoxholeItemAPIServiceUnitTests
+    public class FoxholeItemAPIServiceUnitTests : IFoxholeItemAPIServiceUnitTest
     {
-        // .. Enum => Category {
-        // Ammunition, Base_Upgrade, Building, Event, Facility, Map, Medical, Research, Resource, Shippable,
-        // Supplie, Tool, UI, Uniform, Vehicle, Weapon, None }
-
-        // .. Enum => ShippingType {
-        // ShippingContainer, Pallet, CrateOrPackage
-        //}
-
-        // INTERFACE => IItem
-        // - Icon => string
-        // - DisplayName => string
-        // - 
-        // - ShippingType => enum
-
-        // INTERFACE => IItemService
-        // - GetAllItems => List<IItem>
-        // - GetItemsInCategory (Category: Enum) => List<IItem>
-
         [Fact]
         public void TestGetAllItems()
         {
-            // .. GET Icons -> return a list of all items under https://foxhole.fandom.com/wiki/Category:Icons
+            // .. Get all of the items
+            var items = FoxholeItemAPIService<MockFoxholeItemAPIRepository>.GetItems();
 
-            var itemService = new FoxholeAPIItemService();
-            var items = itemService.GetAllItems();
-
+            // .. Make sure that the list is not empty and contains items of at least two different types
             Assert.NotEmpty(items);
+            Assert.Contains(items, (i => i.Category == Category.Ammunition));
+            Assert.Contains(items, (i => i.Category == Category.Shippable));
         }
 
-        [Fact]
-        public void TestGetItemsInCategory()
+        [Theory]
+        [InlineData(Category.Ammunition,Category.Shippable)]
+        public void TestGetItemsInCategory(Category categoryA, Category categoryB)
         {
-            // .. GET Icons (Category : Enum) -> return a list of all items under [WIKIROOT]/Category:[CATEGORY]
+            // .. GET Icons (Category : Enum) -> return a list of all items in the JSON file matching [category]
+
+            // .. Get all of the items in [categoryA]
+            var itemsInCategory = FoxholeItemAPIService<MockFoxholeItemAPIRepository>.GetItemsInCategory(categoryA);
+
+            // .. Make sure the list is non-empty, contains at least one item in [categoryA] and NO ITEMS in any other category
+            Assert.NotEmpty(itemsInCategory);
+            Assert.Contains(itemsInCategory, (i => i.Category == categoryA));
+            Assert.DoesNotContain(itemsInCategory, (i => i.Category != categoryA));
+
+            // .. Get all of the items in [categoryB]
+            itemsInCategory = FoxholeItemAPIService<MockFoxholeItemAPIRepository>.GetItemsInCategory(categoryB);
+
+            // .. Make sure the list is non-empty, contains at least one item in [categoryB] and NO ITEMS in any other category
+            Assert.NotEmpty(itemsInCategory);
+            Assert.Contains(itemsInCategory, (i => i.Category == categoryB));
+            Assert.DoesNotContain(itemsInCategory, (i => i.Category != categoryB));
         }
     }
 }
