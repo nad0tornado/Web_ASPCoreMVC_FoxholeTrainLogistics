@@ -25,8 +25,12 @@ Planned Features:
 ### Why this project?
 During my job search from Jan - Mar 2023, I identified some key skill areas which were in high-demand in the industry including being able to use Asp .NET Core MVC, .Net Core 6.0 and TDD (Test-Driven Development). While I had some experience in these areas, I wanted to work on a project that would help to solidify these skillsets and increase my overall value as a Software Engineer - and I wanted the project to be engaging enough that I would want to keep working on it and see it to completion.
 
-https://youtu.be/l6ndkMHsAqg?t=5
+![image](https://user-images.githubusercontent.com/67047470/227814447-85f0a1ac-db05-4f47-800a-c61402bf34fc.png)
 
-I was playing a lot of the mmo game known as "Foxhole" and I was quite involved with the logistics system they have in the game, particularly with trains. However, I noticed a gap in the kinds of tools that were available to streamline the process of managing a train network and managing freight shipments. Having recently developed a really useful spreadsheet for calculating shipments, I decided that this would be an excellent opportunity for me to explore use of Asp .NET Core MVC + Entity Framework, so I thought why not build a tool that's both useful and is something that I can show in job interviews?
+I was playing a lot of the mmo game known as "Foxhole" and I was quite involved with the logistics system they have in the game, particularly with trains. However, I noticed a gap in the kinds of tools that were available to streamline the process of managing a train network and managing freight shipments.
 
-And here we are!
+![image](https://user-images.githubusercontent.com/67047470/227814680-c7138860-6f97-463b-9dd1-f41390f89653.png)
+
+Having recently developed a really useful spreadsheet for calculating shipments, I decided that this would be an excellent opportunity for me to explore use of Asp .NET Core MVC + Entity Framework, so I thought why not build a tool that's both useful and is something that I can show in job interviews?
+
+..And here we are!
