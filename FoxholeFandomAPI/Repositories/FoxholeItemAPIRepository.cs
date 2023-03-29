@@ -3,15 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FoxholeItemAPI.Repositories
 {
     internal class FoxholeItemAPIRepository : IFoxholeItemAPIRepository
     {
-        public static string LoadData()
+        public object? LoadData()
         {
-            throw new NotImplementedException();
+            using (var fileStream = File.OpenRead("./foxhole.json"))
+            {
+                var result = JsonSerializer.DeserializeAsync<Dictionary<string, string>[]>(fileStream).Result;
+                return result ?? Array.Empty<Dictionary<string,string>>();
+            }
         }
     }
 }

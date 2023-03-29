@@ -11,7 +11,7 @@ namespace FoxholeItemAPI_Tests
         public void TestGetAllItems()
         {
             // .. Get all of the items
-            var items = FoxholeItemAPIService<MockFoxholeItemAPIRepository>.GetItems();
+            var items = FoxholeItemAPIService.GetItems();
 
             // .. Make sure that the list is not empty and contains items of at least two different types
             Assert.NotEmpty(items);
@@ -26,7 +26,7 @@ namespace FoxholeItemAPI_Tests
             // .. GET Icons (Category : Enum) -> return a list of all items in the JSON file matching [category]
 
             // .. Get all of the items in [categoryA]
-            var itemsInCategory = FoxholeItemAPIService<MockFoxholeItemAPIRepository>.GetItemsInCategory(categoryA);
+            var itemsInCategory = FoxholeItemAPIService.GetItemsInCategory(categoryA);
 
             // .. Make sure the list is non-empty, contains at least one item in [categoryA] and NO ITEMS in any other category
             Assert.NotEmpty(itemsInCategory);
@@ -34,7 +34,7 @@ namespace FoxholeItemAPI_Tests
             Assert.DoesNotContain(itemsInCategory, (i => i.Category != categoryA));
 
             // .. Get all of the items in [categoryB]
-            itemsInCategory = FoxholeItemAPIService<MockFoxholeItemAPIRepository>.GetItemsInCategory(categoryB);
+            itemsInCategory = FoxholeItemAPIService.GetItemsInCategory(categoryB);
 
             // .. Make sure the list is non-empty, contains at least one item in [categoryB] and NO ITEMS in any other category
             Assert.NotEmpty(itemsInCategory);

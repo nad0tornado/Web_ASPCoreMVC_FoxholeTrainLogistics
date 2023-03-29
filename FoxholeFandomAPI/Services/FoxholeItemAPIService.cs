@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace FoxholeItemAPI.Services
 {
-    internal class FoxholeItemAPIService<Repository> : IFoxholeItemAPIService where Repository : IFoxholeItemAPIRepository
+    internal class FoxholeItemAPIService : IFoxholeItemAPIService
     {
-        private FoxholeItemAPIService() { }
         public static List<IItem> GetItems()
         {
-            throw new NotImplementedException();
+            return new();
         }
 
         public static List<IItem> GetItemsInCategory(Category category)

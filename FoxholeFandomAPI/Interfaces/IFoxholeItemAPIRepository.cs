@@ -8,6 +8,6 @@ namespace FoxholeItemAPI.Interfaces
 {
     internal interface IFoxholeItemAPIRepository
     {
-        public static string LoadData() { throw new NotImplementedException(); }
+        public object? LoadData();
     }
 }

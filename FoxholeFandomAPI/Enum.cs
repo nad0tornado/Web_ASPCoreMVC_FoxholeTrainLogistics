@@ -12,5 +12,7 @@ namespace FoxholeItemAPI
         Supplie, Tool, UI, Uniform, Vehicle, Weapon, None 
     };
 
+    public enum Faction { Warden, Colonial, Neutral}
+
     public enum ShippingType { ShippingContainer, Pallet, CrateOrPackage};
 }
