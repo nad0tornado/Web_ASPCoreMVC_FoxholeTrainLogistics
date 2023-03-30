@@ -8,15 +8,22 @@ using System.IO;
 using System.Text.Json;
 using FoxholeItemAPI;
 using FoxholeItemAPI.Repositories;
+using FoxholeItemAPI.Models;
 
 namespace FoxholeItemAPI_Tests.Repositories
 {
     internal class MockFoxholeItemAPIRepository : AbstractFoxholeItemAPIRepository, IFoxholeItemAPIRepository
     {
-        private string data = string.Empty;
+        private List<FoxholeItemAPIItem> data = new();
+
+        public MockFoxholeItemAPIRepository() { _LoadData(); }
+
         protected override void _LoadData()
         {
-
+            using(var file = File.OpenRead("./foxholeSample.json"))
+            {
+                data = JsonSerializer.Deserialize<List<FoxholeItemAPIItem>>(file) ?? new();
+            }
         }
         public List<IItem> GetItems()
         {

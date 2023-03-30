@@ -12,7 +12,7 @@ namespace FoxholeItemAPI_Tests
         public void TestGetAllItems()
         {
             // .. Get all of the items
-            var repo = new FoxholeItemAPIRepository();
+            var repo = new MockFoxholeItemAPIRepository();
             var items = repo.GetItems();
 
             // .. Make sure that the list is not empty and contains items of at least two different types

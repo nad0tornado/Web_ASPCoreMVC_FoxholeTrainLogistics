@@ -1,0 +1,47 @@
+[
+   {
+      "displayId": 0,
+      "faction": [
+         "neutral",
+         "colonial"
+      ],
+      "imgName": "Item1Image.png",
+      "ItemName": "Item1",
+      "itemDesc": "This is item 1",
+      "itemCategory": "small_arms",
+      "itemClass": "Assault Rifle",
+      "ammoUsed": "7.92mm",
+      "numberProduced": 10,
+      "isTeched": true,
+      "isMpfCraftable": true,
+      "craftLocation": [
+         "factory",
+         "mpf"
+      ],
+      "cost": {
+         "bmat": 100
+      }
+   },
+  {
+    "displayId": 22,
+    "faction": [
+      "neutral",
+      "warden"
+    ],
+    "imgName": "ItemContainerImage.png",
+    "itemName": "ItemContainer",
+    "itemDesc": "This is a container",
+    "itemCategory": "shipables",
+    "ammoUsed": "7.92mm",
+    "numberProduced": 10,
+    "isTeched": true,
+    "isMpfCraftable": true,
+    "craftLocation": [
+      "factory",
+      "mpf"
+    ],
+    "cost": {
+      "bmat": 165
+    }
+  }
+]
