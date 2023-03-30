@@ -37,3 +37,7 @@ I was playing a lot of the mmo game known as "Foxhole" and I was quite involved 
 Having recently developed a really useful spreadsheet for calculating shipments, I decided that this would be an excellent opportunity for me to explore use of Asp .NET Core MVC + Entity Framework, so I thought why not build a tool that's both useful and is something that I can show in job interviews?
 
 ..And here we are!
+
+**DISCLAIMER:**
+- "FoxholeItemAPI" uses a .json file created by Joshua Hallee for pre-population of API items. All credit goes to him for its original creation.
+- "FoxholeTrainLogistics" (MVC Project) Uses images and text content from https://foxhole.fandom.com, content which is originally owned by Siege Camp (prev. Clapfoot Inc) and is licensed under the Creative Commons Attribution-ShareAlike (CC BY-SA) license. As such, this project gives full credit to the original copyright holders and complies with the license terms by releasing the resulting work under the same CC BY-SA license.
