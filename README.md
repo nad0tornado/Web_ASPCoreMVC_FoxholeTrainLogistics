@@ -11,6 +11,9 @@ Planned Features:
 
 ### Stack: HTML5, CSS + Bootstrap, Javascript, Asp .NET Core MVC (.NET 6.0), Entity Framework
 
+**Coding Conventions:** 
+- **Backend:** [Microsoft C# Coding Conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
+
 **Concepts Explored:**
 - Bootstrap
 - Asp .NET Core MVC (.NET 6.0) & Entity Framework
