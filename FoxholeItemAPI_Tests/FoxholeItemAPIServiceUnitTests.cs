@@ -17,18 +17,19 @@ namespace FoxholeItemAPI_Tests
 
             // .. Make sure that the list is not empty and contains items of at least two different types
             Assert.NotEmpty(items);
-            Assert.Contains(items, (i => i.Category == Category.Ammunition));
-            Assert.Contains(items, (i => i.Category == Category.Shippable));
+            Assert.Contains(items, (i => i.Category == Category.SmallArms));
+            Assert.Contains(items, (i => i.Category == Category.Shippables));
         }
 
         [Theory]
-        [InlineData(Category.Ammunition,Category.Shippable)]
+        [InlineData(Category.SmallArms,Category.Shippables)]
         public void TestGetItemsInCategory(Category categoryA, Category categoryB)
         {
             // .. GET Icons (Category : Enum) -> return a list of all items in the JSON file matching [category]
 
             // .. Get all of the items in [categoryA]
-            var itemsInCategory = FoxholeItemAPIService.GetItemsInCategory(categoryA);
+            var repo = new MockFoxholeItemAPIRepository();
+            var itemsInCategory = repo.GetItemsInCategory(categoryA);
 
             // .. Make sure the list is non-empty, contains at least one item in [categoryA] and NO ITEMS in any other category
             Assert.NotEmpty(itemsInCategory);
@@ -36,7 +37,7 @@ namespace FoxholeItemAPI_Tests
             Assert.DoesNotContain(itemsInCategory, (i => i.Category != categoryA));
 
             // .. Get all of the items in [categoryB]
-            itemsInCategory = FoxholeItemAPIService.GetItemsInCategory(categoryB);
+            itemsInCategory = repo.GetItemsInCategory(categoryB);
 
             // .. Make sure the list is non-empty, contains at least one item in [categoryB] and NO ITEMS in any other category
             Assert.NotEmpty(itemsInCategory);

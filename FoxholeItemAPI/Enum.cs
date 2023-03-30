@@ -8,8 +8,7 @@ namespace FoxholeItemAPI
 {
     public enum Category
     {
-        Ammunition, Base_Upgrade, Building, Event, Facility, Map, Medical, Research, Resource, Shippable,
-        Supplie, Tool, UI, Uniform, Vehicle, Weapon, None 
+        SmallArms, HeavyArms,HeavyAmmunition,Utilities,Supplies,Medical,Uniforms,Vehicles,Shippables,Unknown
     };
 
     public enum Faction { Warden, Colonial, Neutral}

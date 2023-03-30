@@ -9,12 +9,12 @@ namespace FoxholeItemAPI.Models
 {
     internal class Item : IItem
     {
-        public string Icon { get; private set; }
+        public string IconName { get; set; } = string.Empty;
 
-        public string DisplayName { get; private set; }
+        public string DisplayName { get; set; } = string.Empty;
 
-        public Category Category { get; private set; }
+        public Category Category { get; set; }
 
-        public ShippingType ShippingType { get; private set; }
+        public ShippingType ShippingType { get; set; }
     }
 }

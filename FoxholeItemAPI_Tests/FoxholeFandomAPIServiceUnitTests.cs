@@ -15,7 +15,7 @@ namespace FoxholeFandomAPI_Tests
         }
 
         [Theory(Skip = "Skipped due to not being implemented")]
-        [InlineData(Category.Ammunition, Category.Shippable)]
+        [InlineData(Category.SmallArms, Category.Shippables)]
         public void TestGetItemsInCategory(Category categoryA, Category categoryB)
         {
             // .. GET Icons (Category : Enum) -> return a list of all items under [WIKIROOT]/Category:[CATEGORY]

@@ -6,7 +6,7 @@
          "colonial"
       ],
       "imgName": "Item1Image.png",
-      "ItemName": "Item1",
+      "itemName": "Item1",
       "itemDesc": "This is item 1",
       "itemCategory": "small_arms",
       "itemClass": "Assault Rifle",

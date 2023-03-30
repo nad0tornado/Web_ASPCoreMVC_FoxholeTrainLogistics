@@ -10,9 +10,12 @@ namespace FoxholeItemAPI
     {
         internal interface IItem
         {
-            public string Icon { get; }
+            public string IconName { get; }
+
             public string DisplayName { get; }
+
             public Category Category { get; }
+
             public ShippingType ShippingType { get; }
         }
     }

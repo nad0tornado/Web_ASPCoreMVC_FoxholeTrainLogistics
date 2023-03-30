@@ -9,30 +9,36 @@ using System.Text.Json;
 using FoxholeItemAPI;
 using FoxholeItemAPI.Repositories;
 using FoxholeItemAPI.Models;
+using System.Text.RegularExpressions;
+using System.ComponentModel;
+using FoxholeItemAPI.Converters;
 
 namespace FoxholeItemAPI_Tests.Repositories
 {
     internal class MockFoxholeItemAPIRepository : AbstractFoxholeItemAPIRepository, IFoxholeItemAPIRepository
     {
-        private List<FoxholeItemAPIItem> data = new();
+        private List<IItem> items = new();
 
-        public MockFoxholeItemAPIRepository() { _LoadData(); }
+        public MockFoxholeItemAPIRepository() { 
+            _LoadData(); 
+        }
 
         protected override void _LoadData()
         {
-            using(var file = File.OpenRead("./foxholeSample.json"))
+            if (!File.Exists("./foxholeSample.json"))
+                return;
+
+            using (var file = File.OpenRead("./foxholeSample.json"))
             {
-                data = JsonSerializer.Deserialize<List<FoxholeItemAPIItem>>(file) ?? new();
+                var options = new JsonSerializerOptions();
+                options.Converters.Add(new ItemConverter());
+                items = (JsonSerializer.Deserialize<List<Item>>(file, options) ?? new()).ToList<IItem>();
             }
         }
-        public List<IItem> GetItems()
-        {
-            throw new NotImplementedException();
-        }
 
-        public List<IItem> GetItemsInCategory(Category category)
-        {
-            throw new NotImplementedException();
-        }
+        public List<IItem> GetItems() => items;
+
+        public List<IItem> GetItemsInCategory(Category category) 
+            => items.Where(i => i.Category == category).ToList();
     }
 }
