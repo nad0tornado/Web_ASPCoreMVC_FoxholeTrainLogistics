@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FoxholeFandomAPI\FoxholeItemAPI.csproj" />
+    <ProjectReference Include="..\FoxholeItemAPI\FoxholeItemAPI.csproj" />
   </ItemGroup>
 
 </Project>

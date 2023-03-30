@@ -8,6 +8,7 @@ namespace FoxholeItemAPI.Interfaces
 {
     internal interface IFoxholeItemAPIRepository
     {
-        public object? LoadData();
+        public List<IItem> GetItems();
+        public List<IItem> GetItemsInCategory(Category category);
     }
 }

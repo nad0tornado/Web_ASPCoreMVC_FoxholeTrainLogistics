@@ -5,9 +5,9 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoxholeTrainLogistics", "FoxholeTrainLogistics\FoxholeTrainLogistics.csproj", "{0B14DC5C-725A-41CE-AF40-570195A02F51}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoxholeItemAPI", "FoxholeFandomAPI\FoxholeItemAPI.csproj", "{3A3E5B07-75E3-4DA1-AA01-249A674C0329}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoxholeItemAPI", "FoxholeItemAPI\FoxholeItemAPI.csproj", "{CCB78CE8-06F4-4B5B-94E5-5AC4F9CB3244}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoxholeItemAPI_Tests", "FoxholeFandomAPI_Tests\FoxholeItemAPI_Tests.csproj", "{6B55C7A5-E40A-4E5C-93F8-BC7672EE6552}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoxholeItemAPI_Tests", "FoxholeItemAPI_Tests\FoxholeItemAPI_Tests.csproj", "{61213172-AA69-4FF1-8CA9-5F7F60339EFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		{0B14DC5C-725A-41CE-AF40-570195A02F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B14DC5C-725A-41CE-AF40-570195A02F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B14DC5C-725A-41CE-AF40-570195A02F51}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A3E5B07-75E3-4DA1-AA01-249A674C0329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A3E5B07-75E3-4DA1-AA01-249A674C0329}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A3E5B07-75E3-4DA1-AA01-249A674C0329}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A3E5B07-75E3-4DA1-AA01-249A674C0329}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B55C7A5-E40A-4E5C-93F8-BC7672EE6552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B55C7A5-E40A-4E5C-93F8-BC7672EE6552}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B55C7A5-E40A-4E5C-93F8-BC7672EE6552}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B55C7A5-E40A-4E5C-93F8-BC7672EE6552}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCB78CE8-06F4-4B5B-94E5-5AC4F9CB3244}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCB78CE8-06F4-4B5B-94E5-5AC4F9CB3244}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCB78CE8-06F4-4B5B-94E5-5AC4F9CB3244}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCB78CE8-06F4-4B5B-94E5-5AC4F9CB3244}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61213172-AA69-4FF1-8CA9-5F7F60339EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61213172-AA69-4FF1-8CA9-5F7F60339EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61213172-AA69-4FF1-8CA9-5F7F60339EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61213172-AA69-4FF1-8CA9-5F7F60339EFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

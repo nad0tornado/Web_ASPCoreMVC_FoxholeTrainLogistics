@@ -2,6 +2,7 @@ using FoxholeItemAPI_Tests.Interfaces;
 using FoxholeItemAPI;
 using FoxholeItemAPI.Services;
 using FoxholeItemAPI_Tests.Repositories;
+using FoxholeItemAPI.Repositories;
 
 namespace FoxholeItemAPI_Tests
 {
@@ -11,7 +12,8 @@ namespace FoxholeItemAPI_Tests
         public void TestGetAllItems()
         {
             // .. Get all of the items
-            var items = FoxholeItemAPIService.GetItems();
+            var repo = new FoxholeItemAPIRepository();
+            var items = repo.GetItems();
 
             // .. Make sure that the list is not empty and contains items of at least two different types
             Assert.NotEmpty(items);
