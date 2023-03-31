@@ -22,11 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FoxholeItemAPI\FoxholeItemAPI.csproj" />
+    <ProjectReference Include="..\FoxholeItemAPI_Web\FoxholeItemAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="foxholeSample.json">
+    <None Update="foxhole.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

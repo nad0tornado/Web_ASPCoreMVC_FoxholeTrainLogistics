@@ -1,8 +1,7 @@
 using FoxholeItemAPI_Tests.Interfaces;
-using FoxholeItemAPI;
 using FoxholeItemAPI.Services;
-using FoxholeItemAPI_Tests.Repositories;
 using FoxholeItemAPI.Repositories;
+using FoxholeItemAPI.Utils;
 
 namespace FoxholeItemAPI_Tests
 {
@@ -12,7 +11,7 @@ namespace FoxholeItemAPI_Tests
         public void TestGetAllItems()
         {
             // .. Get all of the items
-            var repo = new MockFoxholeItemAPIRepository();
+            var repo = new FoxholeItemAPIRepository();
             var items = repo.GetItems();
 
             // .. Make sure that the list is not empty and contains items of at least two different types
@@ -28,7 +27,7 @@ namespace FoxholeItemAPI_Tests
             // .. GET Icons (Category : Enum) -> return a list of all items in the JSON file matching [category]
 
             // .. Get all of the items in [categoryA]
-            var repo = new MockFoxholeItemAPIRepository();
+            var repo = new FoxholeItemAPIRepository();
             var itemsInCategory = repo.GetItemsInCategory(categoryA);
 
             // .. Make sure the list is non-empty, contains at least one item in [categoryA] and NO ITEMS in any other category

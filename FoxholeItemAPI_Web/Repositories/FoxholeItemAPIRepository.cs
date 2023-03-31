@@ -1,9 +1,9 @@
 ﻿using FoxholeItemAPI.Interfaces;
 using System.Text.Json;
-using FoxholeItemAPI;
 using FoxholeItemAPI.Repositories;
 using FoxholeItemAPI.Models;
 using FoxholeItemAPI.Converters;
+using FoxholeItemAPI.Utils;
 
 namespace FoxholeItemAPI.Repositories
 {
@@ -29,9 +29,9 @@ namespace FoxholeItemAPI.Repositories
             }
         }
 
-        public List<IItem> GetItems() => items;
+        public IEnumerable<IItem> GetItems() => items;
 
-        public List<IItem> GetItemsInCategory(Category category)
+        public IEnumerable<IItem> GetItemsInCategory(Category category)
             => items.Where(i => i.Category == category).ToList();
     }
 }

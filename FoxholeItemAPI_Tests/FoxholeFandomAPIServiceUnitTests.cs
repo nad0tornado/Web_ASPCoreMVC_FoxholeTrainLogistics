@@ -1,5 +1,5 @@
 ﻿using FoxholeItemAPI_Tests.Interfaces;
-using FoxholeItemAPI;
+using FoxholeItemAPI.Utils;
 
 namespace FoxholeFandomAPI_Tests
 {

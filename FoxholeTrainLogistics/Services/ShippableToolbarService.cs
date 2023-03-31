@@ -1,7 +1,6 @@
 ﻿using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.ViewModels;
-using NuGet.DependencyResolver;
-using System.IO;
+using FoxholeItemAPI.Repositories;
 using System.Text.RegularExpressions;
 
 namespace FoxholeTrainLogistics.Services
@@ -65,6 +64,8 @@ namespace FoxholeTrainLogistics.Services
         public Dictionary<string,List<IShippableIcon>> GetShippableItems()
         {
             var shippableItems = new Dictionary<string,List<IShippableIcon>>();
+            var foxholeItemAPIRepo = new FoxholeItemAPIRepository();
+            var foxholeItemAPIItems = foxholeItemAPIRepo.GetItems();
 
             foreach (IShippableIcon category in GetShippableCategories())
             {

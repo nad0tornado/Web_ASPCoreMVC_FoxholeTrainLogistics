@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using FoxholeItemAPI;
 using FoxholeItemAPI.Converters;
 using FoxholeItemAPI.Models;
+using FoxholeItemAPI.Utils;
 
 namespace FoxholeItemAPI_Tests
 {

@@ -1,5 +1,4 @@
-﻿using FoxholeItemAPI;
-using FoxholeItemAPI.Core;
+﻿using FoxholeItemAPI.Utils;
 
 namespace FoxholeItemAPI_Tests.Interfaces
 {
@@ -9,7 +8,7 @@ namespace FoxholeItemAPI_Tests.Interfaces
         public void TestGetAllItems();
 
         [Theory]
-        [InlineData(null, null)]
+        [InlineData(Category.Unknown, Category.Unknown)]
         public void TestGetItemsInCategory(Category categoryA, Category categoryB);
     }
 }
