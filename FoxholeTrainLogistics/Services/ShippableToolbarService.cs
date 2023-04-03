@@ -1,6 +1,9 @@
-﻿using FoxholeTrainLogistics.Interfaces;
+﻿using FoxholeItemAPI.Converters;
+using FoxholeItemAPI.Interfaces;
+using FoxholeItemAPI.Models;
+using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.ViewModels;
-using FoxholeItemAPI.Repositories;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace FoxholeTrainLogistics.Services
@@ -61,19 +64,26 @@ namespace FoxholeTrainLogistics.Services
             return categories;
         }
 
-        public Dictionary<string,List<IShippableIcon>> GetShippableItems()
+        public async Task<Dictionary<string,List<IShippableIcon>>> GetShippableItems()
         {
             var shippableItems = new Dictionary<string,List<IShippableIcon>>();
-            var foxholeItemAPIRepo = new FoxholeItemAPIRepository();
-            var foxholeItemAPIItems = foxholeItemAPIRepo.GetItems();
+            var httpClient = new HttpClient();
+
+            var foxholeApiItemsResponse = await httpClient.GetAsync("https://localhost:7118/api/items");
+            foxholeApiItemsResponse.EnsureSuccessStatusCode();
+            var foxholeApiItemsJson = await foxholeApiItemsResponse.Content.ReadAsStringAsync();
+            foxholeApiItemsJson = Regex.Replace(foxholeApiItemsJson, @"\b\w", m => m.Value.ToUpper());
+
+            var foxholeApiItems = JsonSerializer.Deserialize<List<Item>>(foxholeApiItemsJson);
 
             foreach (IShippableIcon category in GetShippableCategories())
             {
                 var items = new List<IShippableIcon>();
-                var itemsImagePaths = Directory.GetFiles(shippableContentRoot + "/" + category.Name + "/","*.*",SearchOption.AllDirectories);
+                var foxholeApiItemsInCategory = foxholeApiItems?.Where(i => i.Category.ToString() == category.DisplayName).ToList() ?? new List<Item>();
 
-                // .. To Get Infopages for a particular item:
-                // ... Get a list of all possible CATEGORIES, MECHANICS, STRUCTURES and other things that are NOT item pages
+                //foreach(IItem item in foxholeApiItems)
+
+                /* var itemsImagePaths = Directory.GetFiles(shippableContentRoot + "/" + category.Name + "/","*.*",SearchOption.AllDirectories);
 
                 foreach(string path in itemsImagePaths)
                 {
@@ -82,7 +92,7 @@ namespace FoxholeTrainLogistics.Services
                     var displayName = getDisplayNameFromName(name);
 
                     items.Add(new ShippableIconViewModel(ShippableIconType.Item, localPath, name, displayName));
-                }
+                } */
 
                 shippableItems.Add(category.Name, items);
             }

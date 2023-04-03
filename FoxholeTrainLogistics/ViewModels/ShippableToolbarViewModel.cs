@@ -7,17 +7,23 @@ namespace FoxholeTrainLogistics.ViewModels
 {
     public class ShippableToolbarViewModel
     {
-       
+        private IShippableToolbarService _shippableToolbarService;  
         public List<IShippableIcon> ShippableCategories { get; private set; }
 
-        public Dictionary<string,List<IShippableIcon>> ShippableItems { get; } = new Dictionary<string, List<IShippableIcon>>();
+        public Dictionary<string, List<IShippableIcon>>? _shippableItems = null;
 
         public ShippableToolbarViewModel(IShippableToolbarService shippableToolbarService)
         {
             ShippableCategories = shippableToolbarService.GetShippableCategories();
-            ShippableItems = shippableToolbarService.GetShippableItems();
+            _shippableToolbarService = shippableToolbarService;
         }
 
-        
+        public async Task<Dictionary<string, List<IShippableIcon>>> GetShippableItems()
+        {
+            if(_shippableItems == null)
+                _shippableItems = await _shippableToolbarService.GetShippableItems();
+
+            return _shippableItems;
+        }
     }
 }
