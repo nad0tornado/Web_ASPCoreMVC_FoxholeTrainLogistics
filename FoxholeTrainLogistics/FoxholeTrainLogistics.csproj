@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Web_ASP_FoxholeItemAPI\FoxholeItemAPI\FoxholeItemAPI.csproj" />
+    <ProjectReference Include="..\..\Web_ASPCore_FoxholeItemAPI\FoxholeItemAPI\FoxholeItemAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

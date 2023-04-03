@@ -1,6 +1,7 @@
 ﻿using FoxholeItemAPI.Converters;
 using FoxholeItemAPI.Interfaces;
 using FoxholeItemAPI.Models;
+using FoxholeItemAPI.Utils;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.ViewModels;
 using System.Text.Json;
@@ -44,6 +45,13 @@ namespace FoxholeTrainLogistics.Services
             return displayName;
         }
 
+        private string toCamelCase(string str)
+        {
+            return Regex.Replace(str, @"[_-]([a-z])", match => match.Groups[1].Value.ToUpper())
+                        .Replace("-", "")
+                        .Replace("_", "");
+        }
+
         public List<IShippableIcon> GetShippableCategories()
         {
             var categories = new List<IShippableIcon>();
@@ -53,7 +61,8 @@ namespace FoxholeTrainLogistics.Services
             {
                 var localPath = path.Replace(contentRoot, ".");
                 var name = getNameFromPath(localPath);
-                var displayName = getDisplayNameFromName(name);
+                var category = name.ToCategory();
+                var displayName = getDisplayNameFromName(category.ToString());
 
                 if (!Directory.Exists(shippableContentRoot + "/" + name))
                     Directory.CreateDirectory(shippableContentRoot + "/" + name);
@@ -69,30 +78,28 @@ namespace FoxholeTrainLogistics.Services
             var shippableItems = new Dictionary<string,List<IShippableIcon>>();
             var httpClient = new HttpClient();
 
+            // .. this code will need to become a separate "service" and "mocked" to be able to be tested
             var foxholeApiItemsResponse = await httpClient.GetAsync("https://localhost:7118/api/items");
             foxholeApiItemsResponse.EnsureSuccessStatusCode();
             var foxholeApiItemsJson = await foxholeApiItemsResponse.Content.ReadAsStringAsync();
             foxholeApiItemsJson = Regex.Replace(foxholeApiItemsJson, @"\b\w", m => m.Value.ToUpper());
 
-            var foxholeApiItems = JsonSerializer.Deserialize<List<Item>>(foxholeApiItemsJson);
+            var foxholeApiItems = JsonSerializer.Deserialize<List<Item>>(foxholeApiItemsJson) ?? new();
 
             foreach (IShippableIcon category in GetShippableCategories())
             {
+                var itemsImagePaths = Directory.GetFiles(shippableContentRoot + "/" + category.Name + "/","*.*",SearchOption.AllDirectories);
+                var itemsInCategory = foxholeApiItems.Where(i => i.Category.ToString() == category.Name.Replace(" ","")).ToList();
                 var items = new List<IShippableIcon>();
-                var foxholeApiItemsInCategory = foxholeApiItems?.Where(i => i.Category.ToString() == category.DisplayName).ToList() ?? new List<Item>();
-
-                //foreach(IItem item in foxholeApiItems)
-
-                /* var itemsImagePaths = Directory.GetFiles(shippableContentRoot + "/" + category.Name + "/","*.*",SearchOption.AllDirectories);
 
                 foreach(string path in itemsImagePaths)
                 {
                     var localPath = path.Replace(contentRoot, ".");
                     var name = getNameFromPath(localPath);
-                    var displayName = getDisplayNameFromName(name);
+                    var displayName = itemsInCategory.FirstOrDefault(i => i.DisplayName.Contains(name))?.DisplayName ?? getDisplayNameFromName(name);
 
                     items.Add(new ShippableIconViewModel(ShippableIconType.Item, localPath, name, displayName));
-                } */
+                }
 
                 shippableItems.Add(category.Name, items);
             }
