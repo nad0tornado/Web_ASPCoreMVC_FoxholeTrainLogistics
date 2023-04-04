@@ -43,13 +43,6 @@ namespace FoxholeTrainLogistics.Services
             return displayName;
         }
 
-        private string toCamelCase(string str)
-        {
-            return Regex.Replace(str, @"[_-]([a-z])", match => match.Groups[1].Value.ToUpper())
-                        .Replace("-", "")
-                        .Replace("_", "");
-        }
-
         public List<IShippableIcon> GetShippableCategories()
         {
             var categories = new List<IShippableIcon>();
@@ -94,8 +87,11 @@ namespace FoxholeTrainLogistics.Services
                 {
                     var localPath = path.Replace(contentRoot, ".");
                     var name = getNameFromPath(localPath);
-                    var itemInCategory = itemsInCategory.FirstOrDefault(i => i.DisplayName.Contains(name));
-                    var displayName = itemInCategory?.DisplayName ?? "UNKNOWN_ITEM";
+                    var itemInCategory = itemsInCategory.FirstOrDefault(i => i.DisplayName.ToLower().Contains(name.ToLower()));
+                    var displayName = itemInCategory?.DisplayName;
+
+                    if (displayName == null)
+                        throw new NullReferenceException("DisplayName cannot be null");
 
                     items.Add(new ShippableIconViewModel(ShippableIconType.Item, localPath, name, displayName));
                 }
