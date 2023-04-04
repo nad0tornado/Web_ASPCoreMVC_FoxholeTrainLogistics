@@ -24,10 +24,4 @@
     <ProjectReference Include="..\..\Web_ASPCore_FoxholeItemAPI\FoxholeItemAPI\FoxholeItemAPI.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="FoxholeItemAPI">
-      <HintPath>..\FoxholeItemAPI\bin\Debug\net6.0\FoxholeItemAPI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
