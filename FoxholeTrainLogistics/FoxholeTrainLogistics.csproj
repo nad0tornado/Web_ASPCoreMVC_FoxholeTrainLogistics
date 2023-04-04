@@ -24,4 +24,10 @@
     <ProjectReference Include="..\..\Web_ASPCore_FoxholeItemAPI\FoxholeItemAPI\FoxholeItemAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Config\iconShadows.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

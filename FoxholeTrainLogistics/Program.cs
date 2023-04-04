@@ -1,5 +1,4 @@
 using FoxholeTrainLogistics.Contexts;
-using FoxholeTrainLogistics.Controllers;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Models;
 using FoxholeTrainLogistics.Services;
@@ -13,12 +12,7 @@ namespace FoxholeTrainLogistics
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
-
-            // .. Setup DB Context
-            builder.Services.AddSingleton<ITrainsDbContext, TrainsInMemoryContext>();
-            builder.Services.AddSingleton<IShippableToolbarService, ShippableToolbarService>();
+            ConfigureServices(builder.Services);
 
             var app = builder.Build();
 
@@ -44,6 +38,22 @@ namespace FoxholeTrainLogistics
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+        }
+
+        public static void ConfigureServices(IServiceCollection services)
+        {
+            // Add services to the container.
+            services.AddControllersWithViews();
+
+            // .. Setup DB Context
+            services.AddSingleton<ITrainsDbContext, TrainsInMemoryContext>();
+            services.AddSingleton<IShippableToolbarService, ShippableToolbarService>();
+
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddJsonFile("iconShadows.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            services.AddSingleton(configuration);
         }
 
         private static void SetupDBDummyData(WebApplication app)

@@ -87,7 +87,7 @@ namespace FoxholeTrainLogistics.Services
                 {
                     var localPath = path.Replace(contentRoot, ".");
                     var name = getNameFromPath(localPath);
-                    var itemInCategory = itemsInCategory.FirstOrDefault(i => i.DisplayName.ToLower().Contains(name.ToLower()));
+                    var itemInCategory = itemsInCategory.FirstOrDefault(i => i.IconName.ToLower().Contains(name.ToLower()));
                     var displayName = itemInCategory?.DisplayName;
 
                     if (displayName == null)
