@@ -1,5 +1,5 @@
 ﻿using FoxholeTrainLogistics.Interfaces;
-using FoxholeTrainLogistics.Trains;
+using FoxholeTrainLogistics.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoxholeTrainLogistics.Models

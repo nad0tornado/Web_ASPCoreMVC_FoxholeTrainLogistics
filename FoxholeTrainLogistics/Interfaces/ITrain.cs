@@ -1,7 +1,7 @@
 ﻿using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Models;
 
-namespace FoxholeTrainLogistics.Trains
+namespace FoxholeTrainLogistics.Interfaces
 {
     public enum TrainStatus { Parked, InTransit, Stopped }
 

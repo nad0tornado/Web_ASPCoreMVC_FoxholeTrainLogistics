@@ -1,4 +1,4 @@
-﻿using FoxholeTrainLogistics.Trains;
+﻿using FoxholeTrainLogistics.Interfaces;
 using Newtonsoft.Json;
 
 namespace FoxholeTrainLogistics.Models

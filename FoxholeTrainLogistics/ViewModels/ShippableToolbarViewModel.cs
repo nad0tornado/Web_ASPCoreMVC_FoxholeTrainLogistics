@@ -1,16 +1,12 @@
 ﻿using FoxholeItemAPI.Interfaces;
 using FoxholeTrainLogistics.Interfaces;
-using FoxholeTrainLogistics.Services;
-using Microsoft.Extensions.Configuration;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace FoxholeTrainLogistics.ViewModels
 {
     public class ShippableToolbarViewModel
     {
-        private IConfiguration _configuration;
-        private IShippableToolbarService _shippableToolbarService;  
+        private IShippableToolbarService _shippableToolbarService;
+
         public List<IShippableIcon> ShippableCategories { get; private set; }
 
         public Dictionary<string, List<IItem>>? _shippableItems = null;
@@ -18,6 +14,7 @@ namespace FoxholeTrainLogistics.ViewModels
         public ShippableToolbarViewModel(IShippableToolbarService shippableToolbarService)
         {
             ShippableCategories = shippableToolbarService.GetShippableCategories();
+
             _shippableToolbarService = shippableToolbarService;
         }
 

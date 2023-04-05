@@ -2,7 +2,7 @@ using FoxholeTrainLogistics.Contexts;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Models;
 using FoxholeTrainLogistics.Services;
-using FoxholeTrainLogistics.Trains;
+using FoxholeTrainLogistics.Interfaces;
 
 namespace FoxholeTrainLogistics
 {

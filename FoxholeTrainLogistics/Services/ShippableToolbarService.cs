@@ -13,6 +13,8 @@ namespace FoxholeTrainLogistics.Services
         const string contentRoot = "./wwwroot";
         const string shippableContentRoot = contentRoot + "/img/shippable";
 
+        private ITrain _train;
+
         public ShippableToolbarService() { 
             
         }
@@ -98,6 +100,11 @@ namespace FoxholeTrainLogistics.Services
             }
 
             return shippableItems;
+        }
+
+        public void LoadItemOntoTrain(IItem item)
+        {
+            // ..TODO
         }
     }
 }

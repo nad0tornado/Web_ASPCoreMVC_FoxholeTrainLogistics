@@ -1,6 +1,6 @@
 ﻿using FoxholeTrainLogistics.Models;
 using Microsoft.EntityFrameworkCore;
-using FoxholeTrainLogistics.Trains;
+using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Interfaces;
 
 namespace FoxholeTrainLogistics.Contexts
