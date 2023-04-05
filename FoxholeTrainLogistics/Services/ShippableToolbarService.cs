@@ -1,4 +1,5 @@
-﻿using FoxholeItemAPI.Models;
+﻿using FoxholeItemAPI.Interfaces;
+using FoxholeItemAPI.Models;
 using FoxholeItemAPI.Utils;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.ViewModels;
@@ -58,15 +59,15 @@ namespace FoxholeTrainLogistics.Services
                 if (!Directory.Exists(shippableContentRoot + "/" + name))
                     Directory.CreateDirectory(shippableContentRoot + "/" + name);
 
-                categories.Add(new ShippableIconViewModel(ShippableIconType.Category, localPath, name, displayName));
+                categories.Add(new ShippableIconViewModel(localPath, name, displayName));
             }
 
             return categories;
         }
 
-        public async Task<Dictionary<string,List<IShippableIcon>>> GetShippableItems()
+        public async Task<Dictionary<string,List<IItem>>> GetShippableItems()
         {
-            var shippableItems = new Dictionary<string, List<IShippableIcon>>();
+            var shippableItems = new Dictionary<string, List<IItem>>();
             var httpClient = new HttpClient();
 
             // .. this code will need to become a separate "service" and "mocked" to be able to be tested
@@ -81,19 +82,16 @@ namespace FoxholeTrainLogistics.Services
             {
                 var itemsImagePaths = Directory.GetFiles(shippableContentRoot + "/" + category.Name + "/", "*.*", SearchOption.AllDirectories);
                 var itemsInCategory = foxholeApiItems.Where(i => i.Category.ToString().ToLower() == category.Name.Replace(" ", "").ToLower()).ToList();
-                var items = new List<IShippableIcon>();
+                var items = new List<IItem>();
 
                 foreach (string path in itemsImagePaths)
                 {
                     var localPath = path.Replace(contentRoot, ".");
                     var name = getNameFromPath(localPath);
                     var itemInCategory = itemsInCategory.FirstOrDefault(i => i.IconName.ToLower().Contains(name.ToLower()));
-                    var displayName = itemInCategory?.DisplayName;
+                    var displayName = itemInCategory?.DisplayName ?? "UNKNOWN ITEM";
 
-                    if (displayName == null)
-                        throw new NullReferenceException("DisplayName cannot be null");
-
-                    items.Add(new ShippableIconViewModel(ShippableIconType.Item, localPath, name, displayName));
+                    items.Add((itemInCategory ?? new Item()) with { IconName = localPath});
                 }
 
                 shippableItems.Add(category.Name, items);

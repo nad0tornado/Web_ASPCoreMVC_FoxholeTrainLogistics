@@ -48,12 +48,6 @@ namespace FoxholeTrainLogistics
             // .. Setup DB Context
             services.AddSingleton<ITrainsDbContext, TrainsInMemoryContext>();
             services.AddSingleton<IShippableToolbarService, ShippableToolbarService>();
-
-            IConfiguration configuration = new ConfigurationBuilder()
-                .AddJsonFile("iconShadows.json", optional: false, reloadOnChange: true)
-                .Build();
-
-            services.AddSingleton(configuration);
         }
 
         private static void SetupDBDummyData(WebApplication app)
