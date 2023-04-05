@@ -1,4 +1,4 @@
-#Troubleshooting Guide
+# Troubleshooting Guide
 ### Foxhole Train Logistics System
 
 - When cloning the repo for the first time, if the project reference for "FoxholeItemAPI" in "FoxholeTrainLogistics.sln" doesn't work,
