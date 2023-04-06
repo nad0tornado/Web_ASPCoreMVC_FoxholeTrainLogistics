@@ -1,14 +1,13 @@
 ﻿@model TrainViewModel
 @using FoxholeTrainLogistics.Interfaces;
 @using FoxholeTrainLogistics.Services;
-@using FoxholeTrainLogistics.Interfaces;
 
 <!-- Import Train Creation Factory-->
 <script type="module">
     import { TrainsFactory } from './js/trainsFactory.js?v=-1';
     var trainId = '@Model.Train.TrainId';
     var trainsFactory = new TrainsFactory(trainId, @Model.Interactable.ToString().ToLower());
-    
+
     var trainCars = JSON.parse('@Html.Raw(Model.Train.Cars.ToJson())');
     delete localStorage.trainCars;
 
@@ -26,7 +25,7 @@
         const trainCrewChip = document.getElementById("train-crew-" + trainId);
         trainCrewChip.innerHTML = "Crew Capacity: " + trainCars.map(c => c.Crew).reduce((a, c) => a + c);
     }
-    function buildToolbar () {
+    function buildToolbar() {
         const carTypes = JSON.parse('@Html.Raw(TrainCarFactory.GetAllTrainCarTypes().ToJson())');
 
         const trainToolbar = document.getElementById("train-toolbar-" + trainId);
@@ -39,60 +38,61 @@
             btn.className = 'ftl-noselect ftl-interact ftl-button';
             btn.onclick = () => {
                 var trainCar = trainsFactory.createTrainCar(car);
-                
-                    if (!validateTrain())
-                        trainCar.style = 'background-color: red;';
 
-                    updateTrain();
-                }
+                if (!validateTrain())
+                    trainCar.style = 'background-color: red;';
 
-                const img = document.createElement("img");
-                img.src = "/img/" + car.Image + "?v=1";
-                img.className = "ftl-icon";
-                btn.appendChild(img);
+                updateTrain();
+            }
 
-                trainToolbar.appendChild(btn);
-            })
-        }
+            const img = document.createElement("img");
+            img.src = "/img/" + car.Image + "?v=1";
+            img.className = "ftl-icon";
+            btn.appendChild(img);
 
-        @(Model.Interactable.ToString().ToLower()) && buildToolbar();
-    </script>
+            trainToolbar.appendChild(btn);
+        })
+    }
+
+    //@(Model.Interactable.ToString().ToLower()) && buildToolbar();
+</script>
 
 <div class="ftl-paper" style="margin-bottom: 5px; min-height: 100px; display: flex; flex-direction: column">
-        <span>@Model.Train.TrainId</span>
-        
-        <div id=@("train-container-"+Model.Train.TrainId) style="display: flex; vertical-align: middle; margin-top: 5px; margin-bottom: 5px; min-height: 50px"></div>
-        
-            <div class="btn-group" role="group">
-                <button type="button" class="ftl-interact ftl-chip">@Model.NumberOfCars Cars</button>
-                <button id=@("train-crew-"+Model.Train.TrainId) type ="button" class="ftl-interact ftl-chip">
-                    Crew Capacity: 2
-                </button>
-                
-                @{
-            if (@Model.Train.Status == TrainStatus.Parked) {
-                                                                        <button type="button" class="ftl-interact ftl-chip alert-info">Status: @Model.StatusDisplayName</button>
+    <span>@Model.Train.TrainId</span>
+
+    <div id=@("train-container-"+Model.Train.TrainId)
+        style="display: flex; vertical-align: middle; margin-top: 5px; margin-bottom: 5px; min-height: 50px"></div>
+
+    <div class="btn-group" role="group">
+        <button type="button" class="ftl-interact ftl-chip">@Model.NumberOfCars Cars</button>
+        <button id=@("train-crew-"+Model.Train.TrainId) type="button" class="ftl-interact ftl-chip">
+            Crew Capacity: 2
+        </button>
+
+        @{
+            if (@Model.Train.Status == TrainStatus.Parked)
+            {
+                <button type="button" class="ftl-interact ftl-chip alert-info">Status: @Model.StatusDisplayName</button>
             }
-            if (@Model.Train.Status == TrainStatus.InTransit) {
-                                                                        <button type="button" class="ftl-interact ftl-chip alert-success">Status: @Model.StatusDisplayName</button>
+            if (@Model.Train.Status == TrainStatus.InTransit)
+            {
+                <button type="button" class="ftl-interact ftl-chip alert-success">Status: @Model.StatusDisplayName</button>
             }
             if (@Model.Train.Status == TrainStatus.Stopped)
             {
-                                                                        <button type="button" class="ftl-interact ftl-chip alert-danger">Status: @Model.StatusDisplayName</button>
+                <button type="button" class="ftl-interact ftl-chip alert-danger">Status: @Model.StatusDisplayName</button>
             }
-            }
-        </div>
+        }
     </div>
+</div>
 
-    @if (!Model.Interactable)
+@if (!Model.Interactable)
     return;
 
-    <div class="ftl-paper" style=" display: flex; min-height: 75px; width: fit-content; min-width: 500px">
-        <div id=@("train-toolbar-"+Model.Train.TrainId) style=" display: flex; "></div>
-        <!--<div style="display: flex; justify-content: end; align-content:start; flex: 1">
-        <button class="ftl-button ftl-paper ftl-noselect ftl-interact" style="padding: 2px; padding-top: initial; padding-bottom: initial; height: fit-content">
-            <i class="fa-solid fa-check" style="color:green"></i>
+<div class="ftl-paper" style=" display: flex; min-height: 75px; width: fit-content; min-width: 500px">
+    <div id=@("train-toolbar-"+Model.Train.TrainId) style=" display: flex; ">
+        <button class="ftl-noselect ftl-interact ftl-button">
+            <img class="ftl-icon" src="~/img/engineCarBlack_side.png" />
         </button>
-        </div>-->
-        
     </div>
+</div>
