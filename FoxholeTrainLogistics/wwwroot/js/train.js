@@ -1,1 +1,0 @@
-﻿// .. TODO: move all train js code from _Train.cshtml to here and then import this

@@ -11,7 +11,7 @@ namespace FoxholeTrainLogistics.Services
     public class ShippableToolbarService : IShippableToolbarService
     {
         const string contentRoot = "./wwwroot";
-        const string shippableContentRoot = contentRoot + "/img/shippable";
+        const string shippableContentRoot = contentRoot + "/img";
 
         private string getNameFromPath(string path)
         {
@@ -43,7 +43,8 @@ namespace FoxholeTrainLogistics.Services
         public List<IShippableIcon> GetShippableCategories()
         {
             var categories = new List<IShippableIcon>();
-            var categoriesImagePaths = Directory.GetFiles(shippableContentRoot + "/categories/");
+            var directoriesRoot = shippableContentRoot + "/itemCategories";
+            var categoriesImagePaths = Directory.GetFiles(directoriesRoot);
 
             foreach (var path in categoriesImagePaths)
             {
@@ -52,8 +53,8 @@ namespace FoxholeTrainLogistics.Services
                 var category = name.ToCategory();
                 var displayName = getDisplayNameFromName(category.ToString());
 
-                if (!Directory.Exists(shippableContentRoot + "/" + name))
-                    Directory.CreateDirectory(shippableContentRoot + "/" + name);
+                if (!Directory.Exists(directoriesRoot +"/" + name))
+                    Directory.CreateDirectory(directoriesRoot + "/" + name);
 
                 categories.Add(new ShippableIconViewModel(localPath, name, displayName));
             }
@@ -76,7 +77,7 @@ namespace FoxholeTrainLogistics.Services
 
             foreach (IShippableIcon category in GetShippableCategories())
             {
-                var itemsImagePaths = Directory.GetFiles(shippableContentRoot + "/" + category.Name + "/", "*.*", SearchOption.AllDirectories);
+                var itemsImagePaths = Directory.GetFiles(shippableContentRoot + "/items/" + category.Name + "/", "*.*", SearchOption.AllDirectories);
                 var itemsInCategory = foxholeApiItems.Where(i => i.Category.ToString().ToLower() == category.Name.Replace(" ", "").ToLower()).ToList();
                 var items = new List<IItem>();
 
