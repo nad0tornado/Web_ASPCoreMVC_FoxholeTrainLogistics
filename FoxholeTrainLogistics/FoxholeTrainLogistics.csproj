@@ -20,4 +20,10 @@
     <ProjectReference Include="..\..\Web_ASPCore_FoxholeItemAPI\FoxholeItemAPI\FoxholeItemAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\js\trainsFactory.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

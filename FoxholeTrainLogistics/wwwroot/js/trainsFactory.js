@@ -2,7 +2,7 @@
 
 class TrainsFactory {
 
-    constructor(trainId, interactable = true) {
+    init (trainId, interactable = true) {
         this.interactable = interactable;
         this.trainId = trainId;
     }
@@ -26,11 +26,11 @@ class TrainsFactory {
         console.log('adding ' + car.Type);
 
         var img = btn.appendChild(document.createElement("img"));
-        img.src = "./img/"+car.Image;
+        img.src = "./img/trains/"+car.Image;
 
         img.className = "ftl-icon";
 
-        console.log(trainCars);
+        console.log(car);
         trainCars.push(car);
         localStorage.trainCars = JSON.stringify(trainCars).replace(/[\[\]']+/g, '');
 
@@ -50,5 +50,3 @@ class TrainsFactory {
         return btn;
     }
 }
-
-var trainsFactory = new TrainsFactory();

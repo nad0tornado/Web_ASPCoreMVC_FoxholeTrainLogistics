@@ -1,49 +1,55 @@
 ﻿@using FoxholeTrainLogistics.ViewModels;
 @using FoxholeItemAPI.Interfaces;
+@using FoxholeItemAPI.Converters;
 @using System.Text.Json;
 @model ShippableToolbarViewModel
 
 <head>
-    <script src="~/js/shippableToolbar.js"></script>
+    <script src="~/js/shippableToolbar.js?v=-1"></script>
 </head>
+
+@{
+    await Html.RenderPartialAsync("_Enum");
+}
 
 <div class="ftl-paper" style="min-width: 500px; min-height: 500px; max-width: fit-content; margin-top: 5px;">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         @{
             foreach (ShippableIconViewModel category in Model.ShippableCategories)
             {
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link @(Model.ShippableCategories.IndexOf(category)==5 ? "active" : "")"
-                    id="@category.Name-tab" data-bs-toggle="tab" data-bs-target="#@category.Name" type="button" role="tab"
-                    aria-controls="@category.Name" aria-selected="true">
-                        <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@category.ImagePath?v=-1"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="@category.DisplayName" />
-                    </button>
-                </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link @(Model.ShippableCategories.IndexOf(category)==5 ? "active" : "")"
+                        id="@category.Name-tab" data-bs-toggle="tab" data-bs-target="#@category.Name" type="button" role="tab"
+                        aria-controls="@category.Name" aria-selected="true">
+                            <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@category.ImagePath?v=-1"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="@category.DisplayName" />
+                        </button>
+                    </li>
             }
         }
     </ul>
     <div class="tab-content" id="myTabContent" style="max-width: 500px; ">
         @{
             var shippableItems = await Model.GetShippableItems();
+
             foreach (ShippableIconViewModel category in Model.ShippableCategories)
             {
-                <div class="tab-pane fade @(Model.ShippableCategories.IndexOf(category)==5 ? "show active" : "")"
-                id="@category.Name" role="tabpanel" aria-labelledby="@category.Name-tab">
-                    @{
+                    <div class="tab-pane fade @(Model.ShippableCategories.IndexOf(category)==5 ? "show active" : "")"
+                    id="@category.Name" role="tabpanel" aria-labelledby="@category.Name-tab">
+                        @{
                         var categoryItems = shippableItems[category.Name];
 
                         foreach (IItem item in categoryItems)
                         {
-                            <button class="ftl-interact ftl-button" style="width: 72px; height: 72px; margin-right: -2px"
-                        onclick="ShippableToolbar.loadItemOntoTrain(@(JsonSerializer.Serialize(item)));">
-                                <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@item.IconName?v=-1"
-                            style="padding: 0px; background-color: @(item.DisplayName == "UNKNOWN ITEM" ? "red" : "transparent"); transform: scale(150%);"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="@item.DisplayName" />
-                            </button>
+                                    <button class="ftl-interact ftl-button" style="width: 72px; height: 72px; margin-right: -2px"
+                                    onclick="ShippableToolbar.loadItemOntoTrain(@(item.ToString()));">
+                                        <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@item.IconName?v=-1"
+                                    style="padding: 0px; background-color: @(item.DisplayName == "UNKNOWN ITEM" ? "red" : "transparent"); transform: scale(150%);"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="@item.DisplayName" />
+                                    </button>
                         }
-                    }
-                </div>
+                        }
+                    </div>
             }
 
         }

@@ -1,0 +1,9 @@
+﻿
+@using FoxholeItemAPI.Utils;
+@using System.Text.Json;
+
+<script>
+    var Category = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<Category>()));
+    var ShippingType = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<ShippingType>()));
+    var TrainCarType = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<TrainCarType>()));
+</script>
