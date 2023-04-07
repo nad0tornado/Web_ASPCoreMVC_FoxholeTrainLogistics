@@ -1,6 +1,6 @@
 ﻿// Train Creation Factory
 
-export class TrainsFactory {
+class TrainsFactory {
 
     constructor(trainId, interactable = true) {
         this.interactable = interactable;
@@ -18,12 +18,12 @@ export class TrainsFactory {
 
     createTrainCar(car) {
 
-        console.log('adding ' + car.Type);
-
         const trainCars = localStorage.trainCars ? JSON.parse('['+localStorage.trainCars+']') : [];
         const trainContainer = this.getTrainContainer();
         const btn = trainContainer.appendChild(document.createElement("button"));
         btn.className = "ftl-noselect ftl-interact ftl-button";
+
+        console.log('adding ' + car.Type);
 
         var img = btn.appendChild(document.createElement("img"));
         img.src = "./img/"+car.Image;
@@ -50,3 +50,5 @@ export class TrainsFactory {
         return btn;
     }
 }
+
+var trainsFactory = new TrainsFactory();

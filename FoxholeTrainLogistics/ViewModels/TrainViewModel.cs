@@ -1,5 +1,5 @@
 ﻿using FoxholeTrainLogistics.Interfaces;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace FoxholeTrainLogistics.Models
 {
@@ -7,7 +7,7 @@ namespace FoxholeTrainLogistics.Models
     {
         public static string ToJson<T>(this IEnumerable<T> collection)
         {
-            var collectionJson = JsonConvert.SerializeObject(collection);
+            var collectionJson = JsonSerializer.Serialize(collection);
             return collectionJson; // Regex.Replace(collectionJson,@"\[|\]","");
         }
 

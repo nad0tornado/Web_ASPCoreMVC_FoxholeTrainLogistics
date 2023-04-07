@@ -1,5 +1,5 @@
 ﻿using FoxholeTrainLogistics.Interfaces;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace FoxholeTrainLogistics.Services
 {
@@ -20,7 +20,7 @@ namespace FoxholeTrainLogistics.Services
             }
 
             public override string ToString()
-                => JsonConvert.SerializeObject(this);
+                => JsonSerializer.Serialize(this);
         }
 
         public static ITrainCar CreateTrainCar(TrainCarType type)

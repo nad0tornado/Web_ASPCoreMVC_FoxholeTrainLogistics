@@ -13,12 +13,6 @@ namespace FoxholeTrainLogistics.Services
         const string contentRoot = "./wwwroot";
         const string shippableContentRoot = contentRoot + "/img/shippable";
 
-        private ITrain _train;
-
-        public ShippableToolbarService() { 
-            
-        }
-
         private string getNameFromPath(string path)
         {
             var nameIndex = path.LastIndexOf('/') + 1;

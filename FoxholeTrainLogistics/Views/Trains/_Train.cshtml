@@ -1,17 +1,24 @@
-﻿@model TrainViewModel
-@using FoxholeTrainLogistics.Interfaces;
+﻿@using FoxholeTrainLogistics.Interfaces;
 @using FoxholeTrainLogistics.Services;
+@model TrainViewModel
 
 <!-- Import Train Creation Factory-->
+
+<head>
+    <script src="~/js/trainsFactory.js"></script>
+</head>
 <script type="module">
-    import { TrainsFactory } from './js/trainsFactory.js?v=-1';
     var trainId = '@Model.Train.TrainId';
-    var trainsFactory = new TrainsFactory(trainId, @Model.Interactable.ToString().ToLower());
+    trainsFactory = new TrainsFactory(trainId, @Model.Interactable.ToString().ToLower());
 
     var trainCars = JSON.parse('@Html.Raw(Model.Train.Cars.ToJson())');
     delete localStorage.trainCars;
 
     trainCars.forEach(c => trainsFactory.createTrainCar(c))
+
+    function handleCreateTrainCarClicked(trainCar) {
+        console.log("hello train car!");
+    }
 
     function validateTrain() {
         const trainContainer = trainsFactory.getTrainContainer();
@@ -72,15 +79,15 @@
         @{
             if (@Model.Train.Status == TrainStatus.Parked)
             {
-                <button type="button" class="ftl-interact ftl-chip alert-info">Status: @Model.StatusDisplayName</button>
+                    <button type="button" class="ftl-interact ftl-chip alert-info">Status: @Model.StatusDisplayName</button>
             }
             if (@Model.Train.Status == TrainStatus.InTransit)
             {
-                <button type="button" class="ftl-interact ftl-chip alert-success">Status: @Model.StatusDisplayName</button>
+                    <button type="button" class="ftl-interact ftl-chip alert-success">Status: @Model.StatusDisplayName</button>
             }
             if (@Model.Train.Status == TrainStatus.Stopped)
             {
-                <button type="button" class="ftl-interact ftl-chip alert-danger">Status: @Model.StatusDisplayName</button>
+                    <button type="button" class="ftl-interact ftl-chip alert-danger">Status: @Model.StatusDisplayName</button>
             }
         }
     </div>
@@ -89,10 +96,19 @@
 @if (!Model.Interactable)
     return;
 
+@{
+    List<ITrainCar> carTypes = TrainCarFactory.GetAllTrainCarTypes();
+}
+
+
 <div class="ftl-paper" style=" display: flex; min-height: 75px; width: fit-content; min-width: 500px">
     <div id=@("train-toolbar-"+Model.Train.TrainId) style=" display: flex; ">
-        <button class="ftl-noselect ftl-interact ftl-button">
-            <img class="ftl-icon" src="~/img/engineCarBlack_side.png" />
-        </button>
+        @foreach (ITrainCar car in carTypes)
+        {
+            <button class="ftl-noselect ftl-interact ftl-button" onclick="handleCreateTrainCarClicked">
+                <img class="ftl-icon" src="/img/@(car.Image)?v=1" data-bs-toggle="tooltip" data-bs-placement="top"
+                title="Engine" />
+            </button>
+        }
     </div>
 </div>

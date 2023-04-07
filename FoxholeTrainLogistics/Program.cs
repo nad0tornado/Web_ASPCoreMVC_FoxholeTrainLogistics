@@ -2,9 +2,8 @@ using FoxholeTrainLogistics.Contexts;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Models;
 using FoxholeTrainLogistics.Services;
-using FoxholeTrainLogistics.Interfaces;
 
-namespace FoxholeTrainLogistics
+namespace Test
 {
     public class Program
     {
@@ -40,7 +39,7 @@ namespace FoxholeTrainLogistics
             app.Run();
         }
 
-        public static void ConfigureServices(IServiceCollection services)
+        private static void ConfigureServices(IServiceCollection services)
         {
             // Add services to the container.
             services.AddControllersWithViews();
