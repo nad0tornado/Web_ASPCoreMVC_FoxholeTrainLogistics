@@ -12,6 +12,14 @@
     await Html.RenderPartialAsync("_Enum");
 }
 
+<script>
+    function handleLoadItemOntoTrainClicked(item) {
+
+        //var flatbedCar = JsonSerializer.Deserialize( TrainCarFactory.CreateFlatbedCar)
+        ShippableToolbar.loadItemOntoTrain(item);
+    }
+</script>
+
 <div class="ftl-paper" style="min-width: 500px; min-height: 500px; max-width: fit-content; margin-top: 5px;">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         @{
@@ -42,7 +50,7 @@
                         foreach (IItem item in categoryItems)
                         {
                                     <button class="ftl-interact ftl-button" style="width: 72px; height: 72px; margin-right: -2px"
-                                    onclick="ShippableToolbar.loadItemOntoTrain(@(item.ToString()));">
+                                    onclick="handleLoadItemOntoTrainClicked(@(item.ToString()));">
                                         <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@item.IconName?v=-1"
                                     style="padding: 0px; background-color: @(item.DisplayName == "UNKNOWN ITEM" ? "red" : "transparent"); transform: scale(150%);"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="@item.DisplayName" />
