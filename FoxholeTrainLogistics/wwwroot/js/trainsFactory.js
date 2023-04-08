@@ -2,7 +2,7 @@
 
 class TrainsFactory {
 
-    init (trainId, interactable = true) {
+    init(trainId, interactable = true) {
         this.interactable = interactable;
         this.trainId = trainId;
     }
@@ -18,20 +18,17 @@ class TrainsFactory {
 
     createTrainCar(car) {
 
-        const trainCars = localStorage.trainCars ? JSON.parse('['+localStorage.trainCars+']') : [];
+        const trainCars = localStorage.trainCars ? JSON.parse('[' + localStorage.trainCars + ']') : [];
         const trainContainer = this.getTrainContainer();
-        const btn = trainContainer.appendChild(document.createElement("button"));
+        const btn = document.createElement("button");
         btn.className = "ftl-noselect ftl-interact ftl-button";
 
         console.log('adding ' + car.Type);
 
         var img = btn.appendChild(document.createElement("img"));
-        img.src = "./img/trains/"+car.Image;
-
+        img.src = "./img/trains/" + car.Image;
         img.className = "ftl-icon";
 
-        console.log(car);
-        trainCars.push(car);
         localStorage.trainCars = JSON.stringify(trainCars).replace(/[\[\]']+/g, '');
 
         if (this.interactable) {
@@ -46,7 +43,11 @@ class TrainsFactory {
                 trainCrewChip.innerHTML = "Crew Capacity: " + updatedTrainCars.map(c => c.Crew).reduce((a, c) => a + c);
             }
         }
-        
+
         return btn;
+    }
+
+    createFlatbedCar(containerType, containerContents = []) {
+
     }
 }

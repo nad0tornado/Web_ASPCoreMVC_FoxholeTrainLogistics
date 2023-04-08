@@ -9,7 +9,7 @@
 </script>
 <script type="module">
     if(typeof trainsFactory === "undefined")
-        throw new DOMException("A trainsFactory must exist");
+        throw new DOMException("A trainsFactory must exist"); 
 
     var trainId = '@Model.Train.TrainId';
     trainsFactory.init(trainId, @Model.Interactable.ToString().ToLower());
