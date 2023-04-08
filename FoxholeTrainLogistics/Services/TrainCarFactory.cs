@@ -1,4 +1,5 @@
-﻿using FoxholeItemAPI.Utils;
+﻿using FoxholeItemAPI.Interfaces;
+using FoxholeItemAPI.Utils;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Interfaces.Trains;
 using System.Dynamic;
@@ -39,6 +40,14 @@ namespace FoxholeTrainLogistics.Services
             {
                 Container = container;
             }
+
+            public void AddContainer(ShippingType shippingType, List<IItem>? contents = null)
+            {
+                Container = ContainerFactory.CreateContainer(shippingType, contents);
+            }
+
+            public override string ToString()
+                => JsonSerializer.Serialize(this);
         }
 
 
@@ -48,7 +57,7 @@ namespace FoxholeTrainLogistics.Services
                 TrainCarType.EngineCar => new TrainCar(type, "engineCarBlack_side.png", 2),
                 TrainCarType.CoalCar => new TrainCar(type, "coalCarBlack_side.png"),
                 TrainCarType.InfantryCar => new TrainCar(type, "infantryCarBlack_side.png", 6),
-                TrainCarType.FlatbedCar => CreateFlatbedCar(ShippingType.None),
+                TrainCarType.FlatbedCar => new FlatbedCar(),
                 TrainCarType.CabooseCar => new TrainCar(type, "cabooseCarBlack_side.png", 6),
                 _ => throw new NotImplementedException()
             };

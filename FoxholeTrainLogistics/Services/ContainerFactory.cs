@@ -25,15 +25,14 @@ namespace FoxholeTrainLogistics.Services
             }
         }
 
-        public static IContainer CreateContainer(ShippingType type)
+        public static IContainer CreateContainer(ShippingType type, List<IItem>? contents = null)
             => type switch
             {
-                ShippingType.ShippingContainer => new Container(type, "Shipping_Container.png"),
-                ShippingType.LiquidContainer => new Container(type, "Fuel_Container.png"),
-                ShippingType.ResourceContainer => new Container(type, "Resource_Container.png"),
-                ShippingType.Pallet => new Container(type, "Material_Pallet.png"),
-                ShippingType.Crate => new Container(type, "Crate.png"),
-                ShippingType.None => new Container(type, ""),
+                ShippingType.ShippingContainer => new Container(type, "Shipping_Container.png",contents),
+                ShippingType.LiquidContainer => new Container(type, "Fuel_Container.png", contents),
+                ShippingType.ResourceContainer => new Container(type, "Resource_Container.png", contents),
+                ShippingType.Pallet => new Container(type, "Material_Pallet.png", contents),
+                ShippingType.Crate => new Container(type, "Crate.png", contents),
                 _ => throw new NotImplementedException()
             };
     }
