@@ -1,6 +1,7 @@
 ﻿@using FoxholeTrainLogistics.ViewModels;
 @using FoxholeItemAPI.Interfaces;
 @using FoxholeItemAPI.Converters;
+@using FoxholeTrainLogistics.Services;
 @using System.Text.Json;
 @model ShippableToolbarViewModel
 
@@ -15,7 +16,7 @@
 <script>
     function handleLoadItemOntoTrainClicked(item) {
 
-        //var flatbedCar = JsonSerializer.Deserialize( TrainCarFactory.CreateFlatbedCar)
+        // var flatbedCar = @TrainCarFactory.CreateFlatbedCar()
         ShippableToolbar.loadItemOntoTrain(item);
     }
 </script>
