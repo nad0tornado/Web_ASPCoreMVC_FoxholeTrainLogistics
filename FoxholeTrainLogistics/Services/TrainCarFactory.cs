@@ -4,6 +4,7 @@ using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Interfaces.Trains;
 using System.Dynamic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace FoxholeTrainLogistics
 {
@@ -29,7 +30,17 @@ namespace FoxholeTrainLogistics.Services
             }
 
             public override string ToString()
-                => JsonSerializer.Serialize(this);
+            {
+                var options = new JsonSerializerOptions
+                {
+                    Converters =
+                {
+                    new JsonStringEnumConverter()
+                }
+                };
+
+                return JsonSerializer.Serialize(this, options);
+            }
         }
 
         private class FlatbedCar : TrainCar, IFlatbedCar
@@ -47,7 +58,17 @@ namespace FoxholeTrainLogistics.Services
             }
 
             public override string ToString()
-                => JsonSerializer.Serialize(this);
+            {
+                var options = new JsonSerializerOptions
+                {
+                    Converters =
+                {
+                    new JsonStringEnumConverter()
+                }
+                };
+
+                return JsonSerializer.Serialize(this, options);
+            }
         }
 
 

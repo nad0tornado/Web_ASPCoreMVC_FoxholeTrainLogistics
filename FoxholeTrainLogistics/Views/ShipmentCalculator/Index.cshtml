@@ -7,30 +7,27 @@
 }
 
 <script src="~/js/train.js?v=-1"></script>
-<script>
-    const testTrain = new Train(true);
-    testTrain.foo();
+<script defer>
+    @{
+        var train = new Train()
+        {
+            TrainId = Guid.NewGuid(),
+            Cars = new List<ITrainCar>() {
+            TrainCarFactory.CreateTrainCar(TrainCarType.EngineCar),
+            TrainCarFactory.CreateTrainCar(TrainCarType.CoalCar)
+        },
+                Status = TrainStatus.Parked
+        };
+    }
+
+    const train = new Train(@Html.Raw(train.Cars.ToJson()));
 </script>
 
 <h1>Shipment Calculator</h1>
 
 <div>
     <b>Your Train</b>
-    
-    @{
-        var train = new Train()
-            {
-                TrainId = Guid.NewGuid(),
-                Cars = new List<ITrainCar>() {
-                    TrainCarFactory.CreateTrainCar(TrainCarType.EngineCar),
-                    TrainCarFactory.CreateTrainCar(TrainCarType.CoalCar)
-                },
-                Status = TrainStatus.Parked
-            };
-        await Html.RenderPartialAsync("../Trains/_Train", new TrainViewModel(train,true));
-    }
-    </div>
-@{
-    await Html.RenderPartialAsync("./_ShippableToolbar", new ShippableToolbarViewModel(ShippableToolbarService));
-}
+    @{await Html.RenderPartialAsync("../Trains/_Train", new TrainViewModel(train,true));}
+</div>
+@{await Html.RenderPartialAsync("./_ShippableToolbar", new ShippableToolbarViewModel(ShippableToolbarService));}
 

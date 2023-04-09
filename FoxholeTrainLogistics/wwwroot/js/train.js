@@ -1,12 +1,15 @@
-function Train (sayHello = false) {
+function Train (trainCars) {
 
-    if (sayHello) {
-        console.log("toot toot");
-
-    }
     const init = () => {
         if (typeof trainsFactory === undefined)
             throw new DOMException("ShippableToolbar requires prior existence of a trainsFactory");
+
+        if (typeof trainCars === "string") {
+            var trainCarsObj = JSON.parse(trainCars);
+            console.log("trainCarsObj=", trainCarsObj);
+        }
+
+        console.log("trainCars=", trainCars);
     };
 
     init();
