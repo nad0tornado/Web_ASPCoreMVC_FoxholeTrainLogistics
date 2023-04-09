@@ -6,8 +6,7 @@
     ViewData["Title"] = "Shipment Calculator";
 }
 
-<script src="~/js/train.js?v=-1"></script>
-<script defer>
+<script>
     @{
         var train = new Train()
         {
@@ -19,8 +18,6 @@
                 Status = TrainStatus.Parked
         };
     }
-
-    const train = new Train(@Html.Raw(train.Cars.ToJson()));
 </script>
 
 <h1>Shipment Calculator</h1>

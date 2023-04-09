@@ -1,6 +1,7 @@
 ﻿using FoxholeItemAPI.Utils;
 using FoxholeTrainLogistics.Interfaces;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace FoxholeTrainLogistics.Models
 {
@@ -8,7 +9,15 @@ namespace FoxholeTrainLogistics.Models
     {
         public static string ToJson<T>(this IEnumerable<T> collection)
         {
-            var collectionJson = JsonSerializer.Serialize(collection);
+            var options = new JsonSerializerOptions
+            {
+                Converters =
+                {
+                    new JsonStringEnumConverter()
+                }
+            };
+
+            var collectionJson = JsonSerializer.Serialize(collection, options);
             return collectionJson;
         }
 

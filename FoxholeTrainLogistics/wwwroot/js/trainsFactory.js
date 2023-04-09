@@ -2,25 +2,18 @@
 
 class TrainsFactory {
 
-    init(trainId, interactable = true) {
+    init(train, interactable = true) {
         this.interactable = interactable;
-        this.trainId = trainId;
-    }
-
-    getTrainContainer() {
-        var container = document.getElementById("train-container-" + this.trainId);
-
-        if (container === null)
-            throw new DOMException("Unable to locate trainContainer - was this script ran before the trainContainer was created?");
-
-        return container;
+        this.train = train;
+        this.trainContainer = document.getElementById("train-container-" + train.TrainId);
+        this.trainCrewChip = document.getElementById("train-crew-" + train.TrainId);
     }
 
     createTrainCar(car) {
+        if (!this.trainContainer)
+            throw new DOMException("A train container must exist");
 
-        const trainCars = localStorage.trainCars ? JSON.parse('[' + localStorage.trainCars + ']') : [];
-        const trainContainer = this.getTrainContainer();
-        const btn = document.createElement("button");
+        const btn = this.trainContainer.appendChild(document.createElement("button"));
         btn.className = "ftl-noselect ftl-interact ftl-button";
 
         console.log('adding ' + car.Type);
@@ -29,18 +22,15 @@ class TrainsFactory {
         img.src = "./img/trains/" + car.Image;
         img.className = "ftl-icon";
 
-        localStorage.trainCars = JSON.stringify(trainCars).replace(/[\[\]']+/g, '');
-
         if (this.interactable) {
             btn.onclick = () => {
-                trainContainer.removeChild(btn);
+                this.trainContainer.removeChild(btn);
 
-                trainCars[trainCars.indexOf(car)] = undefined;
-                var updatedTrainCars = trainCars.filter(t => t !== undefined);
-                localStorage.trainCars = JSON.stringify(updatedTrainCars).replace(/[\[\]']+/g, '');
+                var updatedTrainCars = this.train.Cars.filter(c => this.train.Cars.indexOf(c) !== this.train.Cars.indexOf(car));
 
-                const trainCrewChip = document.getElementById("train-crew-" + this.trainId);
-                trainCrewChip.innerHTML = "Crew Capacity: " + updatedTrainCars.map(c => c.Crew).reduce((a, c) => a + c);
+                console.log("updatedTrainCars = ", updatedTrainCars);
+
+                this.trainCrewChip.innerHTML = "Crew Capacity: " + updatedTrainCars.map(c => c.Crew).reduce((a, c) => a + c);
             }
         }
 

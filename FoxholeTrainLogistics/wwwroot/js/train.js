@@ -1,27 +1,33 @@
-function Train (trainCars) {
+function Train(train, isInteractable=false) {
 
     const init = () => {
-        if (typeof trainsFactory === undefined)
-            throw new DOMException("ShippableToolbar requires prior existence of a trainsFactory");
+        if (typeof train !== "object")
+            throw new DOMException(`train must be an object`);
 
-        if (typeof trainCars === "string") {
-            var trainCarsObj = JSON.parse(trainCars);
-            console.log("trainCarsObj=", trainCarsObj);
-        }
-
-        console.log("trainCars=", trainCars);
+        trainsFactory.init(train, isInteractable);
+        this.train = { ...train, Cars: [] };
+        train.Cars.forEach(c => addTrainCar(c));
     };
+
+    const addTrainCar = (car) => {
+        const trainCarElement = trainsFactory.createTrainCar(car);
+        this.train.Cars.push({ ...car, element: trainCarElement })
+        console.log("updatedTrainCars=", this.train.Cars);
+    }
+
+    const loadItemOntoTrain = (item) => {
+        const trainCars = JSON.parse("[" + localStorage.trainCars + "]");
+        const flatbedCars = trainCars.filter(c => TrainCarType[c.Type] === "FlatbedCar");
+        console.log("flatbeds=", flatbedCars);
+
+        console.log("item=", item);
+    }
 
     init();
 
     return {
-        foo: () => console.log("foo!"),
-        loadItemOntoTrain: (item) => {
-            const trainCars = JSON.parse("[" + localStorage.trainCars + "]");
-            const flatbedCars = trainCars.filter(c => TrainCarType[c.Type] === "FlatbedCar");
-            console.log("flatbeds=", flatbedCars);
-
-            console.log("item=", item);
-        }
+        ...this.train,
+        addTrainCar,
+        loadItemOntoTrain
     };
 };

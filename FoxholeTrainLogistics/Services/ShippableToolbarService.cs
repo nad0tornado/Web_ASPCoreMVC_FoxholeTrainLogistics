@@ -44,7 +44,7 @@ namespace FoxholeTrainLogistics.Services
         {
             var categories = new List<IShippableIcon>();
             var directoriesRoot = shippableContentRoot + "/itemCategories";
-            var categoriesImagePaths = Directory.GetFiles(directoriesRoot);
+            string[] categoriesImagePaths = Directory.GetFiles(directoriesRoot);
 
             foreach (var path in categoriesImagePaths)
             {
