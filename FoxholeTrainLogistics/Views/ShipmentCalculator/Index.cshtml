@@ -6,6 +6,10 @@
     ViewData["Title"] = "Shipment Calculator";
 }
 
+@{
+    await Html.RenderPartialAsync("_TrainsUtils");
+}
+
 <script>
     @{
         var train = new Train()

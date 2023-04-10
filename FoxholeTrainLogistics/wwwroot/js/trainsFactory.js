@@ -16,28 +16,30 @@ class TrainsFactory {
         const btn = this.trainContainer.appendChild(document.createElement("button"));
         btn.className = "ftl-noselect ftl-interact ftl-button";
 
-        console.log('adding ' + car.Type);
-
         var img = btn.appendChild(document.createElement("img"));
         img.src = "./img/trains/" + car.Image;
         img.className = "ftl-icon";
 
         if (this.interactable) {
             btn.onclick = () => {
-                this.trainContainer.removeChild(btn);
+                train.removeTrainCar(car.id);
 
-                var updatedTrainCars = this.train.Cars.filter(c => this.train.Cars.indexOf(c) !== this.train.Cars.indexOf(car));
-
-                console.log("updatedTrainCars = ", updatedTrainCars);
-
-                this.trainCrewChip.innerHTML = "Crew Capacity: " + updatedTrainCars.map(c => c.Crew).reduce((a, c) => a + c);
+                this.trainCrewChip.innerHTML = "Crew Capacity: " + train.Cars.map(c => c.Crew).reduce((a, c) => a + c);
             }
         }
 
+        console.log('[TrainsFactory] Created ' + car.Type);
+
         return btn;
+    }
+
+    destroyTrainCar(car) {
+        this.trainContainer.removeChild(car.element);
     }
 
     createFlatbedCar(containerType, containerContents = []) {
 
     }
 }
+
+const trainsFactory = new TrainsFactory();

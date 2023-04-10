@@ -1,27 +1,7 @@
-﻿using FoxholeItemAPI.Utils;
-using FoxholeTrainLogistics.Interfaces;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using FoxholeTrainLogistics.Interfaces;
 
 namespace FoxholeTrainLogistics.Models
 {
-    public static class Extensions
-    {
-        public static string ToJson<T>(this IEnumerable<T> collection)
-        {
-            var options = new JsonSerializerOptions
-            {
-                Converters =
-                {
-                    new JsonStringEnumConverter()
-                }
-            };
-
-            var collectionJson = JsonSerializer.Serialize(collection, options);
-            return collectionJson;
-        }
-
-    }
     public class TrainViewModel
     {
         public ITrain Train;

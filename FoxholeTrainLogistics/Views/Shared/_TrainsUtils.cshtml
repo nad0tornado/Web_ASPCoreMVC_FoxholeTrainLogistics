@@ -1,0 +1,19 @@
+﻿
+@using FoxholeItemAPI.Utils;
+@using FoxholeItemAPI.Models;
+@using System.Text.Json;
+@using FoxholeTrainLogistics.Services;
+@using FoxholeTrainLogistics.Interfaces;
+
+<script>
+    var Category = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<Category>()));
+    var ShippingType = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<ShippingType>()));
+    var TrainCarType = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<TrainCarType>()));
+
+    var TrainCarTemplates = @Html.Raw(TrainCarFactory.GetTrainCarTemplates().ToDictionary().ToJson());
+
+    var PackagedItemContainerTemplate = @Html.Raw(ContainerFactory.CreatePackagedItemContainer(new Item()))
+    var MultiItemContainerTemplates = @Html.Raw(ContainerFactory.GetMultiItemContainerTemplates().ToDictionary().ToJson());
+
+    console.log("MultiItemContainerTemplates=", MultiItemContainerTemplates);
+</script>

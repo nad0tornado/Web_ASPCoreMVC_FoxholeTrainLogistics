@@ -1,10 +1,10 @@
 ﻿using FoxholeItemAPI.Interfaces;
 using FoxholeItemAPI.Utils;
 using FoxholeTrainLogistics.Interfaces;
-using FoxholeTrainLogistics.Interfaces.Trains;
 using System.Dynamic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Linq;
 
 namespace FoxholeTrainLogistics
 {
@@ -71,7 +71,6 @@ namespace FoxholeTrainLogistics.Services
             }
         }
 
-
         public static ITrainCar CreateTrainCar(TrainCarType type)
             => type switch
             {
@@ -83,10 +82,10 @@ namespace FoxholeTrainLogistics.Services
                 _ => throw new NotImplementedException()
             };
 
-        public static IFlatbedCar CreateFlatbedCar(ShippingType containerType)
-            => new FlatbedCar(ContainerFactory.CreateContainer(containerType));
-
-        public static List<ITrainCar> GetAllTypes()
+        public static List<ITrainCar> GetTrainCarTemplates()
             => Enum.GetValues(typeof(TrainCarType)).Cast<TrainCarType>().Select(t => CreateTrainCar(t)).ToList();
+
+        public static Dictionary<TrainCarType, ITrainCar> ToDictionary(this IEnumerable<ITrainCar> cars)
+            => cars.ToDictionary(c => c.Type, c => c);
     }
 }

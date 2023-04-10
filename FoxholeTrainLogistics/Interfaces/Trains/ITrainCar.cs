@@ -1,6 +1,4 @@
-﻿using FoxholeTrainLogistics.Interfaces.Trains;
-
-namespace FoxholeTrainLogistics.Interfaces
+﻿namespace FoxholeTrainLogistics.Interfaces
 {
     public interface ITrainCar
     {

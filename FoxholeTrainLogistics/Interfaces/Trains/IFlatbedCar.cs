@@ -1,4 +1,4 @@
-﻿namespace FoxholeTrainLogistics.Interfaces.Trains
+﻿namespace FoxholeTrainLogistics.Interfaces
 {
     public interface IFlatbedCar : ITrainCar
     {
