@@ -34,11 +34,17 @@ function Train(train, isInteractable=false) {
     const getFlatbedCars() => this.train.Cars.filter(c => c.Type === "FlatbedCar");
 
     const LoadItem = (item) => {
-        const flatbedCars = getFlatbedCars();
-        const emptyFlatbedCars = flatbedCars.filter()
-        
+        if (!item)
+            throw new DOMException("item cannot be null");
 
         console.log("item=", item);
+
+        const isPackagedItem = item.ShippingType === "PackagedItem";
+
+        if (isPackagedItem)
+            loadPackagedItem(item);
+        else
+            loadMultiContainerItem(item);
     }
 
     const loadPackagedItem = (item) => {
@@ -47,8 +53,12 @@ function Train(train, isInteractable=false) {
 
     const loadMultiContainerItem = (item) => {
         const flatbedCars = getFlatbedCars();
-        const flatbedCarsWithRightContainer = flatbedCars.filter(fb => fb.Container !== null && fb.Container.Type === item.ShippingType);
+        const flatbedCarsWithRightContainer = flatbedCars.filter(fb => fb.Container && fb.Container.Type === item.ShippingType);
         const flatbedCarsWithFreeSpace = flatbedCarsWithRightContainer.filter(fb => fb.Container.Contents.length < fb.Container.Capacity);
+        const emptyFlatbedCars = flatbedCars.filter(fb => fb.Container == null);
+
+        // .. also take into account any empty flatbeds. if a flatbed is empty AND there's no space in another container,
+        // .. add a container to the empty flatbed rather than making a new flatbed every time
 
         if (flatbedCarsWithFreeSpace.length === 0) {
             const newContainer = new MultiItemContainerTemplates[item.ShippingType];
@@ -56,11 +66,11 @@ function Train(train, isInteractable=false) {
             AddTrainCar(newFlatbed);
         }
         else {
-            const container = containersWithAvailableSpace[0];
-            container.Contents.push(item);
-            // const flatbed = 
-            // ... add the item to the container on the flatbed and update the flatbed in the train cars list
+            const flatbedWithFreeSpace = flatbedCarsWithFreeSpace[0];
+            flatbedWithFreeSpace.Container.Contents.push(item);
         }
+
+        console.log("updated flat cars=", flatbedCars);
     }
 
     Init();
