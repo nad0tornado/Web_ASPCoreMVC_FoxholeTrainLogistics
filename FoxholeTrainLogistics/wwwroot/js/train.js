@@ -31,7 +31,7 @@ function Train(train, isInteractable=false) {
         console.log(this.train.Cars);
     }
 
-    const getFlatbedCars() => this.train.Cars.filter(c => c.Type === "FlatbedCar");
+    const getFlatbedCars = () => this.train.Cars.filter(c => c.Type === "FlatbedCar");
 
     const LoadItem = (item) => {
         if (!item)
@@ -45,32 +45,51 @@ function Train(train, isInteractable=false) {
             loadPackagedItem(item);
         else
             loadMultiContainerItem(item);
+
+        console.log("updated flat cars=", getFlatbedCars());
     }
 
     const loadPackagedItem = (item) => {
-        const 
+        const flatbedCars = getFlatbedCars();
+        const flatbedCarsWithoutContainer = flatbedCars.filter(fb => fb.Container == null);
+        const newContainer = { ...PackagedItemContainerTemplate, Contents: [item] };
+
+        if (flatbedCarsWithoutContainer.length > 0) {
+            const flatcar = flatbedCarsWithoutContainer[0];
+            flatcar.Container = newContainer;
+            trainsFactory.addContainerToFlatcar(flatCar, newContainer);
+        }
+        else {
+            const newFlatbed = { ...TrainCarTemplates.FlatbedCar, Container: newContainer };
+            AddTrainCar(newFlatbed);
+        }
     }
 
     const loadMultiContainerItem = (item) => {
         const flatbedCars = getFlatbedCars();
         const flatbedCarsWithRightContainer = flatbedCars.filter(fb => fb.Container && fb.Container.Type === item.ShippingType);
         const flatbedCarsWithFreeSpace = flatbedCarsWithRightContainer.filter(fb => fb.Container.Contents.length < fb.Container.Capacity);
-        const emptyFlatbedCars = flatbedCars.filter(fb => fb.Container == null);
+        const flatbedCarsWithoutContainer = flatbedCars.filter(fb => fb.Container == null);
 
-        // .. also take into account any empty flatbeds. if a flatbed is empty AND there's no space in another container,
-        // .. add a container to the empty flatbed rather than making a new flatbed every time
-
-        if (flatbedCarsWithFreeSpace.length === 0) {
-            const newContainer = new MultiItemContainerTemplates[item.ShippingType];
-            const newFlatbed = { ...TrainCarTemplates.FlatbedCar, Container: newContainer };
-            AddTrainCar(newFlatbed);
-        }
-        else {
+        if (flatbedCarsWithFreeSpace.length > 0) {
             const flatbedWithFreeSpace = flatbedCarsWithFreeSpace[0];
             flatbedWithFreeSpace.Container.Contents.push(item);
         }
+        else if (flatbedCarsWithoutContainer.length > 0) {
+            const newContainer = { ...MultiItemContainerTemplates[item.ShippingType] };
+            newContainer.Contents.push(item);
 
-        console.log("updated flat cars=", flatbedCars);
+            const flatCar = flatbedCarsWithoutContainer[0];
+            flatCar.Container = newContainer;
+            trainsFactory.addContainerToFlatcar(flatCar, newContainer);
+        }
+        else if (flatbedCarsWithFreeSpace.length === 0) {
+            const newContainer = { ...MultiItemContainerTemplates[item.ShippingType] };
+            newContainer.Contents.push(item);
+
+            const newFlatcar = { ...TrainCarTemplates.FlatbedCar, Container: newContainer };
+            AddTrainCar(newFlatcar);
+        }
     }
 
     Init();

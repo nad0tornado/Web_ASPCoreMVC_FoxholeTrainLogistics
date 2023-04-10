@@ -1,4 +1,5 @@
 ﻿using FoxholeItemAPI.Utils;
+using FoxholeTrainLogistics.Interfaces;
 using Microsoft.VisualBasic;
 using System.ComponentModel;
 
@@ -27,6 +28,16 @@ namespace FoxholeTrainLogistics
                 ShippingType.Crate => 3,
                 ShippingType.PackagedItem => 1,
                 _ => throw new NotImplementedException()
+        };
+
+        public static string ToAlert(this TrainStatus status) =>
+            status switch
+            {
+                TrainStatus.Parked => "alert-info",
+                TrainStatus.InTransit => "alert-success",
+                TrainStatus.Stopped => "alert-danger",
+                _ => throw new NotImplementedException()
             };
+
     }
 }

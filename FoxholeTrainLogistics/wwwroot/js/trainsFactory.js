@@ -15,22 +15,49 @@ class TrainsFactory {
 
         const btn = this.trainContainer.appendChild(document.createElement("button"));
         btn.className = "ftl-noselect ftl-interact ftl-button";
+        btn.style = "display: flex; justify-content: center";
 
         var img = btn.appendChild(document.createElement("img"));
         img.src = "./img/trains/" + car.Image;
         img.className = "ftl-icon";
+        img["data-bs-toggle"] = "tooltip";
+        img["data-bs-placement"] = "top";
+        img.title = car.Type;
 
         if (this.interactable) {
             btn.onclick = () => {
-                train.removeTrainCar(car.id);
-
+                train.RemoveTrainCar(car.id);
                 this.trainCrewChip.innerHTML = "Crew Capacity: " + train.Cars.map(c => c.Crew).reduce((a, c) => a + c);
             }
         }
 
-        console.log('[TrainsFactory] Created ' + car.Type);
+        if (car.Type === "FlatbedCar" && car.Container) {
+
+            btn.appendChild(this.createContainer(car.Container));
+        }
+
+        console.log('[TrainsFactory] Created ' + car.Type +": ",car);
 
         return btn;
+    }
+
+    createContainer(container) {
+        var img = document.createElement("img");
+        img.src = "./img/containers/" + container.Image;
+        img.className = "ftl-icon ftl-shippable-icon";
+        img.style = "position: absolute; margin-top: -10px; height: 60px";
+
+        img["data-bs-toggle"] = "tooltip";
+        img["data-bs-placement"] = "top";
+        img.title = container.Type;
+
+        console.log('[TrainsFactory] Created ' + container.Type + ": ", container);
+
+        return img;
+    }
+
+    addContainerToFlatcar(flatcar, container) {
+        flatcar.element.appendChild(this.createContainer(container));
     }
 
     destroyTrainCar(car) {

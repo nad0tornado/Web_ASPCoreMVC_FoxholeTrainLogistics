@@ -12,8 +12,6 @@
 
     var TrainCarTemplates = @Html.Raw(TrainCarFactory.GetTrainCarTemplates().ToDictionary().ToJson());
 
-    var PackagedItemContainerTemplate = @Html.Raw(ContainerFactory.CreatePackagedItemContainer(new Item()))
+    var PackagedItemContainerTemplate = @Html.Raw(ContainerFactory.CreatePackagedItemContainer(new Item()).ToJson());
     var MultiItemContainerTemplates = @Html.Raw(ContainerFactory.GetMultiItemContainerTemplates().ToDictionary().ToJson());
-
-    console.log("MultiItemContainerTemplates=", MultiItemContainerTemplates);
 </script>

@@ -30,20 +30,7 @@
             Crew Capacity: 2
         </button>
 
-        @{
-            if (@Model.Train.Status == TrainStatus.Parked)
-            {
-                <button type="button" class="ftl-interact ftl-chip alert-info">Status: @Model.StatusDisplayName</button>
-            }
-            if (@Model.Train.Status == TrainStatus.InTransit)
-            {
-                <button type="button" class="ftl-interact ftl-chip alert-success">Status: @Model.StatusDisplayName</button>
-            }
-            if (@Model.Train.Status == TrainStatus.Stopped)
-            {
-                <button type="button" class="ftl-interact ftl-chip alert-danger">Status: @Model.StatusDisplayName</button>
-            }
-        }
+        <button type="button" class="ftl-interact ftl-chip @Model.Train.Status.ToAlert()">Status: @Model.StatusDisplayName</button>
     </div>
 </div>
 
@@ -55,7 +42,7 @@
     <div id=@("train-toolbar-"+Model.Train.TrainId) style=" display: flex; ">
         @foreach (ITrainCar car in TrainCarFactory.GetTrainCarTemplates())
         {
-            <button class="ftl-noselect ftl-interact ftl-button" onclick="train.addTrainCar({...@car});">
+            <button class="ftl-noselect ftl-interact ftl-button" onclick="train.AddTrainCar({...@car});">
                 <img class="ftl-icon" src="/img/trains/@(car.Image)?v=-1" data-bs-toggle="tooltip" data-bs-placement="top"
                 title="@car.Type.DisplayName()" />
             </button>

@@ -7,7 +7,7 @@ namespace FoxholeTrainLogistics
 {
     public static class Utils
     {
-        public static string ToJson<T>(this IEnumerable<T> collection)
+        private static string toJson<T>(this T _object)
         {
             var options = new JsonSerializerOptions
             {
@@ -17,22 +17,12 @@ namespace FoxholeTrainLogistics
                 }
             };
 
-            var collectionJson = JsonSerializer.Serialize(collection, options);
-            return collectionJson;
+            return JsonSerializer.Serialize(_object, options);
         }
-
-        public static string ToJson<K, V>(this Dictionary<K, V> collection) where K : notnull
-        {
-            var options = new JsonSerializerOptions
-            {
-                Converters =
-                {
-                    new JsonStringEnumConverter()
-                }
-            };
-
-            var collectionJson = JsonSerializer.Serialize(collection, options);
-            return collectionJson;
+        public static string ToJson<T>(this T _object) => toJson(_object);
+        public static string ToJson<T>(this IEnumerable<T> collection) => toJson(collection);
+        public static string ToJson<K, V>(this Dictionary<K, V> collection) where K : notnull {
+            return toJson(collection);
         }
 
         public static IEnumerable<E> GetEnumTypes<E>() where E : Enum

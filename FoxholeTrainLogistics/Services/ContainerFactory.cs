@@ -64,9 +64,6 @@ namespace FoxholeTrainLogistics.Services
             return multiItemContainerTypes.Select(t => CreateContainer(t)).ToList();
         }
 
-        public static IContainer GetPackagedItemContainerTemplate()
-            => new Container(ShippingType.PackagedItem, "");
-
         public static Dictionary<ShippingType, IContainer> ToDictionary(this IEnumerable<IContainer> containers)
             => containers.ToDictionary(c => c.Type, c => c);
     }
