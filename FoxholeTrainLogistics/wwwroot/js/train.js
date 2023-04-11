@@ -39,9 +39,9 @@ function Train(train, isInteractable=false) {
 
         console.log("item=", item);
 
-        const isPackagedItem = item.ShippingType === "PackagedItem";
+        const isMPFOrSinglePackage = item.ShippingType === "CrateOrPackage";
 
-        if (isPackagedItem)
+        if (isMPFOrSinglePackage)
             loadPackagedItem(item);
         else
             loadMultiContainerItem(item);
@@ -52,12 +52,24 @@ function Train(train, isInteractable=false) {
     const loadPackagedItem = (item) => {
         const flatbedCars = getFlatbedCars();
         const flatbedCarsWithoutContainer = flatbedCars.filter(fb => fb.Container == null);
-        const newContainer = { ...PackagedItemContainerTemplate, Contents: [item] };
+
+        if (!localStorage.packageOption)
+            throw new DOMException("packageOption cannot be undefined");
+
+        const isMPF = InvertEnum(PackageType)[localStorage.packageOption] == InvertEnum(PackageType).mpfCrate;
+
+        console.log(InvertEnum(PackageType)[localStorage.packageOption], ",", InvertEnum(PackageType).mpfCrate)
+
+        const newContainerImage = isMPF ? "Crate.png" : item.IconName;
+        const newContainerContents = isMPF ? [item, item, item] : [item];
+        const newContainer = { ...PackagedItemContainerTemplate, isMPF, Image: newContainerImage, Contents: newContainerContents };
+
+        newContainer.tooltip = (isMPF ? "Crate of 3x " : "") + item.DisplayName;
 
         if (flatbedCarsWithoutContainer.length > 0) {
             const flatcar = flatbedCarsWithoutContainer[0];
             flatcar.Container = newContainer;
-            trainsFactory.addContainerToFlatcar(flatCar, newContainer);
+            trainsFactory.addContainerToFlatcar(flatcar, newContainer);
         }
         else {
             const newFlatbed = { ...TrainCarTemplates.FlatbedCar, Container: newContainer };
@@ -78,6 +90,7 @@ function Train(train, isInteractable=false) {
         else if (flatbedCarsWithoutContainer.length > 0) {
             const newContainer = { ...MultiItemContainerTemplates[item.ShippingType] };
             newContainer.Contents.push(item);
+            //newContainer.tooltip = 
 
             const flatCar = flatbedCarsWithoutContainer[0];
             flatCar.Container = newContainer;

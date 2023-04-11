@@ -9,9 +9,18 @@
     var Category = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<Category>()));
     var ShippingType = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<ShippingType>()));
     var TrainCarType = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<TrainCarType>()));
+    var PackageType = { 0: "singlePackaged", 1: "mpfCrate" };
 
     var TrainCarTemplates = @Html.Raw(TrainCarFactory.GetTrainCarTemplates().ToDictionary().ToJson());
 
     var PackagedItemContainerTemplate = @Html.Raw(ContainerFactory.CreatePackagedItemContainer(new Item()).ToJson());
     var MultiItemContainerTemplates = @Html.Raw(ContainerFactory.GetMultiItemContainerTemplates().ToDictionary().ToJson());
+
+    function InvertEnum (_enum) {
+        if (typeof _enum !== "object")
+            throw new DOMException("The given enum must be an object");
+
+        var enumInvertedEntries = Object.values(_enum).map((v, i) => [v, Object.keys(_enum)[i]]);
+        return Object.fromEntries(enumInvertedEntries);
+    }
 </script>

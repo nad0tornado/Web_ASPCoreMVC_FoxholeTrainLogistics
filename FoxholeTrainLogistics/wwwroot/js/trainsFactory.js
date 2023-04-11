@@ -42,14 +42,17 @@ class TrainsFactory {
     }
 
     createContainer(container) {
+        const ShippingTypeInv = InvertEnum(ShippingType);
+
         var img = document.createElement("img");
-        img.src = "./img/containers/" + container.Image;
+        img.src = (ShippingTypeInv[container.Type] !== ShippingTypeInv.PackagedItem || container.isMPF ? "./img/containers/" : "") + container.Image;
         img.className = "ftl-icon ftl-shippable-icon";
         img.style = "position: absolute; margin-top: -10px; height: 60px";
 
         img["data-bs-toggle"] = "tooltip";
         img["data-bs-placement"] = "top";
-        img.title = container.Type;
+
+        img.title = container.tooltip ?? container.Type;
 
         console.log('[TrainsFactory] Created ' + container.Type + ": ", container);
 

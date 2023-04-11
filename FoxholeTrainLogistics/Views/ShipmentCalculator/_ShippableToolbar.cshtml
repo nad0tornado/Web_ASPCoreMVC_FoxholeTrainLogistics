@@ -10,9 +10,8 @@
 </head>
 
 <script>
-    function handleLoadItemOntoTrainClicked(item) {
-        console.log("train=",train);
-    }
+    localStorage.packageOption = PackageType[1];
+    console.log(localStorage.packageOption);
 </script>
 
 <div class="ftl-paper" style="min-width: 500px; min-height: 500px; max-width: fit-content; margin-top: 5px;">
@@ -20,14 +19,14 @@
         @{
             foreach (ShippableIconViewModel category in Model.ShippableCategories)
             {
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link @(Model.ShippableCategories.IndexOf(category)==5 ? "active" : "")"
-                        id="@category.Name-tab" data-bs-toggle="tab" data-bs-target="#@category.Name" type="button" role="tab"
-                        aria-controls="@category.Name" aria-selected="true">
-                            <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@category.ImagePath?v=-1"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="@category.DisplayName" />
-                        </button>
-                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link @(Model.ShippableCategories.IndexOf(category)==3 ? "active" : "")"
+                                        id="@category.Name-tab" data-bs-toggle="tab" data-bs-target="#@category.Name" type="button" role="tab"
+                                        aria-controls="@category.Name" aria-selected="true">
+                                            <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@category.ImagePath?v=-1"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="@category.DisplayName" />
+                                        </button>
+                                    </li>
             }
         }
     </ul>
@@ -37,44 +36,47 @@
 
             foreach (ShippableIconViewModel category in Model.ShippableCategories)
             {
-                <div class="tab-pane fade @(Model.ShippableCategories.IndexOf(category)==5 ? "show active" : "")"
-                    id="@category.Name" role="tabpanel" aria-labelledby="@category.Name-tab">
-                    @{
-                        var categoryItems = shippableItems[category.Name];
+                                <div class="tab-pane fade @(Model.ShippableCategories.IndexOf(category)==3 ? "show active" : "")"
+                                    id="@category.Name" role="tabpanel" aria-labelledby="@category.Name-tab">
+                                    @{
+                    var categoryItems = shippableItems[category.Name];
 
-                        <script>
-                            function handleRadioChanged(e) {
-                                console.log("radio changed: ",e);
-                            }
-                        </script>
+                    if(categoryItems.Any(i => i.ShippingType == FoxholeItemAPI.Utils.ShippingType.CrateOrPackage))
+                    {
+                                                                <div id="inlineRadioOptions-@category.Name" style=" padding: 10px">
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions-@category.Name" id="radio-mpf-crate" value="1" checked onclick="(e) => handleRadioChanged(e)">
+                                                                        <label class="form-check-label" for="radio-mpf-crate">MPF Crate</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions-@category.Name" id="radio-single-packaged" value="0" onclick="(e) => handleRadioChanged(e)">
+                                                                        <label class="form-check-label" for="radio-single-packaged">Single Packaged</label>
+                                                                    </div>
+                                                                </div>
 
-                        if(categoryItems.Any(i => i.ShippingType == FoxholeItemAPI.Utils.ShippingType.CrateOrPackage))
-                        {
-                            <div style="padding: 10px">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio-mpf-crate" value="option1" checked onchange="handleRadioChanged">
-                                <label class="form-check-label" for="radio-mpf-crate">MPF Crate</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio-single-packaged" value="option2" onchange="handleRadioChanged">
-                                <label class="form-check-label" for="radio-single-packaged">Single Packaged</label>
-                            </div>
-                            </div>
-                        }
+                                                                <script>
+                                                                    var radioGroup = document.getElementById("inlineRadioOptions-@category.Name");
+
+                                                                    radioGroup.addEventListener("change", function ({target: {value}}) {
+                                                                    localStorage.packageOption = PackageType[value];
+                                                                    console.log(localStorage.packageOption);
+                                                                    });
+                                                                </script>
+                    }
 
                     foreach (IItem item in categoryItems)
                     {
-                        <button class="ftl-interact ftl-button" style="width: 72px; height: 72px; margin-right: -2px"
-                            onclick="train.LoadItem(@(item.ToString()));">
-                            <img 
-                                class="ftl-icon ftl-noselect ftl-shippable-icon" src="@item.IconName?v=-1"
-                                style="padding: 0px; background-color: @(item.DisplayName == "UNKNOWN ITEM" ? "red" : "transparent"); transform: scale(150%);"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="@item.DisplayName" 
-                            />
-                        </button>
+                                                                <button class="ftl-interact ftl-button" style="width: 72px; height: 72px; margin-right: -2px"
+                                                                    onclick="train.LoadItem(@(item.ToString()));">
+                                                                    <img 
+                                                                        class="ftl-icon ftl-noselect ftl-shippable-icon" src="@item.IconName?v=-1"
+                                                                        style="padding: 0px; background-color: @(item.DisplayName == "UNKNOWN ITEM" ? "red" : "transparent"); transform: scale(150%);"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="@item.DisplayName" 
+                                                                    />
+                                                                </button>
                     }
-                    }
-                </div>
+                                    }
+                                </div>
             }
 
         }
