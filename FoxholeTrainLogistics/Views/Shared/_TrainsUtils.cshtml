@@ -10,6 +10,7 @@
     var ShippingType = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<ShippingType>()));
     var TrainCarType = @Html.Raw(JsonSerializer.Serialize(ApiUtils.EnumTypesToString<TrainCarType>()));
     var PackageType = { 0: "singlePackaged", 1: "mpfCrate" };
+    var Faction = {0: "colonial", 1: "warden", 2: "neutral"};
 
     var TrainCarTemplates = @Html.Raw(TrainCarFactory.GetTrainCarTemplates().ToDictionary().ToJson());
 
