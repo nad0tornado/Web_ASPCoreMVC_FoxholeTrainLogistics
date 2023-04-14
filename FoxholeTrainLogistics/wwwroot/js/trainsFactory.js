@@ -25,29 +25,21 @@ class TrainsFactory {
         img.title = car.Type;
 
         var topLeftSelection = btn.appendChild(document.createElement("div"));
-            topLeftSelection.className = "ftl-selection-box";
-            topLeftSelection.style = "left: 0; top: 0;";
+        topLeftSelection.className = "ftl-selection-box selection-box-"+car.id;
+        topLeftSelection.style = "left: 0; top: 0; border-width: 1px 0px 0px .1px";
         var topRightSelection = btn.appendChild(document.createElement("div"));
-            topRightSelection.className = "ftl-selection-box";
-            topRightSelection.style = "right: 0; top: 0";
+        topRightSelection.className = "ftl-selection-box selection-box-" + car.id;
+        topRightSelection.style = "right: 0; top: 0; border-width: 1px 1px 0px 0px";
         var bottomLeftSelection = btn.appendChild(document.createElement("div"));
-            bottomLeftSelection.className = "ftl-selection-box";
-            bottomLeftSelection.style = "left: 0; bottom: 0";
+        bottomLeftSelection.className = "ftl-selection-box selection-box-" + car.id;
+        bottomLeftSelection.style = "left: 0; bottom: 0; border-width: 0px 0px 1px 1px";
         var bottomRightSelection = btn.appendChild(document.createElement("div"));
-            bottomRightSelection.className = "ftl-selection-box";
-            bottomRightSelection.style = "right: 0; bottom: 0";
-        
-
-        /*  <div style="right:0 "></div>
-            <div style="left : 0"></div>  
-            <div style="left:0; bottom: 0 "></div>
-            <div style="right:0; bottom: 0 "></div>
-        */
+        bottomRightSelection.className = "ftl-selection-box selection-box-" + car.id;
+        bottomRightSelection.style = "right: 0; bottom: 0; border-width: 0px 1px 1px 0px";
 
         if (this.interactable) {
             btn.onclick = () => {
-                train.RemoveTrainCar(car.id);
-                this.trainCrewChip.innerHTML = "Crew Capacity: " + train.Cars.map(c => c.Crew).reduce((a, c) => a + c);
+                
             }
         }
 
