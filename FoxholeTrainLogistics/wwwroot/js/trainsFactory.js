@@ -15,7 +15,7 @@ class TrainsFactory {
 
         const btn = this.trainContainer.appendChild(document.createElement("button"));
         btn.className = "ftl-noselect ftl-interact ftl-button";
-        btn.style = "display: flex; justify-content: center";
+        btn.style = "display: flex; justify-content: center; position: relative";
 
         var img = btn.appendChild(document.createElement("img"));
         img.src = "./img/trains/" + car.Image;
@@ -23,6 +23,26 @@ class TrainsFactory {
         img["data-bs-toggle"] = "tooltip";
         img["data-bs-placement"] = "top";
         img.title = car.Type;
+
+        var topLeftSelection = btn.appendChild(document.createElement("div"));
+            topLeftSelection.className = "ftl-selection-box";
+            topLeftSelection.style = "left: 0; top: 0;";
+        var topRightSelection = btn.appendChild(document.createElement("div"));
+            topRightSelection.className = "ftl-selection-box";
+            topRightSelection.style = "right: 0; top: 0";
+        var bottomLeftSelection = btn.appendChild(document.createElement("div"));
+            bottomLeftSelection.className = "ftl-selection-box";
+            bottomLeftSelection.style = "left: 0; bottom: 0";
+        var bottomRightSelection = btn.appendChild(document.createElement("div"));
+            bottomRightSelection.className = "ftl-selection-box";
+            bottomRightSelection.style = "right: 0; bottom: 0";
+        
+
+        /*  <div style="right:0 "></div>
+            <div style="left : 0"></div>  
+            <div style="left:0; bottom: 0 "></div>
+            <div style="right:0; bottom: 0 "></div>
+        */
 
         if (this.interactable) {
             btn.onclick = () => {

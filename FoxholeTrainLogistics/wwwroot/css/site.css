@@ -61,6 +61,12 @@ body {
     filter: none;
 }
 
+.ftl-interact:hover > .ftl-selection-box {
+    width: 10px; 
+    height: 10px;
+    position: absolute;
+}
+
 @media (prefers-reduced-motion: no-preference) {
     .ftl-anim-slide-down {
         animation: FTL-Anim-Slide-Down infinite 2s alternate;
