@@ -11,11 +11,33 @@
 
 <script src="~/js/train.js?v=-1"></script>
 <script>
+    var selectedTrainCar = undefined;
+    var onSelectedTrainCarChangedListeners = [];
+    function onSelectedTrainCarChanged(car) {
+        onSelectedTrainCarChangedListeners.map(l => (typeof l === "function" && l(car)));
+        selectedTrainCar = car;
+    }
+
     var train;
     document.addEventListener('DOMContentLoaded', () => {
         const trainObj = @Html.Raw(JsonSerializer.Serialize(Model.Train,serializerOptions));
         train = new Train(trainObj, @Model.Interactable.ToString().ToLower());
-    });    
+        const testFlatbed = train.AddTrainCar(Object.values(TrainCarTemplates)[2]);
+        const testItem = Object.values(ItemTemplates)[0][0];
+        train.LoadItem(testItem);
+        onSelectedTrainCarChanged(testFlatbed);
+    });
+
+    if((@Model.Interactable.ToString().ToLower()))
+    {
+        document.addEventListener('keydown',function ({key}) {
+            if(key === "Delete" && selectedTrainCar)
+            {
+                train.RemoveTrainCar(selectedTrainCar.id);
+                selectedTrainCar = undefined;
+            }
+        });
+    }
 </script>
 
 <div class="ftl-paper" style="margin-bottom: 5px; min-height: 100px; display: flex; flex-direction: column">

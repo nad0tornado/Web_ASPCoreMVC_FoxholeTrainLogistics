@@ -31,11 +31,12 @@
     @{await Html.RenderPartialAsync("../Trains/_Train", new TrainViewModel(train,true));}
 </div>
 <div style="display: flex;">
-    <div class="ftl-paper" style="flex: 1; min-height: 500px; margin-top: 5px;">
+    <!--<div class="ftl-paper" style="flex: 1; min-height: 500px; margin-top: 5px;">
         @{await Html.RenderPartialAsync("./_ShippableToolbar", new ShippableToolbarViewModel(ShippableToolbarService));}
+    </div>-->
+    <div style="width: 10px">
+
     </div>
-    <div class="ftl-paper" style="flex: 1; min-height: 500px; margin-top: 5px; display: flex; justify-content: center; align-items: center">
-        <h3 style="color: black;">No Item Selected</h3>
-    </div>
+        @{await Html.RenderPartialAsync("./_TrainCarViewer");}
 </div>
 

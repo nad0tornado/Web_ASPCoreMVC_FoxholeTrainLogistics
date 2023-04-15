@@ -1,0 +1,40 @@
+
+
+<style>
+    .container {
+        flex: 1; 
+        min-height: 500px; 
+        margin-top: 5px; 
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+<div class="ftl-paper container">
+    <div id="train-viewer-content" style="display: none">
+    <div style="flex: 1/4">
+        <!-- car icon -->
+        <img id="train-viewer-car-icon"/>
+    </div>
+    <div>
+        <h3 id="test"></h3>
+    </div>
+    </div>
+    <div id="train-viewer-no-content" style="flex: 1; display: flex; justify-content: center; align-items: center;">
+        <h3>No Item Selected</h3>
+    </div>
+</div>
+
+<script>
+    function updateContent(car) {
+        document.getElementById("test").innerHTML = car.Type;
+    }
+
+    function handleSelectedTrainCarChanged(car) {
+        console.log("CHANGED TRAIN CAR: ",car);
+        document.getElementById("train-viewer-no-content").style.display = car ? "none" : "inline";
+        document.getElementById("train-viewer-content").style.display = car ? "inline" : "none";
+        updateContent(car);
+    }
+
+    onSelectedTrainCarChangedListeners.push(handleSelectedTrainCarChanged);
+</script>

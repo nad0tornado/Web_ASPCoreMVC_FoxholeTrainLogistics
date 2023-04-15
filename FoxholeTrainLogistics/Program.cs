@@ -3,6 +3,7 @@ using FoxholeTrainLogistics.Contexts;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Models;
 using FoxholeTrainLogistics.Services;
+using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 
 namespace Test
 {
@@ -43,7 +44,7 @@ namespace Test
         private static void ConfigureServices(IServiceCollection services)
         {
             // Add services to the container.
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             // .. Setup DB Context
             services.AddSingleton<ITrainsDbContext, TrainsInMemoryContext>();

@@ -24,6 +24,16 @@ class TrainsFactory {
         img["data-bs-placement"] = "top";
         img.title = car.Type;
 
+        if (car.Type === "FlatbedCar" && car.Container) {
+
+            btn.appendChild(this.createContainer(car.Container));
+        }
+
+        console.log('[TrainsFactory] Created ' + car.Type +": ",car);
+
+        if(!this.interactable)
+            return btn;
+
         var topLeftSelection = btn.appendChild(document.createElement("div"));
         topLeftSelection.className = "ftl-selection-box selection-box-"+car.id;
         topLeftSelection.style = "left: 0; top: 0; border-width: 1px 0px 0px .1px";
@@ -36,19 +46,10 @@ class TrainsFactory {
         var bottomRightSelection = btn.appendChild(document.createElement("div"));
         bottomRightSelection.className = "ftl-selection-box selection-box-" + car.id;
         bottomRightSelection.style = "right: 0; bottom: 0; border-width: 0px 1px 1px 0px";
-
-        if (this.interactable) {
-            btn.onclick = () => {
-                
-            }
-        }
-
-        if (car.Type === "FlatbedCar" && car.Container) {
-
-            btn.appendChild(this.createContainer(car.Container));
-        }
-
-        console.log('[TrainsFactory] Created ' + car.Type +": ",car);
+        
+        btn.onclick = function() {
+            onSelectedTrainCarChanged(train.GetTrainCar(car.id));
+        };
 
         return btn;
     }
@@ -77,10 +78,6 @@ class TrainsFactory {
 
     destroyTrainCar(car) {
         this.trainContainer.removeChild(car.element);
-    }
-
-    createFlatbedCar(containerType, containerContents = []) {
-
     }
 }
 

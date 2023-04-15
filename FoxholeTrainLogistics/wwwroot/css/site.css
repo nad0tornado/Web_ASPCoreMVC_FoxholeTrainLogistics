@@ -58,6 +58,7 @@ body {
 }
 
 .ftl-interact:active {
+    
     filter: none;
 }
 
@@ -70,12 +71,25 @@ body {
     border-width: 0px;
 }
 
+@keyframes blink {
+    0% {
+        opacity: 0%;
+    }
+    50% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 0%;
+    }
+  }
+
 .ftl-interact:focus > .ftl-selection-box {
     width: 10px;
     height: 10px;
     position: absolute;
-    border-style: solid;
+    border-style: dashed;
     border-width: 0px;
+    animation: blink 1s linear infinite;
 }
 
 

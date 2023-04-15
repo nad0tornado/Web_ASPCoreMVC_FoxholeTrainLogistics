@@ -1,13 +1,22 @@
-function Train(train, isInteractable=false) {
+function Train(_train, isInteractable=false) {
 
     const Init = () => {
-        if (typeof train !== "object")
+        if (typeof _train !== "object")
             throw new DOMException(`train must be an object`);
 
-        trainsFactory.init(train, isInteractable);
-        this.train = { ...train, Cars: [] };
-        train.Cars.forEach(c => AddTrainCar(c));
+        trainsFactory.init(_train, isInteractable);
+        this.train = { ..._train, Cars: [] };
+        _train.Cars.forEach(c => AddTrainCar(c));
     };
+
+    const GetTrainCar = (carId) => {
+        const trainCar = train.Cars.find(c => c.id === carId);
+
+        if (trainCar === undefined)
+            throw new DOMException('[Train] No train car exists with id ' + carId);
+            
+        return trainCar;
+    }
 
     const AddTrainCar = (car) => {
         const carId = Date.now();
@@ -15,7 +24,6 @@ function Train(train, isInteractable=false) {
         const trainCarElement = trainsFactory.createTrainCar(newCar);
         const newCarWithElement = { ...newCar, element: trainCarElement };
         this.train.Cars.push(newCarWithElement)
-        console.log("updatedTrainCars=", this.train.Cars);
 
         return newCarWithElement;
     }
@@ -70,10 +78,12 @@ function Train(train, isInteractable=false) {
             const flatcar = flatbedCarsWithoutContainer[0];
             flatcar.Container = newContainer;
             trainsFactory.addContainerToFlatcar(flatcar, newContainer);
+
+            return flatcar;
         }
         else {
             const newFlatbed = { ...TrainCarTemplates.FlatbedCar, Container: newContainer };
-            AddTrainCar(newFlatbed);
+            return AddTrainCar(newFlatbed);
         }
     }
 
@@ -86,6 +96,8 @@ function Train(train, isInteractable=false) {
         if (flatbedCarsWithFreeSpace.length > 0) {
             const flatbedWithFreeSpace = flatbedCarsWithFreeSpace[0];
             flatbedWithFreeSpace.Container.Contents.push(item);
+
+            return flatbedWithFreeSpace;
         }
         else if (flatbedCarsWithoutContainer.length > 0) {
             const newContainer = { ...MultiItemContainerTemplates[item.ShippingType] };
@@ -95,13 +107,15 @@ function Train(train, isInteractable=false) {
             const flatCar = flatbedCarsWithoutContainer[0];
             flatCar.Container = newContainer;
             trainsFactory.addContainerToFlatcar(flatCar, newContainer);
+
+            return flatCar;
         }
         else if (flatbedCarsWithFreeSpace.length === 0) {
             const newContainer = { ...MultiItemContainerTemplates[item.ShippingType] };
             newContainer.Contents.push(item);
 
             const newFlatcar = { ...TrainCarTemplates.FlatbedCar, Container: newContainer };
-            AddTrainCar(newFlatcar);
+            return AddTrainCar(newFlatcar);
         }
     }
 
@@ -109,6 +123,7 @@ function Train(train, isInteractable=false) {
 
     return {
         ...this.train,
+        GetTrainCar,
         AddTrainCar,
         RemoveTrainCar,
         LoadItem
