@@ -22,10 +22,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         const trainObj = @Html.Raw(JsonSerializer.Serialize(Model.Train,serializerOptions));
         train = new Train(trainObj, @Model.Interactable.ToString().ToLower());
-        const testFlatbed = train.AddTrainCar(Object.values(TrainCarTemplates)[2]);
-        const testItem = Object.values(ItemTemplates)[0][0];
-        train.LoadItem(testItem);
-        onSelectedTrainCarChanged(testFlatbed);
     });
 
     if((@Model.Interactable.ToString().ToLower()))
@@ -66,7 +62,7 @@
         {
             <button class="ftl-noselect ftl-interact ftl-button" onclick="train.AddTrainCar({...@car});">
                 <img class="ftl-icon" src="/img/trains/@(car.Image)?v=-1" data-bs-toggle="tooltip" data-bs-placement="top"
-                title="@car.Type.DisplayName()" />
+                title="@car.Type.GetDisplayName()" />
             </button>
         }
     </div>

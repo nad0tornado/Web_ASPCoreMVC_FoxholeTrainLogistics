@@ -1,22 +1,20 @@
 ﻿using FoxholeItemAPI.Utils;
 using FoxholeTrainLogistics.Interfaces;
-using Microsoft.VisualBasic;
-using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace FoxholeTrainLogistics
 {
     public static class TrainUtils
     {
-        public static string DisplayName(this TrainCarType type) =>
-            type switch
-            {
-                TrainCarType.EngineCar => "Engine",
-                TrainCarType.CoalCar => "Coal Car",
-                TrainCarType.InfantryCar => "Infantry Car",
-                TrainCarType.FlatbedCar => "Flatbed Car",
-                TrainCarType.CabooseCar => "Caboose",
-                _ => throw new NotImplementedException()
+        public static string GetDisplayName(this Enum _type) {
+            var typeString = _type.ToString();
+
+            return typeString switch {
+                "EngineCar" => "Engine",
+                "CabooseCar" => "Caboose",
+                _=> string.Join(" ",Regex.Split(typeString,@"(?<!^)(?=[A-Z])"))
             };
+        }
 
         public static int ToCapacity(this ShippingType shippingType) =>
         shippingType switch

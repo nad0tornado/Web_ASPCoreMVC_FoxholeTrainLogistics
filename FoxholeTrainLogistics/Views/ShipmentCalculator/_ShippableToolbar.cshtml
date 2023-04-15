@@ -113,11 +113,10 @@
             foreach (IItem item in categoryItems)
             {
                     <button class="ftl-interact ftl-button @item.Faction.ToString().ToLower()"
-                        style="width: 72px; height: 72px; margin-right: -2px; text-align: center; vertical-align: middle;"
+                        style="width: 72px; height: 72px; margin-right: -2px; text-align: center; vertical-align: middle; position: relative;"
                         onclick="train.LoadItem(@(item.ToString()));">
                         <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@item.IconName?v=-1"
-                            style="padding: 0px; background-color: @(item.DisplayName == " UNKNOWN ITEM" ? "red" : "transparent"
-                            ); transform: scale(150%);" data-bs-toggle="tooltip" data-bs-placement="top"
+                            style="padding: 0px; transform: scale(150%);" data-bs-toggle="tooltip" data-bs-placement="top"
                             title="@item.DisplayName" />
                     </button>
             }

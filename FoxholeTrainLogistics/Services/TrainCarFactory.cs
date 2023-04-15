@@ -18,6 +18,8 @@ namespace FoxholeTrainLogistics.Services
         {
             public TrainCarType Type { get; }
 
+            public string DisplayName { get; }
+
             public string Image { get; }
 
             public int Crew { get; }
@@ -25,6 +27,7 @@ namespace FoxholeTrainLogistics.Services
             public TrainCar(TrainCarType type, string image, int crew = 0)
             {
                 Type = type;
+                DisplayName = Type.GetDisplayName();
                 Image = image;
                 Crew = crew;
             }

@@ -14,22 +14,19 @@ class TrainsFactory {
             throw new DOMException("A train container must exist");
 
         const btn = this.trainContainer.appendChild(document.createElement("button"));
-        btn.className = "ftl-noselect ftl-interact ftl-button";
-        btn.style = "display: flex; justify-content: center; position: relative";
+        btn.className = "ftl-noselect ftl-interact ftl-button ftl-flex-container";
 
         var img = btn.appendChild(document.createElement("img"));
+        img.id = car.id+"-car";
         img.src = "./img/trains/" + car.Image;
         img.className = "ftl-icon";
         img["data-bs-toggle"] = "tooltip";
         img["data-bs-placement"] = "top";
-        img.title = car.Type;
+        img.title = car.DisplayName;
 
         if (car.Type === "FlatbedCar" && car.Container) {
-
             btn.appendChild(this.createContainer(car.Container));
         }
-
-        console.log('[TrainsFactory] Created ' + car.Type +": ",car);
 
         if(!this.interactable)
             return btn;
@@ -60,12 +57,12 @@ class TrainsFactory {
         var img = document.createElement("img");
         img.src = (ShippingTypeInv[container.Type] !== ShippingTypeInv.PackagedItem || container.isMPF ? "./img/containers/" : "") + container.Image;
         img.className = "ftl-icon ftl-shippable-icon";
-        img.style = "position: absolute; margin-top: -10px; height: 60px";
+        img.style = "margin-top: -10px; height: 60px; position: absolute";
 
         img["data-bs-toggle"] = "tooltip";
         img["data-bs-placement"] = "top";
 
-        img.title = container.tooltip ?? container.Type;
+        img.title = container.DisplayName;
 
         console.log('[TrainsFactory] Created ' + container.Type + ": ", container);
 
@@ -73,7 +70,10 @@ class TrainsFactory {
     }
 
     addContainerToFlatcar(flatcar, container) {
-        flatcar.element.appendChild(this.createContainer(container));
+        const containerElement = this.createContainer(container);
+        containerElement.id = flatcar.id+"-container";
+        flatcar.element.appendChild(containerElement);
+
     }
 
     destroyTrainCar(car) {

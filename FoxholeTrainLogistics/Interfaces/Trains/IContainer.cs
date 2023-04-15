@@ -7,6 +7,8 @@ namespace FoxholeTrainLogistics.Interfaces
     {
         public ShippingType Type { get; }
 
+        public string DisplayName { get; }
+
         public int Capacity { get; }
 
         public string Image { get; }

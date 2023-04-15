@@ -38,6 +38,13 @@ body {
     padding: 10px;
 }
 
+.ftl-flex-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    position: relative;
+}
+
 .ftl-button {
     border: none;
     background: none;

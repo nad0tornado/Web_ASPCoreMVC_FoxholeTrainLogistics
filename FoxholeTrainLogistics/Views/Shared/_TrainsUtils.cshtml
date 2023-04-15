@@ -16,8 +16,6 @@
     var TrainCarTemplates = @Html.Raw(TrainCarFactory.GetTrainCarTemplates().ToDictionary().ToJson());
     var ItemTemplates = @Html.Raw((await shippableToolbarService.GetShippableItems()).ToJson());
 
-    console.log("itemTemplates: ",ItemTemplates);
-
     var PackagedItemContainerTemplate = @Html.Raw(ContainerFactory.CreatePackagedItemContainer(new Item()).ToJson());
     var MultiItemContainerTemplates = @Html.Raw(ContainerFactory.GetMultiItemContainerTemplates().ToDictionary().ToJson());
 

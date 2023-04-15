@@ -4,6 +4,8 @@
     {
         public TrainCarType Type { get; }
 
+        public string DisplayName { get; }
+
         public string Image { get; }
 
         public int Crew { get; }

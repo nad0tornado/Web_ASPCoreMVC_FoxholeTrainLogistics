@@ -48,13 +48,14 @@ function Train(_train, isInteractable=false) {
         console.log("item=", item);
 
         const isMPFOrSinglePackage = item.ShippingType === "CrateOrPackage";
+        var updatedFlatcar = undefined;
 
         if (isMPFOrSinglePackage)
-            loadPackagedItem(item);
+            updatedFlatcar = loadPackagedItem(item);
         else
-            loadMultiContainerItem(item);
+            updatedFlatcar = loadMultiContainerItem(item);
 
-        console.log("updated flat cars=", getFlatbedCars());
+        console.log("[Train] Updated Flat Car:", updatedFlatcar);
     }
 
     const loadPackagedItem = (item) => {

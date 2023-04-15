@@ -12,6 +12,8 @@ namespace FoxholeTrainLogistics.Services
         private struct Container : IContainer
         {
             public ShippingType Type { get; private set; }
+            
+            public string DisplayName { get; }
 
             public string Image { get; private set; }
 
@@ -21,6 +23,7 @@ namespace FoxholeTrainLogistics.Services
             public Container(ShippingType type, string image, List<IItem>? contents = null)
             {
                 Type = type;
+                DisplayName = Type.GetDisplayName();
                 Image = image;
                 Capacity = type.ToCapacity();
                 Contents = contents ?? new();
