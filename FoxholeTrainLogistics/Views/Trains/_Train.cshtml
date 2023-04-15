@@ -30,7 +30,7 @@
             if(key === "Delete" && selectedTrainCar)
             {
                 train.RemoveTrainCar(selectedTrainCar.id);
-                selectedTrainCar = undefined;
+                onSelectedTrainCarChanged(train.Cars[train.Cars.length - 2]);
             }
         });
     }
@@ -40,7 +40,8 @@
     <span>@Model.Train.TrainId</span>
 
     <div id=@("train-container-"+Model.Train.TrainId)
-        style="display: flex; vertical-align: middle; margin-top: 5px; margin-bottom: 5px; min-height: 50px"></div>
+        style="display: flex; vertical-align: middle; margin-top: 5px; margin-bottom: 5px; min-height: 50px">
+    </div>
 
     <div class="btn-group" role="group">
         <button type="button" class="ftl-interact ftl-chip">@Model.NumberOfCars Cars</button>

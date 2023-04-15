@@ -45,10 +45,6 @@ body {
     position: relative;
 }
 
-.ftl-button {
-    border: none;
-    background: none;
-}
 .ftl-chip {
     box-shadow: 1px 3px 5px 0px rgba(100,100,100,0.5);
     border: 0.1px solid rgba(0,0,0,0.15);
@@ -59,45 +55,25 @@ body {
     font-size: 12px;
 }
 
-.ftl-interact:hover {
-    filter: brightness(85%);
-    background: white;
+
+
+::-webkit-scrollbar {
+    width: 10px; /* width of the scrollbar */
+    height: 5px;
 }
 
-.ftl-interact:active {
-    
-    filter: none;
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* color of the track (the area behind the scrollbar) */
 }
 
-.ftl-interact:hover > .ftl-selection-box {
-    width: 10px; 
-    height: 10px;
-    position: absolute;
-    border-color: black;
-    border-style: solid;
-    border-width: 0px;
+::-webkit-scrollbar-thumb {
+    background-color: #888; /* color of the thumb (the draggable element of the scrollbar) */
+    border-radius: 5px; /* border radius of the thumb */
 }
 
-@keyframes blink {
-    0% {
-        opacity: 0%;
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #555; /* color of the thumb when hovered over */
     }
-    50% {
-        opacity: 100%;
-    }
-    100% {
-        opacity: 0%;
-    }
-  }
-
-.ftl-interact:focus > .ftl-selection-box {
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    border-style: dashed;
-    border-width: 0px;
-    animation: blink 1s linear infinite;
-}
 
 
 

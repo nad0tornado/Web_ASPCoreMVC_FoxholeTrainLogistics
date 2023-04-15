@@ -73,7 +73,6 @@ class TrainsFactory {
         const containerElement = this.createContainer(container);
         containerElement.id = flatcar.id+"-container";
         flatcar.element.appendChild(containerElement);
-
     }
 
     destroyTrainCar(car) {

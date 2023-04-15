@@ -3,24 +3,24 @@
 @using FoxholeTrainLogistics.ViewModels;
 @inject IShippableToolbarService ShippableToolbarService;
 @{
-    ViewData["Title"] = "Shipment Calculator";
+ViewData["Title"] = "Shipment Calculator";
 }
 
 @{
-    await Html.RenderPartialAsync("_TrainsUtils");
+await Html.RenderPartialAsync("_TrainsUtils");
 }
 
 <script>
     @{
         var train = new Train()
         {
-            TrainId = Guid.NewGuid(),
-            Cars = new List<ITrainCar>() {
+        TrainId = Guid.NewGuid(),
+            Cars = new List < ITrainCar > () {
             TrainCarFactory.CreateTrainCar(TrainCarType.EngineCar),
-            TrainCarFactory.CreateTrainCar(TrainCarType.CoalCar)
+                TrainCarFactory.CreateTrainCar(TrainCarType.CoalCar)
         },
-                Status = TrainStatus.Parked
-        };
+        Status = TrainStatus.Parked
+    };
     }
 </script>
 
@@ -31,12 +31,7 @@
     @{await Html.RenderPartialAsync("../Trains/_Train", new TrainViewModel(train,true));}
 </div>
 <div style="display: flex;">
-    <div class="ftl-paper" style="flex: 1; min-width: 700px; min-height: 500px; margin-top: 5px;">
-        @{await Html.RenderPartialAsync("./_ShippableToolbar", new ShippableToolbarViewModel(ShippableToolbarService));}
-    </div>
-    <div style="width: 10px">
-
-    </div>
-        @{await Html.RenderPartialAsync("./_TrainCarViewer");}
+    @{await Html.RenderPartialAsync("./_ShippableToolbar", new ShippableToolbarViewModel(ShippableToolbarService));}
+    <div style="width: 10px"></div>
+    @{await Html.RenderPartialAsync("./_TrainCarViewer");}
 </div>
-

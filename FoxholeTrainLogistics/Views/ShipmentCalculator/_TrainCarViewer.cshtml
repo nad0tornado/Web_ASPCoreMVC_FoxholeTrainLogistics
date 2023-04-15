@@ -1,26 +1,27 @@
-
-
 <style>
     .container {
-        flex: 1; 
-        min-height: 500px; 
-        margin-top: 5px; 
+        flex: 1;
+        min-height: 500px;
+        margin-top: 5px;
         display: flex;
         flex-direction: column;
     }
 </style>
 <div class="ftl-paper container">
     <div id="train-viewer-content" style="display: none">
-    <div style="flex: 1/4; display: flex;">
-        <div class="ftl-flex-container" style="flex-direction: column; width: 150px; margin-left: -20px">
-            <div id="train-viewer-icon" class="ftl-flex-container" style="width: 100px; height: 100px; box-shadow: 0px 0px 6px rgba(0,0,0,0.5); border-radius: 8px"></div>
-            <h3 id="carName"></h3>
+        <div style="flex: 1/4; display: flex;">
+            <div class="ftl-flex-container" style="flex-direction: column; align-items: flex-start; width: 150px;">
+                <h3 id="carName"></h3>
+                <div id="train-viewer-icon" class="ftl-flex-container"
+                    style="width: 100px; height: 100px; box-shadow: 0px 0px 6px rgba(0,0,0,0.5); border-radius: 8px">
+                </div>
+
+            </div>
         </div>
-    </div>
-    <div style="margin-top: 10px;">
-        <h2>Contents</h2>
-        <div id="train-viewer-items"></div>
-    </div>
+        <div style="margin-top: 10px;">
+            <h2>Contents</h2>
+            <div id="train-viewer-items"></div>
+        </div>
     </div>
     <div id="train-viewer-no-content" style="flex: 1; display: flex; justify-content: center; align-items: center;">
         <h3>No Item Selected</h3>
@@ -28,16 +29,22 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded',() => {
+    document.addEventListener('DOMContentLoaded', () => {
         const testFlatbed = train.AddTrainCar(Object.values(TrainCarTemplates)[2]);
         console.log(ItemTemplates);
-        const testItem = Object.values(ItemTemplates)[1][0];
-        train.LoadItem(testItem);
+        const testItem = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("smallArms")][0];
+        const testItem2 = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("smallArms")][1];
+
+        for (var i = 0; i < 5; i++) {
+            train.LoadItem(testItem);
+            train.LoadItem(testItem2);
+        }
+
         onSelectedTrainCarChanged(testFlatbed);
     });
 
     function handleSelectedTrainCarChanged(car) {
-        console.log("CHANGED TRAIN CAR: ",car);
+        console.log("CHANGED TRAIN CAR: ", car);
         document.getElementById("train-viewer-no-content").style.display = car ? "none" : "inline";
         document.getElementById("train-viewer-content").style.display = car ? "inline" : "none";
         updateContent(car);
@@ -46,73 +53,91 @@
     function updateContent(car) {
         updateIcon(car);
         document.getElementById("carName").innerHTML = car.DisplayName;
-        
+
         updateItems(car);
     }
 
     function updateItems(car) {
         const trainViewerItems = document.getElementById("train-viewer-items");
         Array.from(trainViewerItems.children).map(child => {
-            if(trainViewerItems.contains(child))
+            if (trainViewerItems.contains(child))
                 child.parentElement.removeChild(child);
         })
 
-        if(car.Container === undefined)
+        if (car.Container === undefined)
             return;
 
         const containerItems = car.Container.Contents;
+        const uniqueItems = [...new Set(containerItems)];
+        const itemCounts = uniqueItems.map(i => containerItems.filter(ci => ci.DisplayName === i.DisplayName).length);
 
-        containerItems.forEach(item => {
-            const itemButton = trainViewerItems.appendChild(document.createElement("btn"));
+
+        uniqueItems.forEach((item, i) => {
+            const itemButton = trainViewerItems.appendChild(document.createElement("button"));
             itemButton.className = "ftl-interact ftl-button";
-            itemButton.style="width: 72px; height: 72px; margin-right: -2px; text-align: center; vertical-align: middle";
+            itemButton.style = "width: 72px; height: 72px; margin-right: 2px; text-align: center; vertical-align: middle; position: relative; padding-bottom: 10px";
             itemButton.onclick = () => {
                 // .. unload the item
             }
 
             const itemImage = itemButton.appendChild(document.createElement("img"));
             itemImage.className = "ftl-icon ftl-noselect ftl-shippable-icon";
-            itemImage.style = "padding: 0px; transform: scale(150%)";
-            itemImage["data-bs-toggle"] ="tooltip"; 
+            itemImage.style.transform = "scale(150%)";
+            itemImage["data-bs-toggle"] = "tooltip";
             itemImage["data-bs-placement"] = "top";
             itemImage.title = item.DisplayName;
             itemImage.src = item.IconName;
 
-            console.log("item image path: ",item.IconName);
+            const itemCountDiv = itemButton.appendChild(document.createElement("p"));
+            itemCountDiv.style = "right: 0; position: absolute; padding-right: 5px";
+
+            const itemCount = itemCountDiv.appendChild(document.createElement("p"));
+            itemCount.innerHTML = "x" + itemCounts[i];
         })
     }
 
-    function updateIcon (car) {
+    function updateIcon(car) {
         const viewerIcon = document.getElementById("train-viewer-icon");
-        
+
         Array.from(viewerIcon.children).map(child => {
-            if(viewerIcon.contains(child))
+            if (viewerIcon.contains(child))
                 child.parentElement.removeChild(child);
         })
 
-        const carImage = document.getElementById(car.id+"-car").cloneNode(true);
-        
+        const carImage = document.getElementById(car.id + "-car").cloneNode(true);
+
         const newDimensions = viewerIcon.style.width;
 
-        carImage.id = carImage.id+Date.now();
+        carImage.id = carImage.id + Date.now();
         carImage.style.height = newDimensions;
-        carImage.src = "./img/trains/"+car.Type+"Black.png";
+        carImage.src = "./img/trains/" + car.Type + "Black.png";
 
-        if(car.Type === "FlatbedCar")
-        carImage.style.transform = "skew(5deg,5deg)";
+        if (car.Type === "FlatbedCar")
+            carImage.style.transform = "skew(5deg,5deg)";
 
         viewerIcon.appendChild(carImage);
 
-        const carContainer = document.getElementById(car.id+"-container")?.cloneNode(true);
-        if(carContainer === undefined)
+        
+
+        const carContainer = document.getElementById(car.id + "-container")?.cloneNode(true);
+
+        console.log("car.Container=", car.Container);
+        console.log("car.id=",car.id+"-container");
+        console.log(carContainer);
+        if (carContainer === undefined)
             return;
 
-        carContainer.id = carContainer.id+Date.now();
+        carContainer.id = carContainer.id + Date.now();
         carContainer.style.height = "auto";
         carContainer.style.width = newDimensions;
         carContainer.style.transform = "scale(90%)";
         carContainer.style.marginTop = "-30px";
-        viewerIcon.appendChild(carContainer);   
+
+        
+        if(car.Container.Type === "LiquidContainer")
+            carContainer.style.marginTop = "-50px";
+
+        viewerIcon.appendChild(carContainer);
     }
 
     onSelectedTrainCarChangedListeners.push(handleSelectedTrainCarChanged);
