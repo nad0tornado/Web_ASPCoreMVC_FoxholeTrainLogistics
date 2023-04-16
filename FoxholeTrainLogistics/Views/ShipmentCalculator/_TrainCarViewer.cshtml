@@ -10,7 +10,7 @@
 <div class="ftl-paper container">
     <div id="train-viewer-content" style="display: none">
         <div style="flex: 1/4; display: flex;">
-            <div class="ftl-flex-container" style="flex-direction: column; align-items: flex-start; width: 150px;">
+            <div class="ftl-flex-container" style="flex-direction: column; align-items: flex-start; width: 200px;">
                 <h3 id="carName"></h3>
                 <div id="train-viewer-icon" class="ftl-flex-container"
                     style="width: 100px; height: 100px; box-shadow: 0px 0px 6px rgba(0,0,0,0.5); border-radius: 8px">
@@ -36,8 +36,8 @@
         const testItem2 = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("smallArms")][1];
 
         for (var i = 0; i < 5; i++) {
-            train.LoadItem(testItem);
-            train.LoadItem(testItem2);
+            train.AddItem(testItem);
+            train.AddItem(testItem2);
         }
 
         onSelectedTrainCarChanged(testFlatbed);
@@ -71,6 +71,9 @@
         const uniqueItems = [...new Set(containerItems)];
         const itemCounts = uniqueItems.map(i => containerItems.filter(ci => ci.DisplayName === i.DisplayName).length);
 
+        console.log("containerItems");
+        containerItems.map(i => console.log(" - "+i.DisplayName));
+
 
         uniqueItems.forEach((item, i) => {
             const itemButton = trainViewerItems.appendChild(document.createElement("button"));
@@ -78,6 +81,11 @@
             itemButton.style = "width: 72px; height: 72px; margin-right: 2px; text-align: center; vertical-align: middle; position: relative; padding-bottom: 10px";
             itemButton.onclick = () => {
                 // .. unload the item
+                if(train === undefined)
+                    throw new DOMException("Train is undefined");
+
+                train.RemoveItem(item,car);
+                updateItems(car);
             }
 
             const itemImage = itemButton.appendChild(document.createElement("img"));
@@ -117,13 +125,8 @@
 
         viewerIcon.appendChild(carImage);
 
-        
-
         const carContainer = document.getElementById(car.id + "-container")?.cloneNode(true);
 
-        console.log("car.Container=", car.Container);
-        console.log("car.id=",car.id+"-container");
-        console.log(carContainer);
         if (carContainer === undefined)
             return;
 
@@ -133,7 +136,6 @@
         carContainer.style.transform = "scale(90%)";
         carContainer.style.marginTop = "-30px";
 
-        
         if(car.Container.Type === "LiquidContainer")
             carContainer.style.marginTop = "-50px";
 

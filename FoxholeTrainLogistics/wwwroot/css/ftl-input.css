@@ -33,7 +33,7 @@
     }
   }
 
-.ftl-interact:focus > .ftl-selection-box {
+.ftl-interact:focus .ftl-selection-box {
     width: 10px;
     height: 10px;
     position: absolute;

@@ -15,6 +15,9 @@
     var onSelectedTrainCarChangedListeners = [];
     function onSelectedTrainCarChanged(car) {
         onSelectedTrainCarChangedListeners.map(l => (typeof l === "function" && l(car)));
+
+        // .. instead of using the "focus" event, just make the button into a regular div and create a class with a "focus" function
+        // car.element.focus();
         selectedTrainCar = car;
     }
 
