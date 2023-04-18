@@ -31,29 +31,40 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const testFlatbed = train.AddTrainCar(Object.values(TrainCarTemplates)[2]);
-        const testItem = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("smallArms")][0];
-        const testItem2 = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("smallArms")][1];
 
-        for (var i = 0; i < 5; i++) {
+        const vehiclesArray = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("vehicles")];
+        const randomVehicleIndex = Math.floor((Math.random() * vehiclesArray.length) % vehiclesArray.length);
+        const testItem = vehiclesArray[randomVehicleIndex];
+
+        for (var i = 0; i < 1; i++) {
             train.AddItem(testItem);
-            train.AddItem(testItem2);
         }
 
         testFlatbed.element.click(); // .. this will automatically trigger the "dispatchEvent" added by trainsFactory for when a train car is changed
     });
 
-    function handleSelectedTrainCarChanged({detail: car}) {
-        console.log("CHANGED TRAIN CAR: ", car);
+    EventManager.AddEventListener("selectedTrainCarChanged", (car) => {
         document.getElementById("train-viewer-no-content").style.display = car ? "none" : "inline";
         document.getElementById("train-viewer-content").style.display = car ? "inline" : "none";
+
+        if (car === undefined || car === null)
+            return;
+
         updateContent(car);
-    }
+    });
+    EventManager.AddEventListener("itemAddedToTrain", (flatcar) => {
+        if(flatcar !== this.car)
+            return;
+
+        updateContent(flatcar);
+    });
 
     function updateContent(car) {
         updateIcon(car);
         document.getElementById("carName").innerHTML = car.DisplayName;
 
         updateItems(car);
+        this.car = car;
     }
 
     function updateItems(car) {
@@ -79,8 +90,12 @@
                 if(train === undefined)
                     throw new DOMException("Train is undefined");
 
-                train.RemoveItem(item,car);
-                updateItems(car);
+                if(car.Container.Type === "PackagedItem")
+                    train.RemoveTrainCarContainer(car);
+                else
+                    train.RemoveItem(item, car);
+
+                updateContent(car);
             }
 
             const itemImage = itemButton.appendChild(document.createElement("img"));
@@ -122,7 +137,7 @@
 
         const carContainer = document.getElementById(car.id + "-container")?.cloneNode(true);
 
-        if (carContainer === undefined)
+        if (carContainer === undefined || carContainer === null)
             return;
 
         carContainer.id = carContainer.id + Date.now();
@@ -131,11 +146,9 @@
         carContainer.style.transform = "scale(90%)";
         carContainer.style.marginTop = "-30px";
 
-        if(car.Container.Type === "LiquidContainer")
+        if (carContainer === "LiquidContainer")
             carContainer.style.marginTop = "-50px";
 
         viewerIcon.appendChild(carContainer);
     }
-
-    document.addEventListener("onSelectedTrainCarChanged",handleSelectedTrainCarChanged);
 </script>

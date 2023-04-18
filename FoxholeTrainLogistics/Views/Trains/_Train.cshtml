@@ -12,14 +12,6 @@
 <script src="~/js/train.js?v=-1"></script>
 <script>
     var selectedTrainCar = undefined;
-    var onSelectedTrainCarChangedListeners = [];
-    function onSelectedTrainCarChanged(car) {
-        onSelectedTrainCarChangedListeners.map(l => (typeof l === "function" && l(car)));
-
-        // .. instead of using the "focus" event, just make the button into a regular div and create a class with a "focus" function
-        // car.element.focus();
-        selectedTrainCar = car;
-    }
 
     var train;
     document.addEventListener('DOMContentLoaded', () => {
@@ -27,13 +19,16 @@
         train = new Train(trainObj, @Model.Interactable.ToString().ToLower());
     });
 
+    EventManager.AddEventListener("selectedTrainCarChanged", (car) => {
+        selectedTrainCar = car
+    });
+
     if((@Model.Interactable.ToString().ToLower()))
     {
         document.addEventListener('keydown',function ({key}) {
-            if(key === "Delete" && selectedTrainCar)
-            {
+            if(key === "Delete" && selectedTrainCar) {
                 train.RemoveTrainCar(selectedTrainCar.id);
-                onSelectedTrainCarChanged(train.Cars[train.Cars.length - 2]);
+                EventManager.DispatchEvent("selectedTrainCarChanged");
             }
         });
     }

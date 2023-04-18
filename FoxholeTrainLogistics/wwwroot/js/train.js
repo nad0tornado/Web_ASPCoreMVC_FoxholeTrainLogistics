@@ -9,8 +9,11 @@ function Train(_train, isInteractable=false) {
         _train.Cars.forEach(c => AddTrainCar(c));
     };
 
-    const GetTrainCar = (carId) => {
-        const trainCar = train.Cars.find(c => c.id === carId);
+    const getTrainCars = () => this.train.Cars;
+    const getFlatbedCars = () => this.train.Cars.filter(c => c.Type === "FlatbedCar");
+
+    const GetTrainCarById = (carId) => {
+        const trainCar = getTrainCars().find(c => c.id === carId);
 
         if (trainCar === undefined)
             throw new DOMException('[Train] No train car exists with id ' + carId);
@@ -18,34 +21,49 @@ function Train(_train, isInteractable=false) {
         return trainCar;
     }
 
+    const GetTrainCarAt = (index) => {
+        const trainCars = getTrainCars();
+        const trainCar = trainCars.find((_, i) => i === index);
+
+        if (trainCar === undefined)
+            throw new DOMException('[Train] No train car exists at position ' + index);
+
+        return trainCars[index % trainCars.length];
+    }
+
+    const GetTrainCarIndex = (car) => {
+        const index = getTrainCars().indexOf(car);
+
+        if (index === -1)
+            throw new DOMException(`[Train] Train car ${car.id} (${car.Type}) isn't a part of train ${this.train.TrainId}`);
+
+        return index;
+    }
+
     const AddTrainCar = (car) => {
-        const carId = Date.now();
+        const carId = Utils.GenerateUniqueId();
         const newCar = { ...car, id: carId };
         const trainCarElement = trainsFactory.createTrainCar(newCar);
         const newCarWithElement = { ...newCar, element: trainCarElement };
-        this.train.Cars.push(newCarWithElement)
+        getTrainCars().push(newCarWithElement)
 
         return newCarWithElement;
     }
 
     const RemoveTrainCar = (carId) => {
-        const car = this.train.Cars.find(c => c.id === carId);
+        const trainCars = getTrainCars();
+        const car = trainCars.find(c => c.id === carId);
 
         if (!car)
             throw new DOMException('[Train] No train car exists with id ' + carId);
 
-        this.train.Cars = this.train.Cars.filter(c => c.id !== carId);
         trainsFactory.destroyTrainCar(car);
-        console.log(this.train.Cars);
+        this.train.Cars = this.train.Cars.filter(c => c.id !== carId);
     }
-
-    const getFlatbedCars = () => this.train.Cars.filter(c => c.Type === "FlatbedCar");
 
     const AddItem = (item) => {
         if (!item)
             throw new DOMException("item cannot be null");
-
-        console.log("item=", item);
 
         const isMPFOrSinglePackage = item.ShippingType === "CrateOrPackage";
         var updatedFlatcar = undefined;
@@ -55,7 +73,7 @@ function Train(_train, isInteractable=false) {
         else
             updatedFlatcar = addMultiContainerItem(item);
 
-        console.log("[Train] Updated Flat Car:", updatedFlatcar);
+        return updatedFlatcar;
     }
 
     const addPackagedItem = (item) => {
@@ -66,8 +84,6 @@ function Train(_train, isInteractable=false) {
             throw new DOMException("packageOption cannot be undefined");
 
         const isMPF = InvertEnum(PackageType)[localStorage.packageOption] == InvertEnum(PackageType).mpfCrate;
-
-        console.log(InvertEnum(PackageType)[localStorage.packageOption], ",", InvertEnum(PackageType).mpfCrate)
 
         const newContainerImage = isMPF ? "Crate.png" : item.IconName;
         const newContainerContents = isMPF ? [item, item, item] : [item];
@@ -148,13 +164,28 @@ function Train(_train, isInteractable=false) {
         flatcarContainer.Contents = flatcarContainer.Contents.filter((_, i) => i !== itemToRemoveIndex);
         
     }
+
+    const RemoveTrainCarContainer = (flatcar) => {
+        if (flatcar === undefined || flatcar?.Type !== "FlatbedCar")
+            throw new DOMException("the given train car is not a flat car");
+
+        if (flatcar.Container === undefined || flatcar.Container === null)
+            return;
+
+        flatcar.Container = undefined;
+        trainsFactory.destroyFlatCarContainer(flatcar);
+    }
+
     Init();
 
     return {
         ...this.train,
-        GetTrainCar,
+        GetTrainCarById,
+        GetTrainCarAt,
+        GetTrainCarIndex,
         AddTrainCar,
         RemoveTrainCar,
+        RemoveTrainCarContainer,
         AddItem,
         RemoveItem
     };

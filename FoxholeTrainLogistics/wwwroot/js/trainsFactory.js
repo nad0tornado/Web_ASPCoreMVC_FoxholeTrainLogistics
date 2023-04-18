@@ -42,9 +42,8 @@
         bottomRightSelection.className = "ftl-selection-box selection-box-" + car.id;
         bottomRightSelection.style = "right: 0; bottom: 0; border-width: 0px 1px 1px 0px";
         
-        btn.onclick = function() {
-            const event = new CustomEvent('onSelectedTrainCarChanged',{detail: train.GetTrainCar(car.id)});
-            document.dispatchEvent(event);
+        btn.onclick = function () {
+            EventManager.DispatchEvent('selectedTrainCarChanged', train.GetTrainCarById(car.id));
         };
 
         return btn;
@@ -76,6 +75,17 @@
 
     destroyTrainCar(car) {
         this.trainContainer.removeChild(car.element);
+    }
+
+    destroyFlatCarContainer(flatcar) {
+        if (flatcar?.Type !== "FlatbedCar")
+            throw new DOMException("the given train car is not a flatbed car");
+
+        console.log('flatcar=', flatcar);
+
+        
+        const containerElement = document.getElementById(flatcar.id + "-container");
+        flatcar.element.removeChild(containerElement);
     }
 }
 
