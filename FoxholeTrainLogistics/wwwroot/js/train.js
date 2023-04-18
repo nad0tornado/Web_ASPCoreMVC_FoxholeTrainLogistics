@@ -99,8 +99,8 @@ function Train(_train, isInteractable=false) {
             return flatcar;
         }
         else {
-            const newFlatbed = { ...TrainCarTemplates.FlatbedCar, Container: newContainer };
-            return AddTrainCar(newFlatbed);
+            const newFlatcar = AddTrainCar({ ...TrainCarTemplates.FlatbedCar, Container: newContainer });
+            return newFlatcar;
         }
     }
 
@@ -131,8 +131,8 @@ function Train(_train, isInteractable=false) {
             const newContainer = { ...MultiItemContainerTemplates[item.ShippingType] };
             newContainer.Contents.push(item);
 
-            const newFlatcar = { ...TrainCarTemplates.FlatbedCar, Container: newContainer };
-            updatedFlatcar = AddTrainCar(newFlatcar);
+            const newFlatcar = AddTrainCar({ ...TrainCarTemplates.FlatbedCar, Container: newContainer });
+            updatedFlatcar = newFlatcar;
         }
 
         updatedFlatcar.Container.Contents = updatedFlatcar.Container.Contents.sort((a, b) => {

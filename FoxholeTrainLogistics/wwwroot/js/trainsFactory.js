@@ -23,7 +23,7 @@
         img.title = car.DisplayName;
 
         if (car.Type === "FlatbedCar" && car.Container) {
-            btn.appendChild(this.createContainer(car.Container));
+            this.addContainerToFlatcar({ ...car, element: btn },car.Container);
         }
 
         if(!this.interactable)
@@ -62,14 +62,12 @@
 
         img.title = container.DisplayName;
 
-        console.log('[TrainsFactory] Created ' + container.Type + ": ", container);
-
         return img;
     }
 
     addContainerToFlatcar(flatcar, container) {
         const containerElement = this.createContainer(container);
-        containerElement.id = flatcar.id+"-container";
+        containerElement.id = flatcar.id + "-container";
         flatcar.element.appendChild(containerElement);
     }
 
@@ -81,9 +79,6 @@
         if (flatcar?.Type !== "FlatbedCar")
             throw new DOMException("the given train car is not a flatbed car");
 
-        console.log('flatcar=', flatcar);
-
-        
         const containerElement = document.getElementById(flatcar.id + "-container");
         flatcar.element.removeChild(containerElement);
     }
