@@ -1,6 +1,4 @@
-﻿// Train Creation Factory
-
-class TrainsFactory {
+﻿class TrainsFactory {
 
     init(train, interactable = true) {
         this.interactable = interactable;
@@ -45,7 +43,8 @@ class TrainsFactory {
         bottomRightSelection.style = "right: 0; bottom: 0; border-width: 0px 1px 1px 0px";
         
         btn.onclick = function() {
-            onSelectedTrainCarChanged(train.GetTrainCar(car.id));
+            const event = new CustomEvent('onSelectedTrainCarChanged',{detail: train.GetTrainCar(car.id)});
+            document.dispatchEvent(event);
         };
 
         return btn;

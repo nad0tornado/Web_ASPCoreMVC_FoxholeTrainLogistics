@@ -31,7 +31,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const testFlatbed = train.AddTrainCar(Object.values(TrainCarTemplates)[2]);
-        console.log(ItemTemplates);
         const testItem = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("smallArms")][0];
         const testItem2 = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("smallArms")][1];
 
@@ -40,10 +39,10 @@
             train.AddItem(testItem2);
         }
 
-        onSelectedTrainCarChanged(testFlatbed);
+        testFlatbed.element.click(); // .. this will automatically trigger the "dispatchEvent" added by trainsFactory for when a train car is changed
     });
 
-    function handleSelectedTrainCarChanged(car) {
+    function handleSelectedTrainCarChanged({detail: car}) {
         console.log("CHANGED TRAIN CAR: ", car);
         document.getElementById("train-viewer-no-content").style.display = car ? "none" : "inline";
         document.getElementById("train-viewer-content").style.display = car ? "inline" : "none";
@@ -64,16 +63,12 @@
                 child.parentElement.removeChild(child);
         })
 
-        if (car.Container === undefined)
+        if (!car.Container)
             return;
 
         const containerItems = car.Container.Contents;
         const uniqueItems = [...new Set(containerItems)];
         const itemCounts = uniqueItems.map(i => containerItems.filter(ci => ci.DisplayName === i.DisplayName).length);
-
-        console.log("containerItems");
-        containerItems.map(i => console.log(" - "+i.DisplayName));
-
 
         uniqueItems.forEach((item, i) => {
             const itemButton = trainViewerItems.appendChild(document.createElement("button"));
@@ -142,5 +137,5 @@
         viewerIcon.appendChild(carContainer);
     }
 
-    onSelectedTrainCarChangedListeners.push(handleSelectedTrainCarChanged);
+    document.addEventListener("onSelectedTrainCarChanged",handleSelectedTrainCarChanged);
 </script>
