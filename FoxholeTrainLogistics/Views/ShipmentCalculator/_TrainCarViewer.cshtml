@@ -36,7 +36,7 @@
         const randomItemIndex = Math.floor((Math.random() * itemsArray.length) % itemsArray.length);
         const testItem = itemsArray[randomItemIndex];
 
-        for (var i = 0; i < 1; i++) {
+        for (var i = 0; i < 65; i++) {
             train.AddItem(testItem);
         }
 
@@ -93,8 +93,18 @@
 
                 if(car.Container.Type === "PackagedItem")
                     train.RemoveTrainCarContainer(car);
-                else
+                else if(!InputManager.MultiplyTen && !InputManager.MultiplyHundred)
                     train.RemoveItem(item, car);
+                else if(InputManager.MultiplyTen)
+                {
+                    for (var i = 0; i < 10; i++)
+                        train.RemoveItem(item, car);
+                }
+                else
+                {
+                    for (var i = 0; i < 100; i++)
+                        train.RemoveItem(item, car);
+                }
 
                 updateContent(car);
             }
