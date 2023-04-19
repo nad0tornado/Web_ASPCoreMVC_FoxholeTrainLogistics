@@ -21,7 +21,7 @@
             foreach (ShippableIconViewModel category in Model.ShippableCategories)
             {
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link @(Model.ShippableCategories.IndexOf(category)==8 ? "active" : "")"
+                        <button class="nav-link @(Model.ShippableCategories.IndexOf(category)==5 ? "active" : "")"
                         id="@category.Name-tab" data-bs-toggle="tab" data-bs-target="#@category.Name" type="button" role="tab"
                         aria-controls="@category.Name" aria-selected="true">
                             <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@category.ImagePath?v=-1"
@@ -37,24 +37,10 @@
 
             foreach (ShippableIconViewModel category in Model.ShippableCategories)
             {
-                <div class="tab-pane fade @(Model.ShippableCategories.IndexOf(category)==8 ? "show active" : "")"
+                <div class="tab-pane fade @(Model.ShippableCategories.IndexOf(category)==5 ? "show active" : "")"
                     id="@category.Name" role="tabpanel" aria-labelledby="@category.Name-tab">
                     @{
-                        var categoryItems = shippableItems[category.Name];
-
-                        if(categoryItems.Any(i => i.ShippingType == FoxholeItemAPI.Utils.ShippingType.CrateOrPackage))
-                        {
-                            <div style="padding: 10px">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio-mpf-crate" value="option1">
-                                <label class="form-check-label" for="radio-mpf-crate">MPF Crate</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio-single-packaged" value="option2">
-                                <label class="form-check-label" for="radio-single-packaged">Single Packaged</label>
-                            </div>
-                            </div>
-                        }
+                    var categoryItems = shippableItems[category.Name];
 
                     foreach (IItem item in categoryItems)
                     {
