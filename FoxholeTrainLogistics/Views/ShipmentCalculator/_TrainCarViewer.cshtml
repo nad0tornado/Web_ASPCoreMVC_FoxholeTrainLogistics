@@ -32,9 +32,9 @@
     document.addEventListener('DOMContentLoaded', () => {
         const testFlatbed = train.AddTrainCar(Object.values(TrainCarTemplates)[2]);
 
-        const vehiclesArray = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("vehicles")];
-        const randomVehicleIndex = Math.floor((Math.random() * vehiclesArray.length) % vehiclesArray.length);
-        const testItem = vehiclesArray[randomVehicleIndex];
+        const itemsArray = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("smallArms")];
+        const randomItemIndex = Math.floor((Math.random() * itemsArray.length) % itemsArray.length);
+        const testItem = itemsArray[randomItemIndex];
 
         for (var i = 0; i < 1; i++) {
             train.AddItem(testItem);
@@ -78,7 +78,8 @@
             return;
 
         const containerItems = car.Container.Contents;
-        const uniqueItems = [...new Set(containerItems)];
+        const containerItemsNames = containerItems.map(ci => ci.IconName);
+        const uniqueItems = containerItems.filter((v, i, s) => containerItemsNames.indexOf(v.IconName) === i);
         const itemCounts = uniqueItems.map(i => containerItems.filter(ci => ci.DisplayName === i.DisplayName).length);
 
         uniqueItems.forEach((item, i) => {
