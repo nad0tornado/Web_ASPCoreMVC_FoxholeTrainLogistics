@@ -71,6 +71,10 @@ function Train(_train, isInteractable=false) {
         const isMPFOrSinglePackage = item.ShippingType === "CrateOrPackage";
         var updatedFlatcar = undefined;
 
+        const ignoreSelectedFlatbedCar = !hasCorrectContainer(flatcar) || !hasFreeSpace(flatcar);
+        if (ignoreSelectedFlatbedCar)
+            flatcar = undefined;
+
         if (isMPFOrSinglePackage)
             updatedFlatcar = addPackagedItem(item,flatcar);
         else
@@ -79,9 +83,22 @@ function Train(_train, isInteractable=false) {
         return updatedFlatcar;
     }
 
+    const hasCorrectContainer = (flatbedCar, shippingType) => {
+        if (!flatbedCar?.Container) return false;
+        if (!flatbedCar.Container.Type === shippingType) return false;
+
+        return true;
+    }
+
+    const hasFreeSpace = (flatbedCar) => {
+        if (!flatbedCar?.Container) return false;
+        if (flatbedCar.Container.Contents.length >= flatbedCar.Container.Capacity) return false;
+
+        return true;
+    }
+
     const addPackagedItem = (item, flatcar = undefined) => {
         const flatbedCars = flatcar ? [flatcar] : getFlatbedCars();
-
         const flatbedCarsWithoutContainer = flatbedCars.filter(fb => fb.Container == null);
 
         if (!localStorage.packageOption)
@@ -109,11 +126,11 @@ function Train(_train, isInteractable=false) {
     }
 
     const addContainerItem = (item, flatcar = undefined) => {
-        
-        const flatbedCars = flatcar ? [flatcar] : getFlatbedCars();
 
-        const flatbedCarsWithRightContainer = flatbedCars.filter(fb => fb.Container && fb.Container.Type === item.ShippingType);
-        const flatbedCarsWithFreeSpace = flatbedCarsWithRightContainer.filter(fb => fb.Container.Contents.length < fb.Container.Capacity);
+        const flatbedCars = getFlatbedCars();
+
+        const flatbedCarsWithRightContainer = flatbedCars.filter(fb => hasCorrectContainer(fb,item.ShippingType));
+        const flatbedCarsWithFreeSpace = flatbedCarsWithRightContainer.filter(fb => hasFreeSpace(fb));
         const flatbedCarsWithoutContainer = flatbedCars.filter(fb => fb.Container == null);
 
         var updatedFlatcar = undefined;
