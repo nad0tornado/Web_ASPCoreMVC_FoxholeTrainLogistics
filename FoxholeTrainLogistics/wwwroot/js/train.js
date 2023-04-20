@@ -61,23 +61,27 @@ function Train(_train, isInteractable=false) {
         this.train.Cars = this.train.Cars.filter(c => c.id !== carId);
     }
 
-    const AddItem = (item) => {
+    const AddItem = (item,flatcar = undefined) => {
         if (!item)
             throw new DOMException("item cannot be null");
+
+        if (flatcar && flatcar.Type !== "FlatbedCar")
+            flatcar = undefined;
 
         const isMPFOrSinglePackage = item.ShippingType === "CrateOrPackage";
         var updatedFlatcar = undefined;
 
         if (isMPFOrSinglePackage)
-            updatedFlatcar = addPackagedItem(item);
+            updatedFlatcar = addPackagedItem(item,flatcar);
         else
-            updatedFlatcar = addMultiContainerItem(item);
+            updatedFlatcar = addContainerItem(item, flatcar);
 
         return updatedFlatcar;
     }
 
-    const addPackagedItem = (item) => {
-        const flatbedCars = getFlatbedCars();
+    const addPackagedItem = (item, flatcar = undefined) => {
+        const flatbedCars = flatcar ? [flatcar] : getFlatbedCars();
+
         const flatbedCarsWithoutContainer = flatbedCars.filter(fb => fb.Container == null);
 
         if (!localStorage.packageOption)
@@ -104,8 +108,10 @@ function Train(_train, isInteractable=false) {
         }
     }
 
-    const addMultiContainerItem = (item) => {
-        const flatbedCars = getFlatbedCars();
+    const addContainerItem = (item, flatcar = undefined) => {
+        
+        const flatbedCars = flatcar ? [flatcar] : getFlatbedCars();
+
         const flatbedCarsWithRightContainer = flatbedCars.filter(fb => fb.Container && fb.Container.Type === item.ShippingType);
         const flatbedCarsWithFreeSpace = flatbedCarsWithRightContainer.filter(fb => fb.Container.Contents.length < fb.Container.Capacity);
         const flatbedCarsWithoutContainer = flatbedCars.filter(fb => fb.Container == null);
@@ -131,10 +137,10 @@ function Train(_train, isInteractable=false) {
             const newContainer = Utils.CloneObject(MultiItemContainerTemplates[item.ShippingType]);
             newContainer.Contents.push(item);
 
-            const newFlatcar = Utils.CloneObject(MultiItemContainerTemplates[item.ShippingType]);
+            const newFlatcar = Utils.CloneObject(TrainCarTemplates.FlatbedCar);
             newFlatcar.Container = newContainer;
 
-            updatedFlatcar = newFlatcar;
+            updatedFlatcar = AddTrainCar(newFlatcar);
         }
 
         updatedFlatcar.Container.Contents = updatedFlatcar.Container.Contents.sort((a, b) => {
