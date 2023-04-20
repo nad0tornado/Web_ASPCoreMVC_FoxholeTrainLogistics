@@ -118,7 +118,7 @@ function Train(_train, isInteractable=false) {
             updatedFlatcar = flatbedWithFreeSpace;
         }
         else if (flatbedCarsWithoutContainer.length > 0) {
-            const newContainer = { ...MultiItemContainerTemplates[item.ShippingType] };
+            const newContainer = Utils.CloneObject(MultiItemContainerTemplates[item.ShippingType]);
             newContainer.Contents.push(item);
 
             const flatCar = flatbedCarsWithoutContainer[0];
@@ -128,10 +128,12 @@ function Train(_train, isInteractable=false) {
             updatedFlatcar = flatCar;
         }
         else if (flatbedCarsWithFreeSpace.length === 0) {
-            const newContainer = { ...MultiItemContainerTemplates[item.ShippingType] };
+            const newContainer = Utils.CloneObject(MultiItemContainerTemplates[item.ShippingType]);
             newContainer.Contents.push(item);
 
-            const newFlatcar = AddTrainCar({ ...TrainCarTemplates.FlatbedCar, Container: newContainer });
+            const newFlatcar = Utils.CloneObject(MultiItemContainerTemplates[item.ShippingType]);
+            newFlatcar.Container = newContainer;
+
             updatedFlatcar = newFlatcar;
         }
 
