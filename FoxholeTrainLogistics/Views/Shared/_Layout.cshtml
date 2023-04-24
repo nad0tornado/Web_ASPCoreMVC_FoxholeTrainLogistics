@@ -8,12 +8,18 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/ftl-input.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FoxholeTrainLogistics.styles.css" asp-append-version="true" />
+
+    
     <script src="~/js/trainsFactory.js"></script>
     <script src="~/js/EventManager.js"></script>
     <script src="~/js/InputManager.js"></script>
     <script src="~/js/Utils.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </head>
 <body>
+
     <header>
         <partial name="_Nav" />
     </header>
@@ -28,9 +34,7 @@
             &copy; 2023 - NadoCo Interactive - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    
     <script src="https://kit.fontawesome.com/9d5c7d3cb0.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

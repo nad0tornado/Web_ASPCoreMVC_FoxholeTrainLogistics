@@ -8,6 +8,14 @@
     background: white;
 }
 
+.ftl-interact-minimal:hover {
+    filter: brightness(85%);
+}
+
+.ftl-interact-minimal:active {
+    filter: none;
+}
+
 .ftl-interact:active {
     filter: none;
 }

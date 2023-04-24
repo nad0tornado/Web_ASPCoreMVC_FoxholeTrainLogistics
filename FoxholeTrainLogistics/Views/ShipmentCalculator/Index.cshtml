@@ -30,8 +30,88 @@ await Html.RenderPartialAsync("_TrainsUtils");
     <b>Your Train</b>
     @{await Html.RenderPartialAsync("../Trains/_Train", new TrainViewModel(train,true));}
 </div>
+<div style="border-top: 1px solid #ababab; border-bottom: 1px solid #ababab; margin-top: 10px; margin-bottom: 5px; padding: 10px; height: 150px">
+    <h3>Shipment Info</h3>
+    <div style="display: flex; flex-direction: row">
+        <script type="text/javascript">
+            
+            function setError(text) {
+                const errorElement = document.getElementById("shipment-error");
+
+                if(text === '' || text === undefined)
+                    errorElement.style.display = 'none';
+                else
+                    errorElement.innerHTML = text;
+            }
+
+            function parseDate (dateString) {
+                const dateParts = dateString.split(/[-T:]/);
+                const year = parseInt(dateParts[0], 10) + 2000;
+                const month = parseInt(dateParts[1], 10) - 1;
+                const day = parseInt(dateParts[2], 10);
+                const hour = parseInt(dateParts[3], 10);
+                const minute = parseInt(dateParts[4], 10);
+
+                const hourNow = new Date().getHours();
+                const minuteNow = new Date().getMinutes();
+                return new Date(year, month, day, !isNaN(hour) ? hour : hourNow, !isNaN(minute) ? minute : minuteNow);
+            }
+
+            function validateForm() {
+                var errors = [];
+
+                const shipmentDate = document.getElementById("shipment-date");
+                const shipmentDateIsDate = !isNaN(parseDate(shipmentDate.value)) || shipmentDate.value === '';
+
+                if(!shipmentDateIsDate)
+                {
+                    errors.push('Please enter a valid Shipment Date like "DD-MM-YYTHH:MM"');
+                    shipmentDate.style.borderColor = 'red';
+                }
+                else
+                    shipmentDate.style.borderColor = '';
+
+                setError(errors.join(' | '));
+            }
+        </script>
+        <div style="width: 300px">
+            <label for="shipment-name">Shipment Name</label>
+            <input type="text" class="form-control" id="shipment-name" aria-describedby="basic-addon3">
+        </div>
+        <div style="width: 250px; margin-left: 10px">
+            <label for="shipment-date">Shipment Date</label>
+            <input type="text" class="form-control" id="shipment-date" aria-describedby="basic-addon3" onchange="validateForm()">
+            
+        </div>
+        <div style="width: 200px; margin-left: 10px">
+            <label for="shipment-from">Ship From</label>
+            <input type="text" class="form-control" id="shipment-from" aria-describedby="basic-addon3">
+        </div>
+        <div style="width: 200px; margin-left: 10px">
+            <label for="shipment-to">Ship To</label>
+            <input type="text" class="form-control" id="shipment-to" aria-describedby="basic-addon3">
+        </div>
+        <div style="width: 200px; margin-left: 10px">
+            <label for="shipment-requested-by">Requested By</label>
+            <input type="text" class="form-control" id="shipment-requested-by" aria-describedby="basic-addon3">
+        </div>
+        <div style="width: 200px; margin-left: 10px">
+            <label for="shipment-when">When</label>
+            <input type="text" class="form-control" id="shipment-when" aria-describedby="basic-addon3">
+        </div>
+    </div>
+    <label id="shipment-error" style="color: red"></label>
+</div>
 <div style="display: flex;">
     @{await Html.RenderPartialAsync("./_ShippableToolbar", new ShippableToolbarViewModel(ShippableToolbarService));}
     <div style="width: 10px"></div>
     @{await Html.RenderPartialAsync("./_TrainCarViewer");}
+</div>
+<div style="margin-top: 10px;">
+    <button type="button" class="btn btn-primary ftl-interact-minimal">Copy Discord Message</button>
+</div>
+<div style="padding: 10px">
+@{
+    await Html.RenderPartialAsync("./_DatePicker");
+}
 </div>

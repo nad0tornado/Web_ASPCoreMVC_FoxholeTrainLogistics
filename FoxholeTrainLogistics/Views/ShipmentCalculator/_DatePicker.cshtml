@@ -1,0 +1,90 @@
+﻿
+@{
+    string[] months = new string[] {
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    };
+
+    string[] weekdays = new string[]{ "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su" };
+    int[] weeks = new int[] { 1, 2, 3, 4, 5, 6 };
+}
+<head>
+    <style>
+        .ftl-date-picker {
+            user-select: none;
+            -webkit-user-drag: none;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+            width: fit-content;
+            padding: 2px;
+            border-radius: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+        .ftl-date-picker .ftl-dp-cell {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ftl-date-picker button {
+            border: none;
+            background: white;
+        }
+        .ftl-date-picker button:hover {
+            filter: brightness(85%);
+        }
+
+        .ftl-date-picker button:active {
+            filter: none;
+        }
+    </style>
+    <script>
+        @{
+            var dateNow = DateTime.Now;
+        }
+    </script>
+</head>
+<div class="ftl-date-picker">
+    <div style="display: flex; justify-content: space-evenly; align-items: center;">
+        <button class="ftl-dp-cell" ><</button><h4>April</h4><button class="ftl-dp-cell">></button>
+    </div>
+    <div class="ftl-dp-grid">
+        <div style=" display: flex; font-weight: bold">
+            <div class="ftl-dp-cell">@weekdays[0]</div>
+            <div class="ftl-dp-cell">@weekdays[1]</div>
+            <div class="ftl-dp-cell">@weekdays[2]</div>
+            <div class="ftl-dp-cell">@weekdays[3]</div>
+            <div class="ftl-dp-cell">@weekdays[4]</div>
+            <div class="ftl-dp-cell">@weekdays[5]</div>
+            <div class="ftl-dp-cell">@weekdays[6]</div>
+        </div>
+        @foreach(int week in weeks)
+        {
+            <div style="display: flex;">
+            @foreach (string weekday in weekdays)
+            {
+                <button class="ftl-dp-cell">
+                    0@(weekdays.ToList().FindIndex(d => d == weekday)+1)
+                </button>
+            }
+            </div>
+        }
+    </div>
+</div>
