@@ -75,21 +75,15 @@ body {
         background-color: #555; /* color of the thumb when hovered over */
     }
 
-
-
-@media (prefers-reduced-motion: no-preference) {
-    .ftl-anim-slide-down {
-        animation: FTL-Anim-Slide-Down infinite 2s alternate;
-    }
-}
-
-@keyframes FTL-Anim-Slide-Down {
-    from {
-        transform: translateY(0px);
+@keyframes dropDown {
+    0% {
+        opacity: 0;
+        height: 0px;
     }
 
-    to {
-        transform: translateY(100px);
+    100% {
+        opacity: 1;
+        height: 350px;
     }
 }
 

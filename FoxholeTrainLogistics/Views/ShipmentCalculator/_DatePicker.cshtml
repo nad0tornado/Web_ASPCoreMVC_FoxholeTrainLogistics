@@ -10,17 +10,21 @@
             display: flex;
             flex-direction: column;
             box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
-            width: fit-content;
             padding: 2px;
+            width: fit-content;
             border-radius: 8px;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            animation: dropDown 0.5s forwards;
+            position: absolute;
         }
+
         .ftl-date-picker .ftl-dp-cell {
             width: 40px;
             height: 40px;
             text-align: center;
-            
+            background: white;
             box-sizing: border-box;
             display: flex;
             justify-content: center;
@@ -29,16 +33,29 @@
 
         .ftl-date-picker button {
             border: none;
-            background: white;
+            
         }
+
         .ftl-date-picker button:hover {
-            filter: brightness(85%);
+            filter: brightness(115%);
         }
 
         .ftl-date-picker button:active {
             filter: none;
         }
+
+        .ftl-dp-bright-button {
+            background: none;
+            color: white;
+        }
+
+        .ftl-dp-bright-button:hover {
+            color: silver;
+        }
+
+        
     </style>
+    <script src="https://kit.fontawesome.com/9d5c7d3cb0.js" crossorigin="anonymous"></script>
     <script>
         const months = [
             "January",
@@ -55,11 +72,12 @@
             "December"
         ];
 
-        var selectedMonthIndex = 0;
+        var now = new Date(Date.now());
+        var selectedMonthIndex = now.getMonth();
+        var selectedYear = now.getFullYear();
 
         window.addEventListener("DOMContentLoaded",() => {
             
-
             const datePickerGrid = document.getElementById("ftl-dp-grid-@datePickerId");
             for(var i = 0; i < 6; i++)
             {
@@ -70,8 +88,12 @@
                 for(var j = 0; j < 7; j++)
                 {
                     const dayCell = document.createElement("button");
+                    dayCell.id=`ftl-dp-day-${i}${j}-@datePickerId`;
                     dayCell.className = "ftl-dp-cell";
                     dayCell.innerHTML = `0${j}`;
+                    dayCell.onclick = () => {
+
+                    }
                     weekRow.appendChild(dayCell);
                 }
             }
@@ -81,27 +103,46 @@
 
         function updateCalendar() {
             document.getElementById("ftl-dp-monthname-@datePickerId").innerHTML = months[selectedMonthIndex];
+            document.getElementById("ftl-dp-year-@datePickerId").innerHTML = selectedYear;
 
-            const monthDays = getMonthDays(selectedMonthIndex);
-            const monthStartWeekday = getMonthStartWeekday(selectedMonthIndex);
-            const lastMonthDays = getMonthDays(selectedMonthIndex == 0 ? 11 : selectedMonthIndex - 1);
-            const nextMonthDays = getMonthDays(selectedMonthIndex == 11 ? 0 : selectedMonthIndex + 1);
+            const monthDays = getMonthDays(selectedMonthIndex,selectedYear);
+            const monthStartWeekday = getMonthStartWeekday(selectedMonthIndex, selectedYear);
+
+            const lastMonthIndex = selectedMonthIndex == 0 ? 11 : selectedMonthIndex - 1;
+            const lastMonthEndWeekday = getMonthEndWeekday(lastMonthIndex, selectedYear);
+            const lastMonthDays = getMonthDays(lastMonthIndex, selectedYear);
+
+            const nextMonthIndex = selectedMonthIndex == 11 ? 0 : selectedMonthIndex + 1;
+            const nextMonthDays = getMonthDays(nextMonthIndex, selectedYear);
 
             const datePickerGrid = document.getElementById("ftl-dp-grid-@datePickerId");
 
             // .. we need to take into account different years as well (explains why January's days are messed up)
-            for (var week = 1; week < 7; week++) {
+            for (var week = 0; week < 6; week++) {
                 const weekRow = datePickerGrid.children[week];
                 for (var weekday = 0; weekday < 7; weekday++) {
                     const cell = weekRow.children[weekday];
-                    const monthDay = ((week - 1) * 7) + weekday + 2 - monthStartWeekday;
-                    if (week == 1 && weekday < monthStartWeekday - 1) {
-                        cell.innerHTML = lastMonthDays - (monthStartWeekday - weekday - 2);
+                    const monthDay = (week * 7) + weekday + 1 - monthStartWeekday;
+                    if (week == 0 && weekday < monthStartWeekday) {
+                        cell.innerHTML = lastMonthDays - (lastMonthEndWeekday - weekday);
                         cell.style.fontWeight = "bold";
                     }
                     else if (monthDay < monthDays+1) {
                         cell.innerHTML = monthDay;
                         cell.style.fontWeight = "normal";
+
+                        const cellDate = new Date(selectedYear, selectedMonthIndex, monthDay);
+
+                        if(cellDate.getDate() === now.getDate())
+                        {
+                            cell.style.background = "#0D6EFF";
+                            cell.style.color = "white";
+                        }
+                        else
+                        {
+                            cell.style.background = "";
+                            cell.style.color = "";
+                        }
                     }
                     else {
                         cell.innerHTML = monthDay-monthDays;
@@ -111,21 +152,30 @@
             }
         }
 
-        function getMonthDays(monthIndex) {
+        function getMonthDays(monthIndex,year = undefined) {
             const now = new Date(Date.now());
-            return new Date(now.getFullYear(), monthIndex + 1, 0).getDate();
+            return new Date(year ?? now.getFullYear(), monthIndex + 1, 0).getDate();
         }
 
-        function getMonthStartWeekday(monthIndex) {
+        function getMonthStartWeekday(monthIndex, year = undefined) {
             const now = new Date(Date.now());
-            return new Date(now.getFullYear(), monthIndex, 1).getDay();
+            return new Date(year ?? now.getFullYear(), monthIndex, 1).getDay();
+        }
+
+        function getMonthEndWeekday(monthIndex, year = undefined) {
+            const now = new Date(Date.now());
+            const monthDays = getMonthDays(monthIndex,year);
+            return new Date(year ?? now.getFullYear(), monthIndex, monthDays).getDay();
         }
 
         function gotoPrevMonth() {
             if(selectedMonthIndex > 0)
                 selectedMonthIndex--;
             else
+            {
                 selectedMonthIndex = 11;
+                selectedYear--;
+            }
 
             updateCalendar();
         }
@@ -134,27 +184,38 @@
             if (selectedMonthIndex < 11)
                 selectedMonthIndex++;
             else
+            {
                 selectedMonthIndex = 0;
+                selectedYear++;
+            }
 
             updateCalendar();
         }
     </script>
 </head>
 <div class="ftl-date-picker">
-    <div style="display: flex; justify-content: space-evenly; align-items: center;">
-        <button class="ftl-dp-cell" onclick="gotoPrevMonth()"><</button>
-        <div style="min-width: 150px; text-align: center"><h4 id="ftl-dp-monthname-@datePickerId"></h4></div>
-        <button class="ftl-dp-cell" onclick="gotoNextMonth()">></button>
-    </div>
-    <div id="ftl-dp-grid-@datePickerId" class="ftl-dp-grid">
-        <div style="display: flex; font-weight: bold">
-            <div class="ftl-dp-cell">Mo</div>
-            <div class="ftl-dp-cell">Tu</div>
-            <div class="ftl-dp-cell">We</div>
-            <div class="ftl-dp-cell">Th</div>
-            <div class="ftl-dp-cell">Fr</div>
-            <div class="ftl-dp-cell">Sa</div>
-            <div class="ftl-dp-cell">Su</div>
+    <div style="display: flex; flex-direction: column; background: #0D6EFF; color: white; width: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px">
+        <div style="display: flex; justify-content: space-evenly; align-items: center;">
+            <button class="ftl-dp-bright-button" onclick="gotoPrevMonth()" style="color">
+                <i class="fa-solid fa-backward"></i>
+            </button>
+            <div style="min-width: 150px; text-align: center"><h4 id="ftl-dp-monthname-@datePickerId"></h4></div>
+            <button class="ftl-dp-bright-button" onclick="gotoNextMonth()">
+                <i class="fa-solid fa-forward"></i>
+            </button>
+        </div>
+        <div id="ftl-dp-year-@datePickerId" style="display: flex; justify-content: center; align-items: center;">
+            
         </div>
     </div>
+    <div style="display: flex; font-weight: bold">
+        <div class="ftl-dp-cell">Su</div>
+        <div class="ftl-dp-cell">Mo</div>
+        <div class="ftl-dp-cell">Tu</div>
+        <div class="ftl-dp-cell">We</div>
+        <div class="ftl-dp-cell">Th</div>
+        <div class="ftl-dp-cell">Fr</div>
+        <div class="ftl-dp-cell">Sa</div>
+    </div>
+    <div id="ftl-dp-grid-@datePickerId" class="ftl-dp-grid"></div>
 </div>
