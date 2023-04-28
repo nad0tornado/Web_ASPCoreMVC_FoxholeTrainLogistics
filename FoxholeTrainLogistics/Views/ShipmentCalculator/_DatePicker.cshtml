@@ -1,6 +1,5 @@
-﻿@{
-    var datePickerId = Guid.NewGuid();
-}
+﻿@using FoxholeTrainLogistics.ViewModels;
+@model DatePickerViewModel
 
 <head>
     <style>
@@ -92,7 +91,7 @@
 
         // .. these probably need to be in a class so we know which datepicker instance to refer to
         function openCalendar() {
-            const element = document.getElementById("ftl-date-picker-@datePickerId");
+            const element = document.getElementById("ftl-date-picker-@Model.Id");
             element.focus();
             element.classList.remove("dropup");
             element.classList.add("dropdown");
@@ -104,7 +103,7 @@
         }
 
         function closeCalendar() {
-            const element = document.getElementById("ftl-date-picker-@datePickerId");
+            const element = document.getElementById("ftl-date-picker-@Model.Id");
             element.classList.remove("dropdown");
             element.classList.add("dropup");
             setTimeout(() => {
@@ -120,7 +119,7 @@
                 year: '2-digit'
             })
 
-            const dateInput = document.getElementById("ftl-dp-input-@datePickerId");
+            const dateInput = document.getElementById("ftl-dp-input-@Model.Id");
             dateInput.value = dateString;
             canOpen = false;
             closeCalendar();
@@ -128,7 +127,7 @@
 
         window.addEventListener("DOMContentLoaded",() => {
             
-            const datePickerGrid = document.getElementById("ftl-dp-grid-@datePickerId");
+            const datePickerGrid = document.getElementById("ftl-dp-grid-@Model.Id");
             for(var i = 0; i < 6; i++)
             {
                 const weekRow = document.createElement("div");
@@ -138,7 +137,7 @@
                 for(var j = 0; j < 7; j++)
                 {
                     const dayCell = document.createElement("button");
-                    dayCell.id=`ftl-dp-day-${i}${j}-@datePickerId`;
+                    dayCell.id=`ftl-dp-day-${i}${j}-@Model.Id`;
                     dayCell.className = "ftl-dp-cell";
                     dayCell.innerHTML = `0${j}`;
                     dayCell.onclick = () => {
@@ -148,8 +147,8 @@
                 }
             }
 
-            const inputElement = document.getElementById("ftl-dp-input-@datePickerId");
-            const datePickerContainer = document.getElementById("ftl-dp-container-@datePickerId");
+            const inputElement = document.getElementById("ftl-dp-input-@Model.Id");
+            const datePickerContainer = document.getElementById("ftl-dp-container-@Model.Id");
 
             document.addEventListener('click', function (event) {
                 if (!datePickerContainer.contains(event.target)) {
@@ -161,12 +160,21 @@
                 }
             });
 
+            const dateString = now.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: '2-digit'
+            })
+
+            const dateInput = document.getElementById("ftl-dp-input-@Model.Id");
+            dateInput.value = dateString;
+
             updateCalendar();
         })
 
         function updateCalendar() {
-            document.getElementById("ftl-dp-monthname-@datePickerId").innerHTML = months[selectedMonthIndex];
-            document.getElementById("ftl-dp-year-@datePickerId").innerHTML = selectedYear;
+            document.getElementById("ftl-dp-monthname-@Model.Id").innerHTML = months[selectedMonthIndex];
+            document.getElementById("ftl-dp-year-@Model.Id").innerHTML = selectedYear;
 
             const monthDays = getMonthDays(selectedMonthIndex,selectedYear);
             const monthStartWeekday = getMonthStartWeekday(selectedMonthIndex, selectedYear);
@@ -180,7 +188,7 @@
             const nextMonthIsNextYear = selectedMonthIndex == 11;
             const nextMonthDays = getMonthDays(nextMonthIndex, selectedYear);
 
-            const datePickerGrid = document.getElementById("ftl-dp-grid-@datePickerId");
+            const datePickerGrid = document.getElementById("ftl-dp-grid-@Model.Id");
 
             // .. we need to take into account different years as well (explains why January's days are messed up)
             for (var week = 0; week < 6; week++) {
@@ -277,16 +285,16 @@
     </script>
 </head>
 
-<div id="ftl-dp-container-@datePickerId" style="width: 250px; margin-left: 10px;">
+<div id="ftl-dp-container-@Model.Id" style="width: 250px; margin-left: 10px;">
 <label for="shipment-date">Shipment Date</label>
-<input type="text" class="form-control" id="ftl-dp-input-@datePickerId" aria-describedby="basic-addon3" onchange="validateForm()">
-    <div class="ftl-date-picker" id="ftl-date-picker-@datePickerId" style="display: none" >
+<input type="text" class="form-control" id="ftl-dp-input-@Model.Id" aria-describedby="basic-addon3" onchange="validateForm()">
+    <div class="ftl-date-picker" id="ftl-date-picker-@Model.Id" style="display: none" >
     <div style="display: flex; flex-direction: column; background: #0D6EFF; color: white; width: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px">
         <div style="display: flex; justify-content: space-evenly; align-items: center;">
             <button class="ftl-dp-bright-button" onclick="gotoPrevMonth()" style="color">
                 <i class="fa-solid fa-backward"></i>
             </button>
-            <div style="min-width: 150px; text-align: center"><h4 id="ftl-dp-monthname-@datePickerId"></h4></div>
+            <div style="min-width: 150px; text-align: center"><h4 id="ftl-dp-monthname-@Model.Id"></h4></div>
             <button class="ftl-dp-bright-button" onclick="gotoNextMonth()">
                 <i class="fa-solid fa-forward"></i>
             </button>
@@ -295,7 +303,7 @@
             <button class="ftl-dp-bright-button" onclick="gotoPrevYear()" style="color">
                 <i class="fa-solid fa-backward"></i>
             </button>
-                <div id="ftl-dp-year-@datePickerId" style="display: flex; justify-content: center; align-items: center;"></div>
+                <div id="ftl-dp-year-@Model.Id" style="display: flex; justify-content: center; align-items: center;"></div>
                 <button class="ftl-dp-bright-button" onclick="gotoNextYear()">
                     <i class="fa-solid fa-forward"></i>
                 </button>
@@ -311,6 +319,6 @@
         <div class="ftl-dp-cell">Fr</div>
         <div class="ftl-dp-cell">Sa</div>
     </div>
-    <div id="ftl-dp-grid-@datePickerId" class="ftl-dp-grid"></div>
+    <div id="ftl-dp-grid-@Model.Id" class="ftl-dp-grid"></div>
 </div>
 </div>

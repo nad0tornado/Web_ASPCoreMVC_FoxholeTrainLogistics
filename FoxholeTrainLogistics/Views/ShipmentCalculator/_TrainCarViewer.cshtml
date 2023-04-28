@@ -32,11 +32,11 @@
     document.addEventListener('DOMContentLoaded', () => {
         const testFlatbed = train.AddTrainCar(Object.values(TrainCarTemplates)[2]);
 
-        const itemsArray = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("smallArms")];
+        const itemsArray = Object.values(ItemTemplates)[Object.keys(ItemTemplates).indexOf("vehicles")];
         const randomItemIndex = Math.floor((Math.random() * itemsArray.length) % itemsArray.length);
         const testItem = itemsArray[randomItemIndex];
 
-        for (var i = 0; i < 65; i++) {
+        for (var i = 0; i < 4; i++) {
             train.AddItem(testItem);
         }
 

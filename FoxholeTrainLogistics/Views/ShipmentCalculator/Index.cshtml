@@ -7,7 +7,7 @@ ViewData["Title"] = "Shipment Calculator";
 }
 
 @{
-await Html.RenderPartialAsync("_TrainsUtils");
+    await Html.RenderPartialAsync("_TrainsUtils");
 }
 
 <script>
@@ -33,6 +33,10 @@ await Html.RenderPartialAsync("_TrainsUtils");
 <div style="border-top: 1px solid #ababab; border-bottom: 1px solid #ababab; margin-top: 10px; margin-bottom: 5px; padding: 10px; height: 150px">
     <h3>Shipment Info</h3>
     <div style="display: flex; flex-direction: row">
+        @{
+            var shipmentDatePickerId = Guid.NewGuid();
+        }
+
         <script type="text/javascript">
             
             function setError(text) {
@@ -73,29 +77,88 @@ await Html.RenderPartialAsync("_TrainsUtils");
 
                 setError(errors.join(' | '));
             }
+
+            function handleCopyDiscordMessage()
+            {
+                const shipmentNameInput = document.getElementById("shipment-name");
+                const shipmentName = shipmentNameInput.value != '' ? shipmentNameInput.value : shipmentNameInput.placeholder;
+                const shipmentDateInput = document.getElementById("ftl-dp-input-@shipmentDatePickerId");
+                const shipmentDate = shipmentDateInput.value != '' ? shipmentDateInput.value : shipmentDateInput.placeholder;
+                const shipFromInput = document.getElementById("shipment-from");
+                const shipFrom = shipFromInput.value != '' ? shipFromInput.value : shipFromInput.placeholder;
+                const shipToInput = document.getElementById("shipment-to");
+                const shipTo = shipToInput.value != '' ? shipToInput.value : shipToInput.placeholder;
+                const requestedByInput = document.getElementById("shipment-requested-by");
+                const requestedBy = requestedByInput.value != '' ? requestedByInput.value : requestedByInput.placeholder;
+                const shipmentWhenInput = document.getElementById("shipment-when");
+                const shipmentWhen = shipmentWhenInput.value != '' ? shipmentWhenInput.value : shipmentWhenInput.placeholder;
+
+                var discordMessage = ``;
+                discordMessage += "------------------------------------------------------\n";
+                discordMessage += `** ${shipmentName} - ${shipmentDate}**\n`;
+                discordMessage += `\n`;
+                discordMessage += `**From: **${shipFrom}\n`;
+                discordMessage += `**To: **${shipTo}\n`;
+                discordMessage += `**Requested By: **${requestedBy}\n`;
+                discordMessage += `**When: **${shipmentWhen}\n`;
+                discordMessage += `\n`;
+
+                const trainFlatbeds = train.Cars.filter(c => c.Type === 'FlatbedCar');
+
+                trainFlatbeds.map((fb,i) => {
+                    discordMessage += `**Flatbed ${i+1}:** ${fb.Container.DisplayName}\n`;
+
+                    const containerContents = fb.Container.Contents;
+                    const containerContentsNames = containerContents.map(item => item.DisplayName);
+                    const uniqueContainerContents = containerContents.filter((v, i, s) => containerContentsNames.indexOf(v.DisplayName) === i);
+                    
+                    uniqueContainerContents.map(item => {
+                        const itemName = `${item.DisplayName} ${fb.Container.isMPF ? "(Crate of 3)" : ""}`;
+                        const itemCountRaw = containerContents.filter(c => c.IconName === item.IconName).length;
+                        const itemCount = fb.Container.isMPF ? 1 : itemCountRaw;
+                        const itemCountString = fb.Container.Type !== "ShippingContainer" ? `**x${itemCount}**` : `(Crates: **${itemCount}**)`
+
+                        discordMessage += ` - ${itemName} ${itemCountString}\n`;
+                    });
+                    discordMessage += `\n`;
+                });
+
+                console.log(discordMessage);
+
+                const discordMessageTextArea = document.createElement('textarea');
+                discordMessageTextArea.value = discordMessage;
+
+                document.body.appendChild(discordMessageTextArea);
+
+                discordMessageTextArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(discordMessageTextArea);
+
+                alert("Discord message copied! Paste it in any discord chat!");
+            }
         </script>
         <div style="width: 300px">
             <label for="shipment-name">Shipment Name</label>
-            <input type="text" class="form-control" id="shipment-name" aria-describedby="basic-addon3">
+            <input type="text" class="form-control" id="shipment-name" aria-describedby="basic-addon3" placeholder="New Shipment">
         </div>
         @{
-            await Html.RenderPartialAsync("_DatePicker");
+            await Html.RenderPartialAsync("_DatePicker",new DatePickerViewModel(shipmentDatePickerId));
         }
         <div style="width: 200px; margin-left: 10px">
             <label for="shipment-from">Ship From</label>
-            <input type="text" class="form-control" id="shipment-from" aria-describedby="basic-addon3">
+            <input type="text" class="form-control" id="shipment-from" aria-describedby="basic-addon3" placeholder="Point A">
         </div>
         <div style="width: 200px; margin-left: 10px">
             <label for="shipment-to">Ship To</label>
-            <input type="text" class="form-control" id="shipment-to" aria-describedby="basic-addon3">
+            <input type="text" class="form-control" id="shipment-to" aria-describedby="basic-addon3"  placeholder="Point B">
         </div>
         <div style="width: 200px; margin-left: 10px">
             <label for="shipment-requested-by">Requested By</label>
-            <input type="text" class="form-control" id="shipment-requested-by" aria-describedby="basic-addon3">
+            <input type="text" class="form-control" id="shipment-requested-by" aria-describedby="basic-addon3"  placeholder="Logistics Coordinator">
         </div>
         <div style="width: 200px; margin-left: 10px">
             <label for="shipment-when">When</label>
-            <input type="text" class="form-control" id="shipment-when" aria-describedby="basic-addon3">
+            <input type="text" class="form-control" id="shipment-when" aria-describedby="basic-addon3"  placeholder="ASAP">
         </div>
     </div>
     <label id="shipment-error" style="color: red"></label>
@@ -106,10 +169,5 @@ await Html.RenderPartialAsync("_TrainsUtils");
     @{await Html.RenderPartialAsync("./_TrainCarViewer");}
 </div>
 <div style="margin-top: 10px;">
-    <button type="button" class="btn btn-primary ftl-interact-minimal">Copy Discord Message</button>
-</div>
-<div style="padding: 10px">
-@{
-    await Html.RenderPartialAsync("./_DatePicker");
-}
+    <button type="button" class="btn btn-primary ftl-interact-minimal" onclick="handleCopyDiscordMessage()">Copy Discord Message</button>
 </div>
