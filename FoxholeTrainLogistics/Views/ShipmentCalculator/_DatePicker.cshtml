@@ -112,8 +112,8 @@
             }, 100);
         }
 
-        function handleDateChanged(monthDay) {
-            const date = new Date(selectedYear,selectedMonthIndex,monthDay);
+        function handleDateChanged(day,month,year) {
+            const date = new Date(year, month, day);
             const dateString = date.toLocaleDateString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
@@ -142,8 +142,7 @@
                     dayCell.className = "ftl-dp-cell";
                     dayCell.innerHTML = `0${j}`;
                     dayCell.onclick = () => {
-                        const value = document.getElementById(dayCell.id).innerHTML;
-                        handleDateChanged(value);
+                        handleDateChanged(dayCell.innerHTML,dayCell.month,dayCell.year);
                     }
                     weekRow.appendChild(dayCell);
                 }
@@ -173,10 +172,12 @@
             const monthStartWeekday = getMonthStartWeekday(selectedMonthIndex, selectedYear);
 
             const lastMonthIndex = selectedMonthIndex == 0 ? 11 : selectedMonthIndex - 1;
+            const lastMonthIsLastYear = selectedMonthIndex == 0;
             const lastMonthEndWeekday = getMonthEndWeekday(lastMonthIndex, selectedYear);
             const lastMonthDays = getMonthDays(lastMonthIndex, selectedYear);
 
             const nextMonthIndex = selectedMonthIndex == 11 ? 0 : selectedMonthIndex + 1;
+            const nextMonthIsNextYear = selectedMonthIndex == 11;
             const nextMonthDays = getMonthDays(nextMonthIndex, selectedYear);
 
             const datePickerGrid = document.getElementById("ftl-dp-grid-@datePickerId");
@@ -190,6 +191,8 @@
                     if (week == 0 && weekday < monthStartWeekday) {
                         cell.innerHTML = lastMonthDays - (lastMonthEndWeekday - weekday);
                         cell.style.fontWeight = "bold";
+                        cell.month = lastMonthIndex;
+                        cell.year = lastMonthIsLastYear ? selectedYear-1 : selectedYear;
                     }
                     else if (monthDay < monthDays+1) {
                         cell.innerHTML = monthDay;
@@ -207,10 +210,15 @@
                             cell.style.background = "";
                             cell.style.color = "";
                         }
+
+                        cell.month = selectedMonthIndex;
+                        cell.year = selectedYear;
                     }
                     else {
                         cell.innerHTML = monthDay-monthDays;
                         cell.style.fontWeight = "bold";
+                        cell.month = nextMonthIndex;
+                        cell.year = nextMonthIsNextYear ? selectedYear + 1 : selectedYear;
                     }
                 }
             }
