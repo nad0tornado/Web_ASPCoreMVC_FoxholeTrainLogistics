@@ -78,11 +78,9 @@ await Html.RenderPartialAsync("_TrainsUtils");
             <label for="shipment-name">Shipment Name</label>
             <input type="text" class="form-control" id="shipment-name" aria-describedby="basic-addon3">
         </div>
-        <div style="width: 250px; margin-left: 10px">
-            <label for="shipment-date">Shipment Date</label>
-            <input type="text" class="form-control" id="shipment-date" aria-describedby="basic-addon3" onchange="validateForm()">
-            
-        </div>
+        @{
+            await Html.RenderPartialAsync("_DatePicker");
+        }
         <div style="width: 200px; margin-left: 10px">
             <label for="shipment-from">Ship From</label>
             <input type="text" class="form-control" id="shipment-from" aria-describedby="basic-addon3">

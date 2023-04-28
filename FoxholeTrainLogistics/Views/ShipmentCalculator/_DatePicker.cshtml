@@ -16,8 +16,20 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            animation: dropDown 0.5s forwards;
             position: absolute;
+            z-index: 100;
+        }
+
+        .dropdown {
+            animation-name: dropDown;
+            animation-duration: 0.2s;
+            animation-fill-mode: forwards;
+        }
+
+        .dropup {
+            animation-name: dropUp;
+            animation-duration: 0.2s;
+            animation-fill-mode: forwards;
         }
 
         .ftl-date-picker .ftl-dp-cell {
@@ -76,6 +88,44 @@
         var selectedMonthIndex = now.getMonth();
         var selectedYear = now.getFullYear();
 
+        var canOpen = true;
+
+        // .. these probably need to be in a class so we know which datepicker instance to refer to
+        function openCalendar() {
+            const element = document.getElementById("ftl-date-picker-@datePickerId");
+            element.focus();
+            element.classList.remove("dropup");
+            element.classList.add("dropdown");
+            element.style.display = "inline";
+
+            selectedYear = now.getFullYear();
+            selectedMonthIndex = now.getMonth();
+            updateCalendar();
+        }
+
+        function closeCalendar() {
+            const element = document.getElementById("ftl-date-picker-@datePickerId");
+            element.classList.remove("dropdown");
+            element.classList.add("dropup");
+            setTimeout(() => {
+                canOpen = true;
+            }, 100);
+        }
+
+        function handleDateChanged(monthDay) {
+            const date = new Date(selectedYear,selectedMonthIndex,monthDay);
+            const dateString = date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: '2-digit'
+            })
+
+            const dateInput = document.getElementById("ftl-dp-input-@datePickerId");
+            dateInput.value = dateString;
+            canOpen = false;
+            closeCalendar();
+        }
+
         window.addEventListener("DOMContentLoaded",() => {
             
             const datePickerGrid = document.getElementById("ftl-dp-grid-@datePickerId");
@@ -92,11 +142,25 @@
                     dayCell.className = "ftl-dp-cell";
                     dayCell.innerHTML = `0${j}`;
                     dayCell.onclick = () => {
-
+                        const value = document.getElementById(dayCell.id).innerHTML;
+                        handleDateChanged(value);
                     }
                     weekRow.appendChild(dayCell);
                 }
             }
+
+            const inputElement = document.getElementById("ftl-dp-input-@datePickerId");
+            const datePickerContainer = document.getElementById("ftl-dp-container-@datePickerId");
+
+            document.addEventListener('click', function (event) {
+                if (!datePickerContainer.contains(event.target)) {
+                    closeCalendar();
+                }
+                else if (canOpen) {
+                    openCalendar();
+                    canOpen = false;
+                }
+            });
 
             updateCalendar();
         })
@@ -191,9 +255,24 @@
 
             updateCalendar();
         }
+
+        function gotoPrevYear() {
+            selectedYear--;
+            updateCalendar();
+        }
+
+        function gotoNextYear() {
+            selectedYear++;
+            updateCalendar();
+        }
+
     </script>
 </head>
-<div class="ftl-date-picker">
+
+<div id="ftl-dp-container-@datePickerId" style="width: 250px; margin-left: 10px;">
+<label for="shipment-date">Shipment Date</label>
+<input type="text" class="form-control" id="ftl-dp-input-@datePickerId" aria-describedby="basic-addon3" onchange="validateForm()">
+    <div class="ftl-date-picker" id="ftl-date-picker-@datePickerId" style="display: none" >
     <div style="display: flex; flex-direction: column; background: #0D6EFF; color: white; width: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px">
         <div style="display: flex; justify-content: space-evenly; align-items: center;">
             <button class="ftl-dp-bright-button" onclick="gotoPrevMonth()" style="color">
@@ -204,7 +283,14 @@
                 <i class="fa-solid fa-forward"></i>
             </button>
         </div>
-        <div id="ftl-dp-year-@datePickerId" style="display: flex; justify-content: center; align-items: center;">
+        <div style="display: flex; justify-content: space-evenly; align-items: center;">
+            <button class="ftl-dp-bright-button" onclick="gotoPrevYear()" style="color">
+                <i class="fa-solid fa-backward"></i>
+            </button>
+                <div id="ftl-dp-year-@datePickerId" style="display: flex; justify-content: center; align-items: center;"></div>
+                <button class="ftl-dp-bright-button" onclick="gotoNextYear()">
+                    <i class="fa-solid fa-forward"></i>
+                </button>
             
         </div>
     </div>
@@ -218,4 +304,5 @@
         <div class="ftl-dp-cell">Sa</div>
     </div>
     <div id="ftl-dp-grid-@datePickerId" class="ftl-dp-grid"></div>
+</div>
 </div>
