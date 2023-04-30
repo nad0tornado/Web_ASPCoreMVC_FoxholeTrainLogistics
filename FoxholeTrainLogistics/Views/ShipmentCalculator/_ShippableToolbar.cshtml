@@ -26,9 +26,13 @@
 <script>
     var selectedTrainCar = undefined;
 
-    function handleTabClicked(shippingType) {
+    function updatePackageRadios(shippingType) {
         var packageRadios = document.getElementById("packageRadios");
         packageRadios.style.display = shippingType === "CrateOrPackage" ? 'inline' : 'none';
+    }
+
+    function handleTabClicked(shippingType) {
+        updatePackageRadios(shippingType);
     }
 
     function handleAddItemToTrain(item) {
@@ -48,101 +52,105 @@
         EventManager.DispatchEvent("selectedTrainCarChanged", updatedFlatcar);
     }
 
-    EventManager.AddEventListener("selectedTrainCarChanged", (car) => {
-        selectedTrainCar = car;
-    });
+    document.addEventListener("DOMContentLoaded",() => {
+        EventManager.AddEventListener("selectedTrainCarChanged", (car) => {
+            selectedTrainCar = car;
+        });
+
+        updatePackageRadios();
+    })
 </script>
 <div class="ftl-paper" style="flex: 1; min-height: 500px; margin-top: 5px;">
-    <ul class="nav nav-tabs" id="myTab" role="tablist"
+    <ul class="nav nav-tabs" id="ftl-shippableTabs" role="tablist"
         style="overflow-x: scroll; overflow-y: hidden; display: flex; flex-wrap: nowrap">
 
         @{
         foreach (ShippableIconViewModel category in Model.ShippableCategories)
         {
         Category categoryAsEnum = Enum.Parse<Category>(category.DisplayName.Replace(" ", ""));
-            <li class="nav-item" role="presentation">
-                <button class="nav-link @(Model.ShippableCategories.IndexOf(category)==4 ? " active" : "" )"
-                    onclick="handleTabClicked('@categoryAsEnum.ToShippingType()')" id="@category.Name-tab"
-                    data-bs-toggle="tab" data-bs-target="#@category.Name" type="button" role="tab"
-                    aria-controls="@category.Name" aria-selected="true">
-                    <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@category.ImagePath?v=-1"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="@category.DisplayName" />
-                </button>
-            </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link @(Model.ShippableCategories.IndexOf(category)==0 ? " active" : "" )"
+                                                onclick="handleTabClicked('@categoryAsEnum.ToShippingType()')" id="@category.Name-tab"
+                                                data-bs-toggle="tab" data-bs-target="#@category.Name" type="button" role="tab"
+                                                aria-controls="@category.Name" aria-selected="true">
+                                                <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@category.ImagePath?v=-1"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="@category.DisplayName" />
+                                            </button>
+                                        </li>
             }
             }
     </ul>
-    <div class="tab-content" id="myTabContent">
+    <div class="tab-content" id="ftl-shippableTabsContent">
         @{
         var shippableItems = await Model.GetShippableItems();
 
-        <div style="display: flex;padding: 10px; ">
-            <div id="factionRadios" style="flex: 1; display: flex; justify-content: center; align-items: center">
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="factionRadios" id="radio-colonial" value="0" />
-                    <label class="form-check-label" for="radio-colonial">Colonial</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="factionRadios" id="radio-warden" value="1" />
-                    <label class="form-check-label" for="radio-warden">Warden</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="factionRadios" id="radio-neutral" value="2"
-                        checked />
-                    <label class="form-check-label" for="radio-neutral">Neutral</label>
-                </div>
-                <script>
-                    var radioGroup = document.getElementById("factionRadios");
+                                    <div style="display: flex;padding: 10px; ">
+                                        <div id="factionRadios" style="flex: 1; display: flex; justify-content: center; align-items: center">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="factionRadios" id="radio-colonial" value="0" />
+                                                <label class="form-check-label" for="radio-colonial">Colonial</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="factionRadios" id="radio-warden" value="1" />
+                                                <label class="form-check-label" for="radio-warden">Warden</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="factionRadios" id="radio-neutral" value="2"
+                                                    checked />
+                                                <label class="form-check-label" for="radio-neutral">Neutral</label>
+                                            </div>
+                                            <script>
+                                                var radioGroup = document.getElementById("factionRadios");
 
-                    radioGroup.addEventListener("change", function ({ target: { value } }) {
-                        onFactionChanged(Faction[value]);
-                    });
-                </script>
-            </div>
+                                                radioGroup.addEventListener("change", function ({ target: { value } }) {
+                                                    onFactionChanged(Faction[value]);
+                                                });
+                                            </script>
+                                        </div>
 
-            <div id="packageRadios" style="flex: 1;  display: flex; justify-content: center; align-items: center">
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="packageRadios" id="radio-mpf-crate" value="1"
-                        checked />
-                    <label class="form-check-label" for="radio-mpf-crate">MPF Crate</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="packageRadios" id="radio-single-packaged"
-                        value="0" />
-                    <label class="form-check-label" for="radio-single-packaged">Single Packaged</label>
-                </div>
-                <script>
-                    var radioGroup = document.getElementById("packageRadios");
+                                        <div id="packageRadios" style="flex: 1;  display: flex; justify-content: center; align-items: center; display: none">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="packageRadios" id="radio-mpf-crate" value="1"
+                                                    checked />
+                                                <label class="form-check-label" for="radio-mpf-crate">MPF Crate</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="packageRadios" id="radio-single-packaged"
+                                                    value="0" />
+                                                <label class="form-check-label" for="radio-single-packaged">Single Packaged</label>
+                                            </div>
+                                            <script>
+                                                var radioGroup = document.getElementById("packageRadios");
 
-                    radioGroup.addEventListener("change", function ({ target: { value } }) {
-                        localStorage.packageOption = PackageType[value];
-                    });
-                </script>
-            </div>
+                                                radioGroup.addEventListener("change", function ({ target: { value } }) {
+                                                    localStorage.packageOption = PackageType[value];
+                                                });
+                                            </script>
+                                        </div>
 
 
-        </div>
+                                    </div>
 
         foreach (ShippableIconViewModel category in Model.ShippableCategories)
         {
-        <div class="tab-pane fade @(Model.ShippableCategories.IndexOf(category)==4 ? " show active" : "" )"
-            id="@category.Name" role="tabpanel" aria-labelledby="@category.Name-tab">
-            @{
+                                    <div class="tab-pane fade @(Model.ShippableCategories.IndexOf(category)==0 ? " show active" : "" )"
+                                        id="@category.Name" role="tabpanel" aria-labelledby="@category.Name-tab">
+                                        @{
             var categoryItems = shippableItems[category.Name];
 
 
             foreach (IItem item in categoryItems)
             {
-            <button class="ftl-interact ftl-button @item.Faction.ToString().ToLower()"
-                style="width: 72px; height: 72px; margin-right: -2px; text-align: center; vertical-align: middle; position: relative;"
-                onclick="handleAddItemToTrain(@(item.ToString()));">
-                <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@item.IconName?v=-1"
-                    style="padding: 0px; transform: scale(150%);" data-bs-toggle="tooltip" data-bs-placement="top"
-                    title="@item.DisplayName" />
-            </button>
+                                                                    <button class="ftl-interact ftl-button @item.Faction.ToString().ToLower()"
+                                                                        style="width: 72px; height: 72px; margin-right: -2px; text-align: center; vertical-align: middle; position: relative;"
+                                                                        onclick="handleAddItemToTrain(@(item.ToString()));">
+                                                                        <img class="ftl-icon ftl-noselect ftl-shippable-icon" src="@item.IconName?v=-1"
+                                                                            style="padding: 0px; transform: scale(150%);" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                            title="@item.DisplayName" />
+                                                                    </button>
             }
-            }
-        </div>
+                                        }
+                                    </div>
         }
 
         }

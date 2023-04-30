@@ -49,6 +49,12 @@ namespace Test
             // .. Setup DB Context
             services.AddSingleton<ITrainsDbContext, TrainsInMemoryContext>();
             services.AddSingleton<IShippableToolbarService, ShippableToolbarService>();
+
+            IConfiguration configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .Build();
+
+            services.AddSingleton(configuration);
         }
 
         private static void SetupDBDummyData(WebApplication app)

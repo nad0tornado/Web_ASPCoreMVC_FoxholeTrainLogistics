@@ -10,8 +10,15 @@ namespace FoxholeTrainLogistics.Services
 {
     public class ShippableToolbarService : IShippableToolbarService
     {
+        private readonly IConfiguration _configuration;
+
         const string contentRoot = "./wwwroot";
         const string shippableContentRoot = contentRoot + "/img";
+
+        public ShippableToolbarService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         private string getNameFromPath(string path)
         {
@@ -42,7 +49,11 @@ namespace FoxholeTrainLogistics.Services
 
         public List<IShippableIcon> GetShippableCategories()
         {
-            var categories = new List<IShippableIcon>();
+            var numCategories = int.Parse(_configuration["numCategories"]);
+            var categorySortOrder = _configuration.GetSection("categorySortOrder");
+
+            var categories = new IShippableIcon[numCategories];
+
             var directoriesRoot = shippableContentRoot + "/itemCategories";
             string[] categoriesImagePaths = Directory.GetFiles(directoriesRoot);
 
@@ -56,10 +67,17 @@ namespace FoxholeTrainLogistics.Services
                 if (!Directory.Exists(directoriesRoot +"/" + name))
                     Directory.CreateDirectory(directoriesRoot + "/" + name);
 
-                categories.Add(new ShippableIconViewModel(localPath, name, displayName));
+                var newShippableIcon = new ShippableIconViewModel(localPath, name, displayName);
+
+                var sortOrder = categorySortOrder.GetValue<int>(name);
+
+                if (categories[sortOrder] != null)
+                    categories = categories.Append(newShippableIcon).ToArray();
+                else
+                    categories[sortOrder] = newShippableIcon;
             }
 
-            return categories;
+            return categories.Where(c => c != null).ToList();
         }
 
         public async Task<Dictionary<string,List<IItem>>> GetShippableItems()
