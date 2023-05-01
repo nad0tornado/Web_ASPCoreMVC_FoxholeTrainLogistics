@@ -38,6 +38,8 @@ Having recently developed a really useful spreadsheet for calculating shipments,
 
 ..And here we are!
 
+![image](https://user-images.githubusercontent.com/67047470/233760297-a32a19ce-5dea-49d6-8462-d19b51bc9aab.png)
+
 **DISCLAIMER:**
 - "FoxholeItemAPI" uses a .json file created by Joshua Hallee for pre-population of API items. All credit goes to him for its original creation.
 - "FoxholeTrainLogistics" (MVC Project) Uses images and text content from https://foxhole.fandom.com, content which is originally owned by Siege Camp (prev. Clapfoot Inc) and is licensed under the Creative Commons Attribution-ShareAlike (CC BY-SA) license. As such, this project gives full credit to the original copyright holders and complies with the license terms by releasing the resulting work under the same CC BY-SA license.
