@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoxholeItemAPI_Web", "..\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoxholeTrainLogistics", "FoxholeTrainLogistics\FoxholeTrainLogistics.csproj", "{52261B58-E2DF-454F-9CDC-C97112222489}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoxholeTrainLogistics_Tests", "FoxholeTrainLogistics_Tests\FoxholeTrainLogistics_Tests.csproj", "{5BF7992C-9FE3-4C23-B026-7F1E47FDEBDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{52261B58-E2DF-454F-9CDC-C97112222489}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52261B58-E2DF-454F-9CDC-C97112222489}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52261B58-E2DF-454F-9CDC-C97112222489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BF7992C-9FE3-4C23-B026-7F1E47FDEBDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BF7992C-9FE3-4C23-B026-7F1E47FDEBDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BF7992C-9FE3-4C23-B026-7F1E47FDEBDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BF7992C-9FE3-4C23-B026-7F1E47FDEBDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

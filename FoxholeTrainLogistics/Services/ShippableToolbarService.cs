@@ -11,13 +11,15 @@ namespace FoxholeTrainLogistics.Services
     public class ShippableToolbarService : IShippableToolbarService
     {
         private readonly IConfiguration _configuration;
+        private readonly IFileSystem _fileSystem;
 
         const string contentRoot = "./wwwroot";
         const string shippableContentRoot = contentRoot + "/img";
 
-        public ShippableToolbarService(IConfiguration configuration)
+        public ShippableToolbarService(IConfiguration configuration, IFileSystem fileSystem)
         {
             _configuration = configuration;
+            _fileSystem = fileSystem;
         }
 
         private string getNameFromPath(string path)
@@ -55,7 +57,7 @@ namespace FoxholeTrainLogistics.Services
             var categories = new IShippableIcon[numCategories];
 
             var directoriesRoot = shippableContentRoot + "/itemCategories";
-            string[] categoriesImagePaths = Directory.GetFiles(directoriesRoot);
+            string[] categoriesImagePaths = _fileSystem.GetFiles(directoriesRoot);
 
             foreach (var path in categoriesImagePaths)
             {
@@ -63,9 +65,6 @@ namespace FoxholeTrainLogistics.Services
                 var name = getNameFromPath(localPath);
                 var category = name.ToCategory();
                 var displayName = getDisplayNameFromName(category.ToString());
-
-                if (!Directory.Exists(directoriesRoot +"/" + name))
-                    Directory.CreateDirectory(directoriesRoot + "/" + name);
 
                 var newShippableIcon = new ShippableIconViewModel(localPath, name, displayName);
 

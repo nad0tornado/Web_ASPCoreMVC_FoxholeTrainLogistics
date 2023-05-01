@@ -49,6 +49,7 @@ namespace Test
             // .. Setup DB Context
             services.AddSingleton<ITrainsDbContext, TrainsInMemoryContext>();
             services.AddSingleton<IShippableToolbarService, ShippableToolbarService>();
+            services.AddSingleton<IFileSystem, FileSystem>();
 
             IConfiguration configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
