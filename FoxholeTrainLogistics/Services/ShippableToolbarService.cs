@@ -3,7 +3,7 @@ using FoxholeItemAPI.Models;
 using FoxholeItemAPI.Utils;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.ViewModels;
-using System.Text.Json;
+
 using System.Text.RegularExpressions;
 
 namespace FoxholeTrainLogistics.Services
@@ -12,14 +12,16 @@ namespace FoxholeTrainLogistics.Services
     {
         private readonly IConfiguration _configuration;
         private readonly IFileSystem _fileSystem;
+        private readonly IFoxholeItemAPIService<Item> _foxholeItemApiService;
 
         const string contentRoot = "./wwwroot";
         const string shippableContentRoot = contentRoot + "/img";
 
-        public ShippableToolbarService(IConfiguration configuration, IFileSystem fileSystem)
+        public ShippableToolbarService(IConfiguration configuration, IFileSystem fileSystem, IFoxholeItemAPIService<Item> foxholeItemApiService)
         {
             _configuration = configuration;
             _fileSystem = fileSystem;
+            _foxholeItemApiService = foxholeItemApiService;
         }
 
         private string getNameFromPath(string path)
@@ -82,15 +84,9 @@ namespace FoxholeTrainLogistics.Services
         public async Task<Dictionary<string,List<IItem>>> GetShippableItems()
         {
             var shippableItems = new Dictionary<string, List<IItem>>();
-            var httpClient = new HttpClient();
 
             // .. this code will need to become a separate "service" and "mocked" to be able to be tested
-            var foxholeApiItemsResponse = await httpClient.GetAsync("https://localhost:7118/api/items");
-            foxholeApiItemsResponse.EnsureSuccessStatusCode();
-            var foxholeApiItemsJson = await foxholeApiItemsResponse.Content.ReadAsStringAsync();
-            foxholeApiItemsJson = Regex.Replace(foxholeApiItemsJson, @"\b\w", m => m.Value.ToUpper());
-
-            var foxholeApiItems = JsonSerializer.Deserialize<List<Item>>(foxholeApiItemsJson) ?? new();
+            var foxholeApiItems = await _foxholeItemApiService.GetItems();
 
             foreach (IShippableIcon category in GetShippableCategories())
             {

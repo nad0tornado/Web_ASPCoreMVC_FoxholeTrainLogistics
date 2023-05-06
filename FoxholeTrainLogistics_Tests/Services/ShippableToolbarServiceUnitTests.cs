@@ -116,5 +116,12 @@ namespace FoxholeTrainLogistics_Tests.Services
 
             _fileSystem.Dispose();
         }
+
+        [Fact]
+        public async void GetShippableItemsWhereNoneExist()
+        {
+            var shippableItems = await _shippableToolbarService.GetShippableItems();
+            Assert.Empty(shippableItems);
+        }
     }
 }

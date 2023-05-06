@@ -1,8 +1,11 @@
+using FoxholeItemAPI.Interfaces;
+using FoxholeItemAPI.Models;
 using FoxholeTrainLogistics;
 using FoxholeTrainLogistics.Contexts;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Models;
 using FoxholeTrainLogistics.Services;
+using FoxholeTrainLogistics_Tests.Services;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 
 namespace Test
@@ -50,6 +53,7 @@ namespace Test
             services.AddSingleton<ITrainsDbContext, TrainsInMemoryContext>();
             services.AddSingleton<IShippableToolbarService, ShippableToolbarService>();
             services.AddSingleton<IFileSystem, FileSystem>();
+            services.AddSingleton<IFoxholeItemAPIService<Item>, FoxholeItemAPIService<Item>>();
 
             IConfiguration configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
