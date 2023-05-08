@@ -69,7 +69,22 @@ namespace FoxholeTrainLogistics_Tests.Services.ContainerFactoryTests
         public void GetMultiItemContainerTemplates()
         {
             var multiItemContainerTemplates = ContainerFactory.GetMultiItemContainerTemplates();
-            
+            var actualTemplateTypes = multiItemContainerTemplates.Select(t => t.Type);
+
+            var expectedTemplateTypes = new List<ShippingType>()
+            {
+                ShippingType.ShippingContainer,
+                ShippingType.LiquidContainer,
+                ShippingType.ResourceContainer,
+                ShippingType.Pallet,
+                ShippingType.Crate
+            };
+
+            Assert.DoesNotContain(multiItemContainerTemplates, t => t.Type == ShippingType.PackagedItem);
+            Assert.DoesNotContain(multiItemContainerTemplates, t => t.Type == ShippingType.CrateOrPackage);
+
+            Assert.All(actualTemplateTypes, (t) => expectedTemplateTypes.Any(e => e == t));
+
         }
 
         [Fact]
