@@ -11,14 +11,21 @@ namespace FoxholeTrainLogistics_Tests.Services
 {
     internal class MockFoxholeItemAPIService : IFoxholeItemAPIService<Item>
     {
-        public Task<List<Item>> GetItems()
+        private readonly List<Item> _items = new();
+
+        public void AddMockItem(Item item)
         {
-            throw new NotImplementedException();
+            _items.Add(item);
         }
 
-        public Task<List<Item>> GetItemsInCategory(Category category)
+        public Task<IEnumerable<Item>> GetItems()
         {
-            throw new NotImplementedException();
+            return Task.Run<IEnumerable<Item>>(() => _items);
+        }
+
+        public Task<IEnumerable<Item>> GetItemsInCategory(Category category)
+        {
+            return Task.Run(() => _items.Where(item => item.Category == category));
         }
     }
 }

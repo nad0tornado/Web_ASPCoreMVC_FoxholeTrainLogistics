@@ -1,4 +1,6 @@
-﻿using FoxholeTrainLogistics.Interfaces;
+﻿using FoxholeItemAPI.Interfaces;
+using FoxholeItemAPI.Models;
+using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Services;
 using FoxholeTrainLogistics.ViewModels;
 using FoxholeTrainLogistics_Tests.Interfaces;
@@ -15,6 +17,7 @@ namespace FoxholeTrainLogistics_Tests.Services
     {
         public IMockFileSystem MockFileSystem;
         public IShippableToolbarService ShippableToolbarService;
+        public IFoxholeItemAPIService<Item> FoxholeItemApiService;
 
         // This method is called once before any tests in this fixture are run
         public ShippableToolbarServiceUnitTestsFixture()
@@ -24,7 +27,9 @@ namespace FoxholeTrainLogistics_Tests.Services
             .Build();
 
             MockFileSystem = new MockFileSystem();
-            ShippableToolbarService = new ShippableToolbarService(appSettingsConfig, MockFileSystem);
+            FoxholeItemApiService = new MockFoxholeItemAPIService();
+
+            ShippableToolbarService = new ShippableToolbarService(appSettingsConfig, MockFileSystem, FoxholeItemApiService);
         }
 
         // This method is called once after all tests in this fixture are run

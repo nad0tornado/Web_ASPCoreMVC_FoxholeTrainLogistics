@@ -12,9 +12,9 @@ using System.Text.Json;
 
 namespace FoxholeTrainLogistics_Tests.Services
 {
-    internal class FoxholeItemAPIService<Item> : IFoxholeItemAPIService<Item> where Item : IItem
+    public class FoxholeItemAPIService<Item> : IFoxholeItemAPIService<Item> where Item : IItem
     {
-        public async Task<List<Item>> GetItems()
+        public async Task<IEnumerable<Item>> GetItems()
         {
             var httpClient = new HttpClient();
             var foxholeApiItemsResponse = await httpClient.GetAsync("https://localhost:7118/api/items");
@@ -26,9 +26,10 @@ namespace FoxholeTrainLogistics_Tests.Services
 
             return foxholeApiItems;
         }
-        public async Task<List<Item>> GetItemsInCategory(Category category)
+        public async Task<IEnumerable<Item>> GetItemsInCategory(Category category)
         {
-            throw new NotImplementedException();
+            var foxholeApiItems = await GetItems();
+            return foxholeApiItems.Where(item => item.Category == category).ToList();
         }
     }
 }

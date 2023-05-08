@@ -1,4 +1,5 @@
 ﻿using FoxholeItemAPI.Interfaces;
+using FoxholeItemAPI.Utils;
 using FoxholeTrainLogistics.Interfaces;
 
 namespace FoxholeTrainLogistics.ViewModels
