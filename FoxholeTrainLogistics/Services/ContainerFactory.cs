@@ -9,7 +9,7 @@ namespace FoxholeTrainLogistics.Services
 {
     public static class ContainerFactory
     {
-        private struct Container : IContainer
+        public struct Container : IContainer
         {
             public ShippingType Type { get; private set; }
             
