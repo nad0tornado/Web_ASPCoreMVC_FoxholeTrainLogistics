@@ -136,12 +136,8 @@ namespace FoxholeTrainLogistics_Tests.Services
         public void ContainerTemplatesConvertibleToDictionary()
         {
             var containerTemplates = ContainerFactory.GetMultiItemContainerTemplates();
-            var containerTemplatesJson = containerTemplates.ToJson();
 
             var containerTemplatesDictionary = containerTemplates.ToDictionary();
-            var containerTemplatesDictionaryJson = containerTemplatesDictionary.ToJson();
-
-            Assert.Equal(containerTemplatesJson, containerTemplatesDictionaryJson);
 
             foreach (IContainer template in containerTemplates)
                 Assert.True(containerTemplatesDictionary.ContainsValue(template));

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace FoxholeTrainLogistics
 {
-    public enum TrainCarType { EngineCar, CoalCar, FlatbedCar, InfantryCar, CabooseCar }
+    public enum TrainCarType { EngineCar, CoalCar, FlatbedCar, InfantryCar, CabooseCar, Unknown }
 }
 namespace FoxholeTrainLogistics.Services
 {
@@ -86,7 +86,12 @@ namespace FoxholeTrainLogistics.Services
             };
 
         public static List<ITrainCar> GetTrainCarTemplates()
-            => Enum.GetValues(typeof(TrainCarType)).Cast<TrainCarType>().Select(t => CreateTrainCar(t)).ToList();
+        {
+            var nonTrainCars = new[] { TrainCarType.Unknown };
+            var trainCarTypes = Utils.GetEnumTypes<TrainCarType>();
+            var trainCars = trainCarTypes.Where(t => !nonTrainCars.Contains(t));
+            return trainCars.Select(t => CreateTrainCar(t)).ToList();
+        }
 
         public static Dictionary<TrainCarType, ITrainCar> ToDictionary(this IEnumerable<ITrainCar> cars)
             => cars.ToDictionary(c => c.Type, c => c);
