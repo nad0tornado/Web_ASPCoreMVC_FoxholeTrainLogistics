@@ -1,4 +1,5 @@
-﻿using FoxholeTrainLogistics_Tests.Interfaces;
+﻿using FoxholeTrainLogistics;
+using FoxholeTrainLogistics_Tests.Interfaces;
 
 namespace FoxholeTrainLogistics_Tests.Services
 {
@@ -17,6 +18,12 @@ namespace FoxholeTrainLogistics_Tests.Services
         {
             if(!_files.Contains(path))
                 _files.Add(path);
+
+            var directoryNameIndex = path.LastIndexOf("/");
+            var directoryPath = path.Substring(0, directoryNameIndex);
+            var directoryName = directoryPath.GetNameFromPath();
+            directoryPath = directoryPath.Substring(0, directoryPath.LastIndexOf("/")+1);
+            CreateDirectory(directoryPath+ directoryName);
         }
 
         public void CreateDirectory(string path)

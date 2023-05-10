@@ -3,6 +3,7 @@ using FoxholeItemAPI.Models;
 using FoxholeTrainLogistics.Interfaces;
 using FoxholeTrainLogistics.Services;
 using FoxholeTrainLogistics.ViewModels;
+using FoxholeTrainLogistics_Tests.Fixtures;
 using FoxholeTrainLogistics_Tests.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -13,40 +14,7 @@ using System.Threading.Tasks;
 
 namespace FoxholeTrainLogistics_Tests.Services
 {
-    public class ShippableToolbarServiceUnitTestsFixture : IDisposable
-    {
-        public IMockFileSystem MockFileSystem;
-        public IShippableToolbarService ShippableToolbarService;
-        public IFoxholeItemAPIService<Item> FoxholeItemApiService;
-
-        // This method is called once before any tests in this fixture are run
-        public ShippableToolbarServiceUnitTestsFixture()
-        {
-            IConfiguration appSettingsConfig = new ConfigurationBuilder()
-            .AddJsonFile("appsettings_test.json", optional: true, reloadOnChange: true)
-            .Build();
-
-            MockFileSystem = new MockFileSystem();
-            FoxholeItemApiService = new MockFoxholeItemAPIService();
-
-            ShippableToolbarService = new ShippableToolbarService(appSettingsConfig, MockFileSystem, FoxholeItemApiService);
-        }
-
-        // This method is called once after all tests in this fixture are run
-        public void Dispose()
-        {
-            MockFileSystem.Dispose();
-        }
-    }
-
-    // This attribute defines the name of the fixture collection
-    [CollectionDefinition("ShippableToolbarServiceUnitTestCollection")]
-    public class ShippableToolbarServiceUnitTestCollection : ICollectionFixture<ShippableToolbarServiceUnitTestsFixture>
-    {
-        // This interface doesn't have any members, it's just used to associate the fixture class with this collection
-    }
-
-    [Collection("ShippableToolbarServiceUnitTestCollection")]
+    [Collection("FoxholeTrainLogisticsTestCollection")]
     public class ShippableToolbarServiceUnitTests
     {
         private IMockFileSystem _fileSystem;
@@ -55,7 +23,7 @@ namespace FoxholeTrainLogistics_Tests.Services
         const string contentRoot = "./wwwroot";
         const string shippableContentRoot = contentRoot + "/img";
 
-        public ShippableToolbarServiceUnitTests(ShippableToolbarServiceUnitTestsFixture fixture)
+        public ShippableToolbarServiceUnitTests(FoxholeTrainLogisticsTestsFixture fixture)
         {
             _fileSystem = fixture.MockFileSystem;
             _shippableToolbarService = fixture.ShippableToolbarService;

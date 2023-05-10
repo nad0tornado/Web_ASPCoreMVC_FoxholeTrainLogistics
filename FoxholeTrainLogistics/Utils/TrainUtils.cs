@@ -37,5 +37,12 @@ namespace FoxholeTrainLogistics
                 _ => throw new NotImplementedException()
             };
 
+        public static string GetDisplayName(this TrainStatus status) =>
+            status switch
+            {
+                TrainStatus.InTransit => "In Transit",
+                _ => status.ToString()
+            };
+
     }
 }

@@ -90,7 +90,11 @@ namespace FoxholeTrainLogistics.Services
 
             foreach (IShippableIcon category in GetShippableCategories())
             {
-                var itemsImagePaths = Directory.GetFiles(shippableContentRoot + "/items/" + category.Name + "/", "*.*", SearchOption.AllDirectories);
+                var directoryPath = shippableContentRoot + "/items/" + category.Name + "/";
+                if (!Directory.Exists(directoryPath))
+                    continue;
+
+                var itemsImagePaths = Directory.GetFiles(directoryPath, "*.*", SearchOption.AllDirectories);
                 var itemsInCategory = foxholeApiItems.Where(i => i.Category.ToString().ToLower() == category.Name.Replace(" ", "").ToLower()).ToList();
                 var items = new List<IItem>();
 

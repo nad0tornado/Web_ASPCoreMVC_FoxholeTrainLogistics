@@ -27,5 +27,15 @@ namespace FoxholeTrainLogistics
 
         public static IEnumerable<E> GetEnumTypes<E>() where E : Enum
             => Enum.GetValues(typeof(E)).Cast<E>();
+
+        public static string GetNameFromPath(this string path)
+        {
+            var nameIndex = path.LastIndexOf('/') + 1;
+            var name = Path.GetFileNameWithoutExtension(path.Substring(nameIndex));
+
+            name = name[0].ToString().ToLower() + name.Substring(1);
+
+            return name;
+        }
     }
 }
