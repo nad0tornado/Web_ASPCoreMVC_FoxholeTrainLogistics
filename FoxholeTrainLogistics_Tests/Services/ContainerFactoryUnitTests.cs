@@ -115,7 +115,7 @@ namespace FoxholeTrainLogistics_Tests.Services
         }
 
         [Fact]
-        public void ContainersToDictionaryByShippingType()
+        public void SortContainersInDictionaryByShippingType()
         {
             var containerA = ContainerFactory.CreateContainer(ShippingType.ShippingContainer);
             var containerB = ContainerFactory.CreateContainer(ShippingType.LiquidContainer);
@@ -125,22 +125,39 @@ namespace FoxholeTrainLogistics_Tests.Services
             Assert.True(containersToDictionary.ContainsKey(ShippingType.ShippingContainer));
             Assert.True(containersToDictionary.ContainsKey(ShippingType.LiquidContainer));
 
-            var shippingContainer = containersToDictionary[ShippingType.ShippingContainer];
-            var liquidContainer = containersToDictionary[ShippingType.LiquidContainer];
+            var shippingContainer = containersToDictionary[ShippingType.ShippingContainer].FirstOrDefault();
+            var liquidContainer = containersToDictionary[ShippingType.LiquidContainer].FirstOrDefault();
             
             Assert.Equal(containerA, shippingContainer);
             Assert.Equal(containerB, liquidContainer);
         }
 
         [Fact]
-        public void ContainerTemplatesConvertibleToDictionary()
+        public void ConvertContainerListToDictionary()
         {
-            var containerTemplates = ContainerFactory.GetMultiItemContainerTemplates();
+            var containerA = ContainerFactory.CreateContainer(ShippingType.ShippingContainer);
+            var containerB = ContainerFactory.CreateContainer(ShippingType.LiquidContainer);
+            var containers = new List<IContainer>() { containerA, containerB };
+            
+            var containersDictionary = containers.ToDictionary();
+            var containersDictionaryValues = containersDictionary.Values.SelectMany(v => v);
 
-            var containerTemplatesDictionary = containerTemplates.ToDictionary();
+            foreach (IContainer template in containers)
+                Assert.Contains(template, containersDictionaryValues);
+        }
 
-            foreach (IContainer template in containerTemplates)
-                Assert.True(containerTemplatesDictionary.ContainsValue(template));
+        [Fact]
+        public void ConvertContainerListToDictionaryWithDuplicateShippingTypes()
+        {
+            var containerA = ContainerFactory.CreateContainer(ShippingType.ShippingContainer);
+            var containerB = ContainerFactory.CreateContainer(ShippingType.ShippingContainer);
+            var containers = new List<IContainer>() { containerA, containerB };
+
+            var containersDictionary = containers.ToDictionary();
+            var containersDictionaryValues = containersDictionary.Values.SelectMany(v => v);
+
+            foreach (IContainer template in containers)
+                Assert.Contains(template, containersDictionaryValues);
         }
     }
 }
