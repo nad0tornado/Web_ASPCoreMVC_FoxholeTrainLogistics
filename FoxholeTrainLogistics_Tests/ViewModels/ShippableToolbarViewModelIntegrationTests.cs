@@ -36,11 +36,24 @@ namespace FoxholeTrainLogistics_Tests.ViewModels
             _fileSystem.CreateMockFile(categoriesRoot + "/" + category2[0]);
 
             var itemsRoot = shippableContentRoot + "/items";
-            _fileSystem.CreateMockFile(itemsRoot + "/" + category1[0] + "/" + category1[1]);
-            _fileSystem.CreateMockFile(itemsRoot + "/" + category2[0] + "/" + category2[1]);
+
+            var category1Name = Path.GetFileNameWithoutExtension(itemsRoot + "/" + category1[0]);
+            var category2Name = Path.GetFileNameWithoutExtension(itemsRoot + "/" + category2[0]);
+            var file1Path = itemsRoot + "/" + category1Name + "/" + category1[1];
+            var file2Path = itemsRoot + "/" + category2Name + "/" + category2[1];
+
+            _fileSystem.CreateMockFile(file1Path);
+            _fileSystem.CreateMockFile(file2Path);
 
             var shippableToolbarViewModel = new ShippableToolbarViewModel(_shippableToolbarService);
             var shippableItems = await shippableToolbarViewModel.GetShippableItems();
+            var shippableItemsIconNames = shippableItems.Values.SelectMany(i => i).Select(i => i.IconName);
+
+            var file1ExpectedIconName = "./img/items/" + category1Name + "/" + category1[1];
+            var file2ExpectedIconName = "./img/items/" + category2Name + "/" + category2[1];
+
+            Assert.Contains(file1ExpectedIconName, shippableItemsIconNames);
+            Assert.Contains(file2ExpectedIconName, shippableItemsIconNames);
         }
     }
 }

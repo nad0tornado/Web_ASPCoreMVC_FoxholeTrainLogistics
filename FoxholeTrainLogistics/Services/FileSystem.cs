@@ -11,6 +11,6 @@ namespace FoxholeTrainLogistics.Services
             => Directory.CreateDirectory(path);
 
         public string[] GetFiles(string root)
-            => Directory.GetFiles(root);
+            => Directory.GetFiles(root,"*.*",SearchOption.AllDirectories);
     }
 }
